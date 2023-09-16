@@ -1,0 +1,9 @@
+This is an interactive filter design package, for designing digital filters. 
+Fill in the form and press the ``Submit'' button, and a filter will be designed for you. You can specify the following types of filter:
+
+Butterworth, Bessel or Chebyshev infinite-impulse-response (IIR) filters, with lowpass, highpass, bandpass or bandstop characteristcis, designed by the bilinear transform or matched z-transform method;
+IIR bandpass, bandstop (notch) or allpass resonators, designed directly in the z-plane;
+finite-impulse-response (FIR) raised-cosine filters, optionally with a square-root response;
+FIR Hilbert transformers.
+
+http://www-users.cs.york.ac.uk/~fisher/mkfilter/

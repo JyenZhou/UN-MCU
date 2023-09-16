@@ -1,0 +1,113 @@
+#ifndef __TPS7A7100_RGW__H__
+#define __TPS7A7100_RGW__H__
+#include "JHAL.h"
+#ifdef __CplusPlus
+extern "C" {
+#endif
+    /*Òý½Å¶¨Òå*/
+#define TPS7A7100_mVfor50_EN_Pin Uc_7100_50mV_Pin
+#define TPS7A7100_mVfor50_EN_GPIO_Port Uc_7100_50mV_GPIO_Port
+#define TPS7A7100_mVfor100_EN_Pin Uc_7100_100mV_Pin
+#define TPS7A7100_mVfor100_EN_GPIO_Port Uc_7100_100mV_GPIO_Port
+#define TPS7A7100_mVfor200_EN_Pin Uc_7100_200mV_Pin
+#define TPS7A7100_mVfor200_EN_GPIO_Port Uc_7100_200mV_GPIO_Port
+#define TPS7A7100_mVfor400_EN_Pin Uc_7100_400mV_Pin
+#define TPS7A7100_mVfor400_EN_GPIO_Port Uc_7100_400mV_GPIO_Port
+#define TPS7A7100_mVfor800_EN_Pin Uc_7100_800mV_Pin
+#define TPS7A7100_mVfor800_EN_GPIO_Port Uc_7100_800mV_GPIO_Port
+#define TPS7A7100_for_1V6_Pin Uc_7100_1600mV_Pin
+#define TPS7A7100_for_1V6_GPIO_Port Uc_7100_1600mV_GPIO_Port
+#define TPS7A7100_RWG_EN_Pin Uc_7100_0V9_3V_EN_Pin
+#define TPS7A7100_RWG_EN_Port Uc_7100_0V9_3V_EN_GPIO_Port
+
+
+#define TPS7A7100_RWG_ENABLE 	HAL_GPIO_WritePin(TPS7A7100_RWG_EN_Port,TPS7A7100_RWG_EN_Pin,GPIO_PIN_SET)
+#define TPS7A7100_RWG_DISABLE  HAL_GPIO_WritePin(TPS7A7100_RWG_EN_Port,TPS7A7100_RWG_EN_Pin,GPIO_PIN_RESET)
+
+
+
+
+
+
+    typedef enum
+    {
+  
+        TPS7A7100_SELECT_0V0     =  0,
+		  	TPS7A7100_SELECT_0V5     =  1,
+				TPS7A7100_SELECT_0V55     =  2,
+				TPS7A7100_SELECT_0V6     =  3,
+				TPS7A7100_SELECT_0V65     = 4,
+				TPS7A7100_SELECT_0V7     =  5,
+				TPS7A7100_SELECT_0V75     = 6,
+				TPS7A7100_SELECT_0V8     =  7,
+				TPS7A7100_SELECT_0V85     = 8,
+        TPS7A7100_SELECT_0V9     =  9,
+        TPS7A7100_SELECT_0V95    =  10,
+        TPS7A7100_SELECT_1V0     =  11,
+        TPS7A7100_SELECT_1V05    =  12,
+        TPS7A7100_SELECT_1V1     =  13,
+        TPS7A7100_SELECT_1V15    =  14,
+        TPS7A7100_SELECT_1V2     =  15,
+			
+        TPS7A7100_SELECT_1V25    =  16,
+        TPS7A7100_SELECT_1V3     =  17,
+        TPS7A7100_SELECT_1V35    =  18,
+        TPS7A7100_SELECT_1V4     =  19,
+        TPS7A7100_SELECT_1V45    =  20,
+        TPS7A7100_SELECT_1V5     =  21,
+        TPS7A7100_SELECT_1V55    =  22,
+        TPS7A7100_SELECT_1V6     =  23,
+        TPS7A7100_SELECT_1V65    =  24,
+        TPS7A7100_SELECT_1V7     =  25,
+        TPS7A7100_SELECT_1V75    =  26,
+        TPS7A7100_SELECT_1V8     =  27,
+        TPS7A7100_SELECT_1V85    =  28,
+        TPS7A7100_SELECT_1V9     =  29,
+        TPS7A7100_SELECT_1V95    =  30,
+        TPS7A7100_SELECT_2V0     =  31,
+				
+        TPS7A7100_SELECT_2V05    =  32,
+        TPS7A7100_SELECT_2V1     =  33,
+        TPS7A7100_SELECT_2V15    =  34,
+        TPS7A7100_SELECT_2V2     =  35,
+        TPS7A7100_SELECT_2V25    =  36,
+        TPS7A7100_SELECT_2V3     =  37,		
+        TPS7A7100_SELECT_2V35    =  38,
+        TPS7A7100_SELECT_2V4     =  39,
+        TPS7A7100_SELECT_2V45    =  40,
+        TPS7A7100_SELECT_2V5     =  41,
+        TPS7A7100_SELECT_2V55    =  42,
+        TPS7A7100_SELECT_2V6     =  43,
+        TPS7A7100_SELECT_2V65    =  44,
+        TPS7A7100_SELECT_2V7     =  45,
+        TPS7A7100_SELECT_2V75    =  46,
+        TPS7A7100_SELECT_2V8     =  47,
+				
+        TPS7A7100_SELECT_2V85    =  48,
+        TPS7A7100_SELECT_2V9     =  49,
+        TPS7A7100_SELECT_2V95    =  50,
+        TPS7A7100_SELECT_3V0     =  51,
+        TPS7A7100_SELECT_3V05    =  52,
+        TPS7A7100_SELECT_3V1     =  53,
+        TPS7A7100_SELECT_3V15    =  54,
+        TPS7A7100_SELECT_3V2     =  55,
+        TPS7A7100_SELECT_3V25    =  56,
+        TPS7A7100_SELECT_3V3     =  57,
+        TPS7A7100_SELECT_3V35    =  58,
+        TPS7A7100_SELECT_3V4     =  59,
+        TPS7A7100_SELECT_3V45    =  60,
+        TPS7A7100_SELECT_3V5     =  61,
+    } TPS7A7100_SELECT_TypeDef;
+
+
+
+    void TPS7A7100_RWG_init(void);
+    uint8_t TPS7A7100SelectFunc(TPS7A7100_SELECT_TypeDef TPS7A7100_select);
+
+#ifdef CplusPlus
+}
+#endif
+
+#endif
+
+

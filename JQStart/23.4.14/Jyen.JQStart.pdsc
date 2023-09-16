@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+ 
+ <package schemaVersion="1.7" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="PACK.xsd">
+   <name>JQStart</name>
+   <vendor>Jyen</vendor>
+   <description>quick start software component include MCU  has: STMicroelectronics,AutoChips,ChipON,Chipway...</description>
+   <url>https://qm.qq.com/cgi-bin/qm/qr?k=mhdWeVSjqke-7cb0JyqwMZ4Yn-ecRZF6&amp;noverify=0</url>
+   <supportContact>z.wj@qq.com</supportContact>
+
+   <releases>
+      <release version="23.4.14" date="2021-8-21">
+	   add gpio  exit   ,but wille bootlodr>8K
+     </release>
+        <release version="22.12.26" date="2021-8-21">
+	   2022/12/26 repair chipway lin known issue
+     </release>
+     <release version="22.11.7" date="2021-8-21">
+	   2022/11/07 add pwm drive
+     </release>
+     <release version="22.8.21" date="2021-8-21">
+	   2022/08/18 add chipway lin drive
+     </release>
+	  <release version="22.5.31" date="2021-07-26">
+     Initial Version (JHAL)
+    </release>
+   </releases>
+ 
+   <keywords>
+     <!-- keywords for indexing -->
+     <keyword>Jyen</keyword>
+     <keyword>HAL</keyword>
+	 <keyword>JQStart</keyword>
+     <keyword>Quick Start</keyword>
+ 	 <keyword>Start</keyword>
+   </keywords>
+ 
+
+   <!-- component section (optional for all Software Packs)-->
+ 
+   <components>
+       <component Cclass="JQStart" Cgroup="Quick Start" Cversion="2.22.10">
+      <description>开始使用</description>
+      <files>
+        <file category="doc" name="https://qm.qq.com/cgi-bin/qm/qr?k=mhdWeVSjqke-7cb0JyqwMZ4Yn-ecRZF6&amp;noverify=0"/>
+        <file category="include" name="LIB/"/>
+        <file category="source" name="LIB/JQStart.c"/>     
+      </files>
+    </component>
+
+
+     <component Cclass="JQStart" Cgroup="Quick Start" Cversion="23.4.14">
+       <description>开始使用</description>
+       <files>
+	      <file category="doc" name="https://qm.qq.com/cgi-bin/qm/qr?k=mhdWeVSjqke-7cb0JyqwMZ4Yn-ecRZF6&amp;noverify=0"/>
+	      <file category="include" name="LIB/"/>
+          <file category="source" name="LIB/JQStart.c"/>     
+       </files>
+     </component>
+
+ 
+   </components>
+   <taxonomy>
+    <description Cclass="JQStart" doc="https://qm.qq.com/cgi-bin/qm/qr?k=mhdWeVSjqke-7cb0JyqwMZ4Yn-ecRZF6&amp;noverify=0">快速启动软件架构说明</description>
+  </taxonomy>
+  <!-- -->
+<conditions></conditions>
+<devices></devices>
+<boards></boards>
+<examples> </examples>
+ 
+</package>
