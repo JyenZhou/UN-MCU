@@ -251,8 +251,6 @@ ADC
 
 
 
-
-
 #include "Util/JHAL_CRC.c"
 #include "Util/JHAL_Math.c"
 #include "Util/JHAL_NumberConverter.c"

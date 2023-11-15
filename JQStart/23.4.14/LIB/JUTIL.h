@@ -39,7 +39,6 @@ extern "C" {
 
 
 
-
     void JHAL_systemReset(void);
 
 
