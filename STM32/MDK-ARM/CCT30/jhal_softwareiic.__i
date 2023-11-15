@@ -1,0 +1,7 @@
+--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../../APL
+-I.\RTE\_CCT30
+-IH:\AYY\Keil\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include
+-IH:\AYY\Keil\Packs\Jyen\JQStart\23.4.14\LIB
+-IH:\AYY\Keil\Packs\Keil\STM32F1xx_DFP\2.4.0\Device\Include
+-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F10X_HD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xE -DHAL_WWDG_MODULE_ENABLED
+-o cct30\jhal_softwareiic.o --omf_browse cct30\jhal_softwareiic.crf --depend cct30\jhal_softwareiic.d "H:\AYY\Keil\Packs\Jyen\JQStart\23.4.14\LIB\HAL\JHAL_SoftwareIIC.c"
