@@ -3,6 +3,41 @@
 #include "JHAL_BootLoader.h"
 
 
+
+
+#ifndef __UART_Number
+
+
+
+#define JBoot_DisUart
+
+#endif
+
+
+
+#ifndef __JHAL_CAN_Exist
+
+#define JBoot_DisCAN
+
+#endif
+
+#ifndef JBoot_DisCAN
+JHAL_CAN  __boot_canConfig= {JHAL_DEV_INIT};
+
+#endif
+
+
+#ifndef JBoot_DisUart
+JHAL_UART   __boot_uartConfig= {JHAL_DEV_INIT};
+#endif
+
+#if   ( defined FlashStartAddr  && (!defined JBoot_DisCAN ||!defined JBoot_DisUart))
+
+
+
+
+
+
 //TODO 后面增加boot升级后保存程序ROM CRC做自检  另外做固定偏移地址的错误函数 实现错误回调
 /*中断偏移*/
 void __JHAL_interruptOffset(uint32_t appxaddr)
@@ -28,6 +63,10 @@ void __JHAL_interruptOffset(uint32_t appxaddr)
 #endif
 
 }
+
+
+
+
 
 void __JHAL_booJjump2App(uint32_t appxaddr)
 {
@@ -107,7 +146,7 @@ typedef enum
 void __JHAL_bootAppUpdateResponse(JHAL_BootInfo bootInfo,JHAL_BootUpdateResponse status,u32 info)
 {
 
-    u8 data[8]= {0xa5};
+    u8 data[8]= {BOOT_DataHead};
 
     data[1]=(u8)status;
     if(BootResponse_SetSizeFailure4SizeOut==status)
@@ -130,18 +169,23 @@ void __JHAL_bootAppUpdateResponse(JHAL_BootInfo bootInfo,JHAL_BootUpdateResponse
     if(bootInfo. bootStatus==BootStatus_Update4CAN) {
 
         JHAL_CANBox box= {.data=data,.id=bootInfo.bootCanId,.length=8,.isExtendFrame= bootInfo.canIsExtendFrame,.isRemoteFrame=false};
-        JHAL_canSendDatas(bootInfo.can,box,NULL);
+
+        JHAL_canSendDatas(&__boot_canConfig,box,NULL);
 
 
 
     }
 #endif
 
+
+#if  ((!defined JBoot_DisCAN)  && (!defined JBoot_DisUart))
     else
+#endif
+
 
         if(bootInfo. bootStatus==BootStatus_Update4Uart) {
 #ifndef JBoot_DisUart
-            JHAL_uartSendDatas(bootInfo .uart,data,8,  JHAL_CRC_Mode_16_Modbus);
+            JHAL_uartSendDatas(&__boot_uartConfig,data,8,  JHAL_CRC_Mode_16_Modbus);
 #endif
 
         }
@@ -162,21 +206,24 @@ void   __JHAL_bootUpdating(JHAL_BootInfo bootInfo,bool isUpdateApp)
 
 //收到的Hex大小
     u8  dataBuff[8];
-    u8 rxDataLenth;
+    u8 rxDataLenth= 0;
     u32 appHexReceivedSize=0;
 
 #ifndef JBoot_DisCAN
-    JHAL_CANBox canBox= {0};
+
     if(bootInfo. bootStatus==BootStatus_Update4CAN) {
 
 
-        JHAL_CANConfig canConfig;
+        __boot_canConfig.baudRate=bootInfo.canBaudRate;
+        __boot_canConfig.filterRxIDList=&(bootInfo.pcCanId);
+        __boot_canConfig.filterRxIDNumber=1;
+        __boot_canConfig.rxDataBuff.data= dataBuff;
+        if(isUpdateApp) {
+            JHAL_canClose( &__boot_canConfig);
+        }
+        JHAL_canOpen(  &__boot_canConfig);
 
-        canConfig.canBaudRate=bootInfo.canBaudRate;
-        canConfig.filterRxIDList=&(bootInfo.pcCanId);
-        canConfig.filterRxIDNumber=1;
-        JHAL_canInit(bootInfo.can,&canConfig);
-        canBox.data=dataBuff;
+
 
 
     }
@@ -185,52 +232,57 @@ void   __JHAL_bootUpdating(JHAL_BootInfo bootInfo,bool isUpdateApp)
     else
 #endif
 
-        if(bootInfo. bootStatus==BootStatus_Update4Uart) {
 #ifndef JBoot_DisUart
-            JHAL_UARTConfig  uartConfig;
-            uartConfig.baudRate=bootInfo.uartBaudRate;
+
+        if(bootInfo. bootStatus==BootStatus_Update4Uart) {
+
+            __boot_uartConfig.dev=bootInfo.uartDev;
+            __boot_uartConfig.baudRate=bootInfo.uartBaudRate;
             JHAL_UART_RXConfig rxConfig;
             //定义8个长度是为了方便兼容can还节省空间
 
             rxConfig.receiveMode=JHAL_UART_ReceiveITMode_IT_DMA_IDLE;
             rxConfig.dataBuff=dataBuff;
-            uartConfig.rxConfig= rxConfig;
+            __boot_uartConfig.rxConfig= rxConfig;
 
-            JHAL_uartInit(bootInfo.uart,&uartConfig);
-#endif
+            if(isUpdateApp) {
+                JHAL_uartClose( &__boot_uartConfig);
+            }
+            JHAL_uartOpen  ( &__boot_uartConfig);
+
+
 
         }
+#endif
 
     __JHAL_bootAppUpdateResponse( bootInfo,BootResponse_AppUpdateWiat,0);
     while(true)
     {
 #ifndef JBoot_DisCAN
-        if(JHAL_canGetRxBuff(bootInfo.can,&canBox)  )
+        rxDataLenth=JHAL_canRxFinsh(&__boot_canConfig   );
+
+
+
+#endif
+
+
+#ifndef JBoot_DisUart
+        if(rxDataLenth==0) {
+            rxDataLenth=JHAL_uartRxFinsh(&__boot_uartConfig);
+        }
+#endif
+        if(rxDataLenth==0)
         {
 
 
-            rxDataLenth=canBox.length;
-
+            if(++appUpdateTimeout>=0x2FFFFF)
+            {
+                appUpdateTimeout=0;
+                bootStep=0;
+                __JHAL_bootAppUpdateResponse( bootInfo,BootResponse_AppUpdateWiat,0);
+            }
+            continue;
         }
-#endif
-
-#if  ((!defined JBoot_DisCAN)  && (!defined JBoot_DisUart))
-        else
-#endif
-#ifndef JBoot_DisUart
-            if((rxDataLenth=JHAL_uartRxFinsh(bootInfo.uart))!=0) {
-
-            }
-#endif
-            else {
-                if(++appUpdateTimeout>=0x2FFFFF)
-                {
-                    appUpdateTimeout=0;
-                    bootStep=0;
-                    __JHAL_bootAppUpdateResponse( bootInfo,BootResponse_AppUpdateWiat,0);
-                }
-                continue;
-            }
 
 
         appUpdateTimeout=0;
@@ -262,7 +314,7 @@ void   __JHAL_bootUpdating(JHAL_BootInfo bootInfo,bool isUpdateApp)
             break;
         case 1:
 
-            JHAL_flashWriteNByte(isUpdateApp?JHAL_BOOT_AppStartAddr+appHexReceivedSize:JHAL_BOOT_BootStartAddr+appHexReceivedSize,dataBuff,canBox.length);
+            JHAL_flashWriteNByte(isUpdateApp?JHAL_BOOT_AppStartAddr+appHexReceivedSize:JHAL_BOOT_BootStartAddr+appHexReceivedSize,dataBuff,rxDataLenth);
 
 
             appHexReceivedSize+=rxDataLenth ;
@@ -288,36 +340,6 @@ void   __JHAL_bootUpdating(JHAL_BootInfo bootInfo,bool isUpdateApp)
 
     }
 }
-
-
-void JHAL_bootLoader(JHAL_BootInfo bootInfo)
-{
-//如果flash中没有boot配置信息那么就把默认的信息写进去
-    if(!  JHAL_bootGetInfo(&bootInfo))
-    {
-        JHAL_bootSetInfo(bootInfo);
-    }
-
-
-
-    if (bootInfo.bootStatus==BootStatus_Run)
-    {
-        __JHAL_booJjump2App(JHAL_BOOT_AppStartAddr);
-    }
-
-    else
-    {
-        __JHAL_bootUpdating(bootInfo,true);
-    }
-
-
-
-}
-
-
-
-
-
 
 
 
@@ -350,7 +372,7 @@ void JHAL_bootLoader(JHAL_BootInfo bootInfo)
 
 
 
-/** ----------------------------JHAL_versionsEncode-----------------------------------
+/** ----------------------------__JHAL_versionsEncode-----------------------------------
   * @描述：版本信息转码成8byte数组
   *
   * @参数：
@@ -361,15 +383,26 @@ void JHAL_bootLoader(JHAL_BootInfo bootInfo)
   * @注:无
   *-----------------------------Jyen-2023-09-14-------------------------------------- */
 
-void JHAL_versionsEncode( uint8_t *data, JHAL_VersionsInfo *versions )
+void __JHAL_versionsEncode( uint8_t *data, __JHAL_VersionsInfo *versions )
 {
-    data[0]= 0XA5;
-    data[1] = ((versions->productID >> 7) & 0x7F); // 7-bit productID (bits 8-14)
-    data[2] =  (((versions->productID & 0x7F) << 1) | versions->isApp); // 7-bit productID (bits 0-6) + 1-bit isApp (bit 7)
-    data[3] =  ((versions->year << 1) | ((versions->month >> 3) & 0x01)); // 7-bit year + 1-bit month (top bit)
-    data[4] =   (((versions->month & 0x07) << 5) | (versions->day << 0)); // 3-bit month (bottom 3 bits) + 5-bit day
-    data[5] =  ((versions->hour << 2) | 0x03); // 6-bit hour + 2 bits padding
 
+
+
+
+    data[0]= BOOT_DataHead;
+
+
+
+// 使用memcpy复制source数组到destination数组效率更高但是要上位机做大端兼容
+//    memcpy(data+1, versions, sizeof(__JHAL_VersionsInfo) ); // 需要复制的字节数要包括字符串结束符 '\0'
+
+    /*   小端在前*/
+
+    data[1] = versions->productID & 0xFF;
+    data[2] = ((versions->productID &0xFE) >>8) | ((versions->isApp & 0x01) << 7);
+    data[3] = ( versions->year & 0x7F)    | ((versions->month & 0x01) <<7);
+    data[4] = ((versions->month & 0x0F)>> 1) | ((versions->day & 0x1F)<<3);
+    data[5] = versions->hour & 0x3F;
 
     JHAL_crcAutoWirte(JHAL_CRC_Mode_16_Modbus,data,8);
 
@@ -389,7 +422,7 @@ void JHAL_versionsEncode( uint8_t *data, JHAL_VersionsInfo *versions )
   * @注:无
   *-----------------------------Jyen-2023-09-14-------------------------------------- */
 
-void JHAL_versionsCreatInfo(JHAL_VersionsInfo  *versions, u16 productID,bool isApp  )
+void __JHAL_versionsCreatInfo(__JHAL_VersionsInfo  *versions, u16 productID,bool isApp  )
 {
     const char* dateStr = __DATE__;
     const char* timeStr = __TIME__;
@@ -403,7 +436,7 @@ void JHAL_versionsCreatInfo(JHAL_VersionsInfo  *versions, u16 productID,bool isA
     versions->isApp=isApp;
 
 }
-/** ----------------------------JHAL_versionsDecode-----------------------------------
+/** ----------------------------__JHAL_versionsDecode-----------------------------------
   * @描述：8byte数组解码成版本信息
   *
   * @参数：
@@ -414,19 +447,22 @@ void JHAL_versionsCreatInfo(JHAL_VersionsInfo  *versions, u16 productID,bool isA
   * @注:无
   *-----------------------------Jyen-2023-09-14-------------------------------------- */
 
-bool JHAL_versionsDecode(JHAL_VersionsInfo  *versions, uint8_t *byteArray )
+bool __JHAL_versionsDecode(__JHAL_VersionsInfo  *versions, uint8_t *data )
 {
 
-    if(!JHAL_crcCheak(JHAL_CRC_Mode_16_Modbus,byteArray,8)) {
+    if(data[0]!= BOOT_DataHead||!JHAL_crcCheak(JHAL_CRC_Mode_16_Modbus,data,8)) {
         return false ;
     }
 
-    versions-> productID = ((byteArray[1] & 0x7F) << 7) | (byteArray[2] >> 1);
-    versions->    isApp = (byteArray[1] >> 6) & 0x01;
-    versions->      year = (byteArray[3] >> 1) & 0x7F;
-    versions->   month = (((byteArray[3] & 0x01) << 3) | ((byteArray[4] >> 5) & 0x0F));
-    versions->    day = (byteArray[4] >> 0) & 0x1F;
-    versions->     hour = (byteArray[5] >> 2) & 0x3F;
+    //  memcpy(  versions,data+1, sizeof(__JHAL_VersionsInfo) ); // 需要复制的字节数要包括字符串结束符 '\0'
+
+
+    versions->productID = data[1] | ((data[2] & 0x7F) << 8);
+    versions->isApp = (data[2] >> 7) & 0x01;
+    versions->year = data[3] & 0x7F;
+    versions->month = ((data[3] >> 7) & 0x01) | ((data[4] & 0x07) << 1);
+    versions->day = (data[4] >> 3) & 0x1F;
+    versions->hour = data[5] & 0x3F;
 
 
     if(versions->year >99||
@@ -440,11 +476,18 @@ bool JHAL_versionsDecode(JHAL_VersionsInfo  *versions, uint8_t *byteArray )
 }
 
 //版本对比是否需要更新 true 需要更新 false 已是最新版本
-bool  JHAL_versionsShouldUpdated( JHAL_VersionsInfo  *remoteVersions,JHAL_VersionsInfo *localversions )
+bool  __JHAL_versionsShouldUpdated( __JHAL_VersionsInfo  *remoteVersions,__JHAL_VersionsInfo *localversions )
 {
-
-
-    if(remoteVersions->year> localversions->year&&remoteVersions->month> localversions->month&&remoteVersions ->day> localversions ->day&&remoteVersions ->hour> localversions ->hour)
+    if(remoteVersions->year> localversions->year)
+    {
+        return true;
+    } else if(remoteVersions->month> localversions->month)
+    {
+        return true;
+    } else if(remoteVersions ->day> localversions ->day)
+    {
+        return true;
+    } else if(remoteVersions ->hour> localversions ->hour)
     {
         return true;
     } else {
@@ -452,6 +495,50 @@ bool  JHAL_versionsShouldUpdated( JHAL_VersionsInfo  *remoteVersions,JHAL_Versio
     }
 
 }
+
+
+
+
+void JHAL_bootLoader(JHAL_BootInfo bootInfo)
+{
+//如果flash中没有boot配置信息那么就把默认的信息写进去
+    if(!  JHAL_bootGetInfo(&bootInfo))
+    {
+
+        __JHAL_VersionsInfo localversions;
+
+
+        __JHAL_versionsCreatInfo(&localversions,  bootInfo.productID,  true  );
+
+        bootInfo.__info=localversions;
+        JHAL_bootSetInfo(bootInfo);
+
+
+    }
+
+
+
+    if (bootInfo.bootStatus==BootStatus_Run)
+    {
+        __JHAL_booJjump2App(JHAL_BOOT_AppStartAddr);
+    }
+
+    else
+    {
+        __JHAL_bootUpdating(bootInfo,true);
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
 
 
 /** ----------------------------JHAL_bootParseUpdateInfo4App-----------------------------------
@@ -469,10 +556,13 @@ bool  JHAL_versionsShouldUpdated( JHAL_VersionsInfo  *remoteVersions,JHAL_Versio
 void JHAL_bootParseUpdateInfo4App( u8 *data,u8 productID,JHAL_BootStatus bootStatus)
 {
 
-    JHAL_VersionsInfo remoteVersions;
-    JHAL_VersionsInfo localversions;
+    __JHAL_VersionsInfo remoteVersions;
+    __JHAL_VersionsInfo localversions;
 
-    JHAL_versionsDecode(&remoteVersions,data );
+    if(!   __JHAL_versionsDecode(&remoteVersions,data ))
+    {
+        return;
+    }
 
     if(remoteVersions.productID!=productID)
     {
@@ -481,8 +571,8 @@ void JHAL_bootParseUpdateInfo4App( u8 *data,u8 productID,JHAL_BootStatus bootSta
 
     if(remoteVersions.isApp)
     {
-        JHAL_versionsCreatInfo(&localversions,  productID,  true  );
-        if(JHAL_versionsShouldUpdated(&remoteVersions,&localversions))
+        __JHAL_versionsCreatInfo(&localversions,  productID,  true  );
+        if(__JHAL_versionsShouldUpdated(&remoteVersions,&localversions))
         {
             __JHAL_bootStatusSet(bootStatus);
         }
@@ -496,8 +586,9 @@ void JHAL_bootParseUpdateInfo4App( u8 *data,u8 productID,JHAL_BootStatus bootSta
             return;
         }
 
-        if(JHAL_versionsShouldUpdated(&remoteVersions,&bootInfo.versionsInfo))
+        if(__JHAL_versionsShouldUpdated(&remoteVersions,&bootInfo.__info))
         {
+            bootInfo.bootStatus=bootStatus;
             __JHAL_bootUpdating (bootInfo,false);
         }
 
@@ -509,5 +600,5 @@ void JHAL_bootParseUpdateInfo4App( u8 *data,u8 productID,JHAL_BootStatus bootSta
 }
 
 
-
+#endif
 

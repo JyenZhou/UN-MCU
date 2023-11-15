@@ -72,8 +72,7 @@ extern "C" {
     /**函数指针类型为void/uint8_t函数 */
     typedef u8         (*FuncPtrArg1Ret1)(uint8_t u8Param);
 
-
-
+ 
 
 
     /*GCC定义*/
@@ -114,7 +113,7 @@ extern "C" {
 #define OS_INLINE static __inline__
 #define OS_EXPECT(x, v) __builtin_expect((x), (v))
 #define OS_BEFORE_MAIN_EXE __attribute__((__constructor__))
-#define OS_AFTER_MAIN_EXE __attribute__((destructor))  
+#define OS_AFTER_MAIN_EXE __attribute__((destructor))
 
 
 
@@ -176,29 +175,29 @@ extern "C" {
 //天->毫秒
 #define Day2Msec  (Day2Sec*Sec2Msec)
 
-/*年->月*/
+    /*年->月*/
 #define   Year2Month 12
 
     typedef enum
     {
-     
-			 JHAL_TimeUnits_NS=1,
-			 JHAL_TimeUnits_100NS=_100Nsec2Nsec,
-		   JHAL_TimeUnits_US=Usec2Nsec,
-       JHAL_TimeUnits_MS=Msec2Nsec,
-			 JHAL_TimeUnits_S=Sec2Nsec,
+
+        JHAL_TimeUnits_NS=1,
+        JHAL_TimeUnits_100NS=_100Nsec2Nsec,
+        JHAL_TimeUnits_US=Usec2Nsec,
+        JHAL_TimeUnits_MS=Msec2Nsec,
+        JHAL_TimeUnits_S=Sec2Nsec,
     } JHAL_TimeUnits;
 
 
-/*电阻换算*/
+    /*电阻换算*/
 //M->K
 #define  M2KOhm 1000
 //K->Ω
 #define  K2Ohm 1000
 //M->Ω
 #define  M2Ohm M2KOhm*K2Ohm
-		
-		
+
+
 //这样定义的好处能够自动进行类型匹配()不能少不然会被拆分造成第一个a与别的地方运算了
 #define max(a,b) (a>b?a:b)
 #define min(a,b) (a<b?a:b)
@@ -206,6 +205,12 @@ extern "C" {
 #define	 max3(a,b,c)		((c>b&&c>a)?c:(a>b)?a:b)
 #define  min3(a,b,c)    ((c<a&&c<b)?c:(a<b)?a:b)
 
+
+		   typedef enum {
+        JHAL_Align_Center=0,
+        JHAL_Align_Left,
+        JHAL_Align_Right,
+    } JHAL_Align;
 
 
 #ifdef __cplusplus

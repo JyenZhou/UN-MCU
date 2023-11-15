@@ -18,45 +18,44 @@ extern "C" {
 #endif
 
 
-    typedef enum
-    {
-        JHAL_Timer0=0,
-				JHAL_Timer1,
-        JHAL_Timer_Number
-    } JHAL_Timer;
-
-
+ 
+    typedef struct {
+			bool isOpen;
+			
+		}__JHAL_Timer_therInfo;
 
 
     typedef struct {
+			
+			u8 dev;
 //中断的时间单位
         JHAL_TimeUnits itTimeUnit;
 //itTimeValue 中断时间值 0-1000
         u16 itTimeValue;
+__JHAL_Timer_therInfo __info;
+    } JHAL_Timer;
 
-    } JHAL_TimerConfig;
 
 
+    /* ----------------------------JHAL_timerInit----------------------------------- */
+    /**
+      * 描述:
+      *
+      *
+      *
+      * 参数:
+    **		  	 timer: [输入/出]
+    **			 config: [输入/出]
+      *
+      * 返回值:无
+      *
+     **/
+    /* -----------------------------Jyen-2022-11-07-------------------------------------- */
 
-/* ----------------------------JHAL_timerInit----------------------------------- */
-/**
-  * 描述:
-  *
-  *
-  *
-  * 参数:
-**		  	 timer: [输入/出] 
-**			 config: [输入/出] 
-  *
-  * 返回值:无
-  *
- **/
-/* -----------------------------Jyen-2022-11-07-------------------------------------- */
-
-    void JHAL_timerInit(JHAL_Timer timer,JHAL_TimerConfig config);
-		void  JHAL_timerDeInit(JHAL_Timer timer);
-//中断回调
-    void JHAL_timerInterruptCallBack(JHAL_Timer timer);
+    bool JHAL_timerOpen(JHAL_Timer *timer );
+    bool  JHAL_timerDeInit(JHAL_Timer *timer);
+//中断回调  注意这里对应的是uart实例 id 不是传进去的dev  因为两个dev可能实际上是一个uart 只是引脚不一样
+    void JHAL_timerInterruptCallBack( u8 id);
 
 #ifdef CplusPlus
 }

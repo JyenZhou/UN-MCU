@@ -45,76 +45,102 @@ return dianya;
 
 
 
-bool  __ads115Init( ADS1115Config  *config,  ADS1115Channel ch )
+bool  __ads115Init( ADS1115  *config,  ADS1115Channel ch )
 {
 
 
 
     u8 regData[2];
     regData[0]=ADS1115_REG_CONFIG_OS_START| ch|config->pga|config->isSingleConversion;
-    regData 	[1]=config->speed|ADS1115_REG_CONFIG_COMP_MODE_TRADITIONAL|ADS1115_REG_CONFIG_COMP_POL_LOW|ADS1115_REG_CONFIG_COMP_LAT_NONLATCH|ADS1115_REG_CONFIG_COMP_QUE_DIS;
+    regData 	[1]= config->speed <<5|ADS1115_REG_CONFIG_COMP_MODE_TRADITIONAL|ADS1115_REG_CONFIG_COMP_POL_LOW|ADS1115_REG_CONFIG_COMP_LAT_NONLATCH|ADS1115_REG_CONFIG_COMP_QUE_DIS;
 
     u8 timeoutCount=10;
 
-    while(!JHAL_iicTransmit(&config->iicConfig,regData,2))
+    while(!JHAL_i2csfMemWrite(&config->i2c,1,false,regData,2))
     {
         if(timeoutCount--==0) {
             return false;
         }
     }
 
-
-    JHAL_delayMs(10);
-    return false;
-}
-
-bool  ads1115Init( ADS1115Config  *config)
-{
-    JHAL_iicInit(	&config->iicConfig);
-    return  __ads115Init(config,ADS1115Channel_INGLE_0);
-}
-
-uint32_t __ads1115GetAD(ADS1115Config  *config  )
-
-{
-
-
-    /*指向ADS1115指针寄存器用于准备读取数据*/
-    uint8_t	readbuff[2];
-    uint32_t conv_data = 0;
-
-
-
-    /*读取数据**/
-
-    JHAL_iicReceice(&config->iicConfig,readbuff,2);
-
-    conv_data=(readbuff[0]<<8)|readbuff[1];
-
-    if(conv_data > 0x8000)//负电压时候
+    u8 delayMs=0;
+    if(config->speed<=ADS1115_Speed_SPS_128)
     {
-        conv_data = 0xffff-conv_data;
+        delayMs=1000/(  8<<config->speed)+1;
+    } else if(config->speed==ADS1115_Speed_SPS_250)
+    {
+
+        delayMs=5;
+
     }
 
-    if(config->isSingleConversion)
+
+
+
+
+    JHAL_delayMs(delayMs);
+    return true;
+}
+
+bool  ads1115Open( ADS1115  *config)
+{
+    JHAL_i2csfOpen(	&config->i2c);
+    return  __ads115Init(config,ADS1115Channel_SINGLE_0);
+}
+
+bool __ads1115GetAD(ADS1115  *config, uint32_t *conv_data )
+
+{
+
+    if(config->alert_rdy_Port!=JHAL_IO_NoSet)
     {
-        while(JHAL_gpioReadPin(config->alert_rdy_Port,config->alert_rdy_Pin));
+        u32 timeCountOut=0;
+        while(JHAL_gpioReadPin(config->alert_rdy_Port,config->alert_rdy_Pin))
+        {
+            if(timeCountOut++>0xFFFFF)
+            {
+                return false;
+            }
+        }
 
     } else {
         JHAL_delayMs(10);
     }
 
-    return conv_data;
+
+    /*指向ADS1115指针寄存器用于准备读取数据*/
+    uint8_t	readbuff[2];
+
+
+
+    /*读取数据**/
+
+    if(  !JHAL_i2csfMemRead(&config->i2c,0,false,readbuff,2))
+    {
+        return false ;
+    }
+
+
+    *conv_data=(readbuff[0]<<8)|readbuff[1];
+
+    if(*conv_data > 0x8000)//负电压时候
+    {
+        *conv_data = 0xffff-*conv_data;
+    }
+
+
+
+    return true ;
 
 }
 
 
 
 
-JHAL_ADCInfo ads1115GetVoltage(ADS1115Config  *config,ADS1115Channel ch )
+bool ads1115GetVoltage(ADS1115  *config,ADS1115Channel ch, JHAL_ADCInfo  *adcInfo  )
 
 {
-    JHAL_ADCInfo  adcInfo ;
+
 
     if(config->isSingleConversion)
     {
@@ -133,74 +159,80 @@ JHAL_ADCInfo ads1115GetVoltage(ADS1115Config  *config,ADS1115Channel ch )
 
         for(u8 i=0; i< samplingCount; i++)
         {
-            adcBuff[i]= __ads1115GetAD(config);
+            if(! __ads1115GetAD(config,&adcBuff[i]))
+            {
+                return false;
+            }
         }
 
 
         JHAL_sortU32ArrayAsc( adcBuff, samplingCount);
 
-        adcInfo.adcValue.minAD=adcBuff[0];
-        adcInfo.adcValue.maxAD=adcBuff[samplingCount-1];
+        adcInfo->adcValue.minAD=adcBuff[0];
+        adcInfo->adcValue.maxAD=adcBuff[samplingCount-1];
 
 
 
         if(config->filteredModel==JHAL_FilteredModel_Median) {
 
-            adcInfo.adcValue.ad= adcBuff[( samplingCount+1)/2];
+            adcInfo->adcValue.ad= adcBuff[( samplingCount-1)/2];
         } else {
             samplingCount-=1;
 
-            adcInfo.adcValue.ad=adcBuff[1] ;
+            adcInfo->adcValue.ad=adcBuff[1] ;
 
             for(u8 i=2; i< samplingCount ; i++)
             {
 
-
-                adcInfo.adcValue.ad =    adcInfo.adcValue.ad + (adcBuff[i]-  adcInfo.adcValue.ad )/samplingCount ;
+                adcInfo->adcValue.ad =    adcInfo->adcValue.ad + (adcBuff[i]-  adcInfo->adcValue.ad )/samplingCount ;
 
             }
 
         }
 
     } else {
-        adcInfo.adcValue.ad= __ads1115GetAD(config);
+        if(! __ads1115GetAD(config,& adcInfo->adcValue.ad))
+        {
+            return false;
+        }
+
     }
 
 
 
     if(config->pga==ADS1115_PGA_6) {
-        adcInfo.voltage=adcInfo.adcValue.ad*0.0001875;
-        adcInfo.maxVoltage=adcInfo.adcValue.maxAD*0.0001875;
-        adcInfo.minVoltage=adcInfo.adcValue.minAD*0.0001875;
+        adcInfo->voltage=adcInfo->adcValue.ad*0.0001875;
+        adcInfo->maxVoltage=adcInfo->adcValue.maxAD*0.0001875;
+        adcInfo->minVoltage=adcInfo->adcValue.minAD*0.0001875;
     } else if(config->pga==ADS1115_PGA_4) {
-        adcInfo.voltage=adcInfo.adcValue.ad*0.000125;
-        adcInfo.maxVoltage=adcInfo.adcValue.maxAD*0.000125;
-        adcInfo.minVoltage=adcInfo.adcValue.minAD*0.000125;
+        adcInfo->voltage=adcInfo->adcValue.ad*0.000125;
+        adcInfo->maxVoltage=adcInfo->adcValue.maxAD*0.000125;
+        adcInfo->minVoltage=adcInfo->adcValue.minAD*0.000125;
 
     } else if(config->pga==ADS1115_PGA_2) {
-        adcInfo.voltage=adcInfo.adcValue.ad*0.0000625;
-        adcInfo.maxVoltage=adcInfo.adcValue.maxAD*0.0000625;
-        adcInfo.minVoltage=adcInfo.adcValue.minAD*0.0000625;
+        adcInfo->voltage=adcInfo->adcValue.ad*0.0000625;
+        adcInfo->maxVoltage=adcInfo->adcValue.maxAD*0.0000625;
+        adcInfo->minVoltage=adcInfo->adcValue.minAD*0.0000625;
 
     } else if(config->pga==ADS1115_PGA_1) {
-        adcInfo.voltage=adcInfo.adcValue.ad*0.00003125;
-        adcInfo.maxVoltage=adcInfo.adcValue.maxAD*0.00003125;
-        adcInfo.minVoltage=adcInfo.adcValue.minAD*0.00003125;
+        adcInfo->voltage=adcInfo->adcValue.ad*0.00003125;
+        adcInfo->maxVoltage=adcInfo->adcValue.maxAD*0.00003125;
+        adcInfo->minVoltage=adcInfo->adcValue.minAD*0.00003125;
     } else if(config->pga==ADS1115_PGA_05) {
-        adcInfo.voltage=adcInfo.adcValue.ad*0.000015625;
-        adcInfo.maxVoltage=adcInfo.adcValue.maxAD*0.000015625;
-        adcInfo.minVoltage=adcInfo.adcValue.minAD*0.000015625;
+        adcInfo->voltage=adcInfo->adcValue.ad*0.000015625;
+        adcInfo->maxVoltage=adcInfo->adcValue.maxAD*0.000015625;
+        adcInfo->minVoltage=adcInfo->adcValue.minAD*0.000015625;
     } else {
-        adcInfo.voltage=adcInfo.adcValue.ad*0.0000078125;
-        adcInfo.maxVoltage=adcInfo.adcValue.maxAD*0.0000078125;
-        adcInfo.minVoltage=adcInfo.adcValue.minAD*0.0000078125;
+        adcInfo->voltage=adcInfo->adcValue.ad*0.0000078125;
+        adcInfo->maxVoltage=adcInfo->adcValue.maxAD*0.0000078125;
+        adcInfo->minVoltage=adcInfo->adcValue.minAD*0.0000078125;
     }
 
 
 
 
 
-    return adcInfo;
+    return true;
 
 
 }
@@ -209,5 +241,5 @@ JHAL_ADCInfo ads1115GetVoltage(ADS1115Config  *config,ADS1115Channel ch )
 
 
 
- 
+
 

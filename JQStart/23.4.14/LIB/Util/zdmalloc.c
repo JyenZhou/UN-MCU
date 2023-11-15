@@ -11,15 +11,7 @@ const u32 memblksize = MEM_BLOCK_SIZE;					//内存分块大小
 const u32 memsize    = MEM_MAX_SIZE;							//内存总大小
 
 
-//内存管理控制器
-struct _m_mallco_dev mallco_dev=
-{
-    my_mem_init,	  //内存初始化
-    my_mem_perused,	  //内存使用率
-	membase,		    //内存池
-	memmapbase,       //内存管理状态表
-	0,  					  //内存管理未就绪
-};
+
 
 //复制内存
 //*des:目的地址
@@ -42,10 +34,13 @@ void mymemset(void *s,u8 c,u32 count)
     while(count--)*xs++=c;  
 }	
 
+
+
 //内存管理初始化  
 //memx:所属内存块
 void my_mem_init(void)
 {  
+	  
   mymemset(mallco_dev.memmap, 0,memtblsize*2);//内存状态表数据清零  
 	mymemset(mallco_dev.membase, 0,memsize);	//内存池所有数据清零  
 	mallco_dev.memrdy=1;								//内存管理初始化OK  
@@ -165,7 +160,15 @@ void *myrealloc(void *ptr,u32 size)
 
 
 
-
+//内存管理控制器
+struct _m_mallco_dev mallco_dev=
+{
+    my_mem_init,	  //内存初始化
+    my_mem_perused,	  //内存使用率
+	membase,		    //内存池
+	memmapbase,       //内存管理状态表
+	0,  					  //内存管理未就绪
+};
 
 
 

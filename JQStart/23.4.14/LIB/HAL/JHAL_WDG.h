@@ -23,12 +23,21 @@ extern "C" {
         JHAL_WDG_GWDG=0,
         //窗口看门狗
         JHAL_WDG_WWDG,
-    } JHAL_WDGType;
+    } JHAL_WDG_Dev;
+
+
+    typedef struct
+    {
+
+        bool isOpen:1;
+
+    } __JHAL_WDG_OtherInfo ;
 
 
 
     typedef struct
     {
+        JHAL_WDG_Dev dev;
 
 //itTimeValue 中断时间值 0-1000
         u16 itTimeValue;
@@ -37,15 +46,17 @@ extern "C" {
         u16 itTimeMinValue;
         u16 itTimeMaxValue;
         JHAL_TimeUnits itTimeUnit;
-    } JHAL_WDGConfig;
+
+        __JHAL_WDG_OtherInfo __info;
+    } JHAL_WDG;
 
 
 //JHAL_wdgInit((JHAL_WDGType){NULL},(JHAL_WDGConfig){NULL});
-    bool  JHAL_wdgInit(JHAL_WDGType wdg, JHAL_WDGConfig config);
-    bool  JHAL_wdgDeInit(JHAL_WDGType wdg);
-    void  JHAL_wdgFeed(void);
+    bool  JHAL_wdgOpen(JHAL_WDG *wdg);
+    bool  JHAL_wdgClose(JHAL_WDG  *wdg);
+    void  JHAL_wdgFeed(JHAL_WDG  *wdg);
     //复位前中断，若中断里面没有喂狗则复位 */
-    void JHALwdgBeforeInterruptCallBack(JHAL_WDGType wdg);
+    void JHALwdgBeforeInterruptCallBack(JHAL_WDG_Dev dev);
 
 
 

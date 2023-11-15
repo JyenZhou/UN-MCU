@@ -19,7 +19,8 @@ extern "C" {
 
     typedef enum
     {
-        JHAL_IOA=0,
+        JHAL_IO_NoSet=0,
+        JHAL_IOA,
         JHAL_IOB,
         JHAL_IOC,
         JHAL_IOD,
@@ -63,7 +64,8 @@ extern "C" {
     void JHAL_gpioInterruptCallback(void);
     void JHAL_gpio4IRKeyInterruptCallback(void);
 
-
+    JHAL_IO_Port JHAL_port2jport(GPIO_TypeDef * port ) ;
+    u8  JHAL_pin2jpin ( u16 pin );
 
 
 

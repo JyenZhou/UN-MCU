@@ -1,16 +1,6 @@
 #include "../JHAL_LIN.h"
-JHAL_UART __JHAL_jlin2juart(JHAL_LIN lin)
-{
-    if(lin==JHAL_LIN0)
-    {
-
-        return JHAL_UART0;
-    } else {
-//不存在或未实现
-        while(true);
-    }
-}
-static  JHAL_LINConfig *__linConfig[UART_NUM];
+ 
+static  JHAL_LIN  *__linConfig[__UART_Number];
 void __JHAL_linAbortTransmitIT (u8 id)
 {
     UART_Type *uart=__JHAL_id2uart(id);
@@ -18,66 +8,80 @@ void __JHAL_linAbortTransmitIT (u8 id)
     __linConfig[id]-> __linTxInfo.enable=false;
 
 }
-void __JHAL_linEnableReceiveIT (u8 id)
+
+ 
+
+void __JHAL_linEnableReceiveIT (u8 dev)
 {
-    UART_Type *uart=__JHAL_id2uart(id);
+    UART_Type *uart=__JHAL_id2uart(dev);
     __JHAL_uartReadBuffClean(uart);
     UART_EnableInterruptCmd(uart, UART_RLineStatusIntEN,ENABLE);
     UART_EnableInterruptCmd(uart, UART_RDataAvailableIntEN,ENABLE);
 }
-void JHAL_linEnableReceiveIT (JHAL_LIN lin)
+void JHAL_linEnableReceiveIT (JHAL_LIN *lin)
 {
-
-    u8 id=  __JHAL_juart2Id(__JHAL_jlin2juart(lin));
-    if(  !  __linConfig[id]->__linRxInfo.enable)
+ 
+    if(  ! lin  ->__linRxInfo.enable)
     {
-        __linConfig[id]->__linRxInfo.enable=true;
-        __JHAL_linEnableReceiveIT(id);
-        __linConfig[id]->__linRxInfo.step = __JHAL_LIN_Start ;
+       lin->__linRxInfo.enable=true;
+        __JHAL_linEnableReceiveIT(lin->dev);
+        lin->__linRxInfo.step = __JHAL_LIN_Start ;
     }
 }
-void __JHAL_linAbortReceiveIT (u8 id)
+void __JHAL_linAbortReceiveIT (u8 dev)
 {
-    UART_Type *uart=__JHAL_id2uart(id);
-    __linConfig[id]-> __linRxInfo.enable=false;
+    UART_Type *uart=__JHAL_id2uart(dev);
+    __linConfig[ __JHAL_juart2Id(dev)]-> __linRxInfo.enable=false;
 
     UART_EnableInterruptCmd(uart, UART_RLineStatusIntEN,DISABLE);
     UART_EnableInterruptCmd(uart, UART_RDataAvailableIntEN,DISABLE);
 }
-void JHAL_linAbortReceiveIT (JHAL_LIN lin)
+void JHAL_linAbortReceiveIT (JHAL_LIN *lin )
 {
-    u8 id=  __JHAL_juart2Id(__JHAL_jlin2juart(lin));
-    if(   __linConfig[id]-> __linRxInfo.enable)
+   
+    if(   __linConfig[ __JHAL_juart2Id(lin->dev)]-> __linRxInfo.enable)
     {
-        __JHAL_linAbortReceiveIT(id);
+        __JHAL_linAbortReceiveIT(lin->dev);
     }
 }
-bool  JHAL_linDeInit(JHAL_LIN lin)
+bool  JHAL_linClose (JHAL_LIN *lin)
 {
-    JHAL_linAbortReceiveIT(lin);
+	   if (lin->__info.uart.__info.isOpen){
+    JHAL_linAbortReceiveIT(lin );
 
-    JHAL_UART  uart=__JHAL_jlin2juart(lin);
-    u8 id=__JHAL_juart2Id(uart);
+    
+    u8 id=__JHAL_juart2Id(lin->dev);
     __JHAL_linAbortTransmitIT(id);
-    JHAL_uartDeInit( uart);
+    JHAL_uartClose( &	 lin-> __info .uart);
+		
     isAnalogLinMode[id]=false;
+	
+	   
     return true;
+		 }
+		 
+ return false;
+		 
 }
 
 
-bool JHAL_linInit(JHAL_LIN lin,JHAL_LINConfig  *config)
+bool JHAL_linOpen(JHAL_LIN    *config)
 {
-    JHAL_UART juartx=__JHAL_jlin2juart(lin);
-    UART_Type *  uart=__JHAL_juart2uart(juartx);
-    u8 id=__JHAL_juart2Id(juartx);
+   if(!config->__info.uart.__info.isOpen){
+    UART_Type *  uart=__JHAL_juart2uart( config->dev);
+    u8 id=__JHAL_juart2Id( config->dev);
+	
     isAnalogLinMode[id]=true;
-    JHAL_UARTConfig uartConfig= {.baudRate=config->baudRate};
+   config-> __info .uart.baudRate=config->baudRate;
+		 
+		  config-> __info .uart.dev=config->dev;
+ 
     UART_FIFOInitTypeDef UART_FIFOInitStruct;
     UART_FIFOInitStruct.UART_RT = UART_RxFIFO_1Char;
     UART_FIFOInitStruct.UART_TET = UART_TxFIFO_0Char;
     UART_FIFOInitStruct.UART_FIFO_Enable = DISABLE;
     UART_FIFOInit(uart, &UART_FIFOInitStruct);
-    JHAL_uartInit(juartx,&uartConfig);
+    JHAL_uartOpen(  &config-> __info .uart);
     UART_LINBreakLengthConfig(uart, UART_LINBreakLength_13b);  //同步间隔至少13bit
     __JHAL_linAbortTransmitIT(id);
     __JHAL_linAbortReceiveIT(id);
@@ -85,7 +89,11 @@ bool JHAL_linInit(JHAL_LIN lin,JHAL_LINConfig  *config)
     while(!config->rxConfig.filter.number);
     config->__linTxInfo.box=&config->__txBox;
     __linConfig[id]=config;
-    return true;
+		
+	 return true;	
+	}
+		
+    return false;
 
 }
 //通过linID获取目标过滤器
@@ -140,9 +148,9 @@ uint8_t __JHAL_linChecksum(uint8_t id, uint8_t *data,uint8_t length, JHAL_LIN_Fr
     }
     return (~check_sum);  //取反
 }
-bool JHAL_linSendData4IT(JHAL_LIN lin,bool isMasterMode,JHAL_LinBox box )
+bool JHAL_linSendData4IT(JHAL_LIN *lin,bool isMasterMode,JHAL_LinBox box )
 {
-    u8 id=  __JHAL_juart2Id(__JHAL_jlin2juart(lin));
+    u8 id=  __JHAL_juart2Id( lin->dev) ;
     UART_Type *uart=__JHAL_id2uart(id);
     if( !  __linConfig[id]->__linTxInfo.enable) {
         *__linConfig[id]-> __linTxInfo.box=box;
@@ -161,9 +169,9 @@ bool JHAL_linSendData4IT(JHAL_LIN lin,bool isMasterMode,JHAL_LinBox box )
     }
     return false;
 }
-bool JHAL_linGetStatus4SendData4IT(JHAL_LIN lin)
+bool JHAL_linGetStatus4SendData4IT(JHAL_LIN *lin)
 {
-    u8 id=  __JHAL_juart2Id(__JHAL_jlin2juart(lin));
+    u8 id=  __JHAL_juart2Id( lin->dev) ;
     return !  __linConfig[id]->__linTxInfo.enable;
 }
 /*实际通过中断回调发送处理*/

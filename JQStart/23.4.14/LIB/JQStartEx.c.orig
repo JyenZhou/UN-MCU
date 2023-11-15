@@ -1,0 +1,48 @@
+#include "JFML.h"
+ 
+#ifdef USE_HAL_DRIVER 
+ #include  "HAL/STM32/stm32f1xx_hal_wwdg.c" 
+#endif
+
+ 
+ 
+ 
+ 
+ 
+ 
+
+//96位UID需要24+1个空间  32位 UID需要8+1个空间   为了兼容 低位uid先存
+void uid2string(char* string,int buffSize )
+{
+ 
+    snprintf(string, buffSize, "%08X%08X%08X",  JHAL_uidGetLow(), JHAL_uidGetMiddle(),JHAL_uidGetHigh());
+			
+ 
+ 
+} 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+

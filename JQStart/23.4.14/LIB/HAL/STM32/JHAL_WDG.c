@@ -1,23 +1,9 @@
-/*****************************************************************************************************
-   *                                                                *
- *                                                                   *
-*                                                                     *
+#include "../JHAL_WDG.h"
 
-1. 要将 stm32f1xx_hal_wwdg.c 添加进来
 
-	已经把初始化和喂狗封装了   正常情况下直接如以下方法复制调用即可
 
-	 MX_WWDG_Init(0x7F, 0X5F,WWDG_PRESCALER_8);//初始化狗
-
-//默认开启了中断被动喂狗 只要在初始化时候加上上面初始化函数就行了
-	 Wwdog();//主动喂狗
-	 注意放喂狗的地方别跑while外面 或超时了
-*                                                                     *
-  *                                                                 *
-   *                                                              *
-*********@作者*Jyen******************@作者*Jyen***********************@作者*Jyen********************/
 #ifdef HAL_WWDG_MODULE_ENABLED
- 
+
 #include "../JHAL_WDG.h"
 WWDG_HandleTypeDef hwwdg;
 uint8_t wwdg_tr, wwdg_wr;
@@ -33,13 +19,14 @@ uint8_t wwdg_tr, wwdg_wr;
   * 返 回 值: 无
   * 说    明：无
   */
-bool JHAL_wdgInit(JHAL_WDGType wdg, JHAL_WDGConfig config )
-{// 最大值  窗口值  分频
-	uint8_t tr=0x7F;
-uint8_t wr=	0X5F;uint32_t WWDG_PRESCALER_X=WWDG_PRESCALER_8;
-	
-    
- 
+bool JHAL_wdgOpen(JHAL_WDG  *wdg  )
+{   // 最大值  窗口值  分频
+    uint8_t tr=0x7F;
+    uint8_t wr=	0X5F;
+    uint32_t WWDG_PRESCALER_X=WWDG_PRESCALER_8;
+
+
+
     hwwdg.Instance = WWDG;
     hwwdg.Init.Prescaler = WWDG_PRESCALER_X;
     hwwdg.Init.Window = wr;
@@ -47,11 +34,11 @@ uint8_t wr=	0X5F;uint32_t WWDG_PRESCALER_X=WWDG_PRESCALER_8;
     hwwdg.Init.EWIMode = WWDG_EWI_ENABLE;
     if (HAL_WWDG_Init(&hwwdg) != HAL_OK)
     {
-         Error_Handler();
+        Error_Handler();
     }
     /* 窗口值我们在初始化的时候设置成0X5F，这个值不会改变 */
     wwdg_wr = WWDG->CFR & 0X7F;//赋值 wwdg_wr
-		return true;
+    return true;
 }
 /**
   * 函数功能: WWDG配置
@@ -96,7 +83,7 @@ void HAL_WWDG_MspDeInit(WWDG_HandleTypeDef* hwwdg)
   ******************************************************************************
   *
   *----------------------作者Jyen---------------------作者Jyen--------------------------*/
-void JHAL_wdgFeed (void)
+void JHAL_wdgFeed (JHAL_WDG  *wdg )
 {
     wwdg_tr = WWDG->CR & 0X7F;
     if( wwdg_tr < wwdg_wr )

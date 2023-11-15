@@ -53,7 +53,8 @@
        <files>
 	      <file category="doc" name="https://qm.qq.com/cgi-bin/qm/qr?k=mhdWeVSjqke-7cb0JyqwMZ4Yn-ecRZF6&amp;noverify=0"/>
 	      <file category="include" name="LIB/"/>
-          <file category="source" name="LIB/JQStart.c"/>     
+          <file category="source" name="LIB/JQStart.c"/>  
+		  <file category="source" name="LIB/JQStartEx.c"/> 		  
        </files>
      </component>
 

@@ -1,33 +1,14 @@
 /**
   ****************************JHAL_BootLoader.h******************************************
-  * @brief     
-	
+  * @brief
+
 	使用说明：
 	   APP中
-		 1.使用 JHAL_versionsCreatInfo(JHAL_VersionsInfo  *versions, u16 productID,bool isApp  ); 创建版本信息
-       使用    JHAL_versionsEncode( uint8_t *data, JHAL_VersionsInfo *versions );  将版本信息加密，这里加密主要是通过debug去得到值数组值给BIN文件命名上位机下发用
-void  showVersionsData()
-{
-    static  bool isok;
-    static JHAL_VersionsInfo versions;
-    static	JHAL_VersionsInfo  versions2;
-    static uint8_t  data[8];
-
-    JHAL_versionsCreatInfo(&versions,   ProductID,  true );
-    JHAL_versionsEncode( data, &versions );
 
 
-    isok =  JHAL_versionsDecode(  &versions2,   data )	;
 
+		 1. APP中时使用如下代码完成boot和app信息同步  防止有时候改了波特率boot不同步 ，这样不需要更新整个boot
 
-}
-			 
-			 
-		 2.串口/CAN接收中解析上位机发的上面的值 传给   JHAL_bootParseUpdateInfo4App( u8 *data,u8 productID,JHAL_BootStatus bootStatus) ;自动触发后续升级
-		 
-		 
-		 3. 初始化时使用如下代码完成boot和app信息同步  防止有时候改了波特率boot不同步 ，这样不需要更新整个boot
- 
 void bootInfoSync()
 {
     JHAL_BootInfo bootInfo;
@@ -42,16 +23,16 @@ void bootInfoSync()
     }
 
 }
-		 
+  2.串口/CAN接收中解析上位机发的上面的值 传给   JHAL_bootParseUpdateInfo4App( u8 *data,u8 productID,JHAL_BootStatus bootStatus) ;自动触发后续升级  注意屏蔽看门狗
 		 Boot中
 		  1.    JHAL_bootLoader(JHAL_BootInfo info);  配置好boot信息传入即可
-		 
+
   *
     ******************************************************************************
   * @file     JHAL_BootLoader.h
   * @author   Jyen
   * @version  v1.0
-  * @date     2023-09-15 
+  * @date     2023-09-15
   * @attention
   * This software is supplied under the terms of a license
   * agreement or non-disclosure agreement.
@@ -63,11 +44,11 @@ void bootInfoSync()
   ********************************************************************************
   */
 
- 
+
 
 #ifndef __JHAL_BOOTOLADER__H__
 #define __JHAL_BOOTOLADER__H__
-#include "JUTIL.h"
+#include "JHAL.h"
 #ifdef __CplusPlus
 extern "C" {
 #endif
@@ -88,9 +69,9 @@ extern "C" {
 
 #define JHAL_BOOT_BootMaxSize   0x4000
 #else
-#erroor 未定义该单片机的
+// 未特殊定义该单片机的 使用预设大小
+#define JHAL_BOOT_BootMaxSize   0x4000
 #endif
-
 
 
 
@@ -112,39 +93,50 @@ extern "C" {
     } JHAL_BootStatus;
 
 
-		
-		
-  typedef struct  __attribute__((packed))
-   {
-		 
-	  u16 productID  : 15;
-	  u16 isApp : 1;   //  1位
-	  u16 year : 7;   // 年份的后两位，最大值为99，占用7位
-    u16 month : 4;  // 月份，最大值为12，占用4位
-    u16 day : 5;    // 日，最大值为31，占用5位
-    u8 hour : 6;   // 时，最大值为23，占用6位
-	 
-		 
-  
-}JHAL_VersionsInfo;
 
- 
+
+
+    typedef struct  __attribute__((packed))
+    {
+
+        u16 productID  : 15;
+        u16 isApp : 1;   //  1位
+        u16 year : 7;   // 年份的后两位，最大值为99，占用7位
+        u16 month : 4;  // 月份，最大值为12，占用4位
+        u16 day : 5;    // 日，最大值为31，占用5位
+        u8 hour : 6;   // 时，最大值为23，占用6位
+
+
+
+    }
+    __JHAL_VersionsInfo;
+
+
 
     //后面增加注意 不能指针类型 数组要注明长度
     typedef struct
     {
         //设置boot初始状态
         JHAL_BootStatus bootStatus;
-        JHAL_CAN  can;
+        u16	productID:15;
+        u8  canDev :3;
+        u8  uartDev:3;
+        bool canIsExtendFrame:1;
         JHAL_CANBaudRate canBaudRate;
-        bool canIsExtendFrame;
+
         //发送命令的上位机ID
         u32  pcCanId;
         u16  bootCanId;
-        JHAL_UART uart;
+
         u32  uartBaudRate;
-			JHAL_VersionsInfo  versionsInfo;
+
+
+        __JHAL_VersionsInfo __info;
+
     } JHAL_BootInfo;
+
+
+
 
 
 
@@ -152,59 +144,35 @@ extern "C" {
     //boot中判断升级及跳转主程序操作
     void JHAL_bootLoader(JHAL_BootInfo info);
 
-
- 
-    //用于app修改同步boot的配置信息 例如波特率变了
+    //用于app修改同步boot的配置信息 例如App动态波特率
     bool JHAL_bootGetInfo( JHAL_BootInfo *bootFlashInfo);
     bool JHAL_bootSetInfo(JHAL_BootInfo info);
+
+    /** ----------------------------JHAL_bootParseUpdateInfo4App-----------------------------------
+    * @描述：由APP调用，传入远程来的数据判断是否要升级，升级的是APP还是Boot
+    *
+    * @参数：
+    **	  	 data: [输入 ] 远程来的信息 8个字节 要和编码一致
+    **			 productID: [输入 ] 产品ID
+    **			 bootStatus: [输入 ] 将要哪种方式升级 can uart
+    *
+    * @返回值:无
+    * @注: 如果APP中使用了看门狗升级boot时候需要关闭
+    *-----------------------------Jyen-2023-09-14-------------------------------------- */
+
+    void JHAL_bootParseUpdateInfo4App( u8 *data,u8 productID,JHAL_BootStatus bootStatus) ;
+
+
+
 
 
     //跳转目标地址运行  一般用于多APP合在一起  单个内部直接跳转
     void JHAL_bootJump2App(uint32_t appAddr);
-   
- 
-/** ----------------------------JHAL_versionsCreatLocalInfo----------------------------------- 
-  * @描述：创建 版本信息  productID isApp:ture=app false=boot
-  *
-  * @参数：
-**	  	 versions: [输 出] 生成的 版本信息
-**			 productID: [输入/出]  产品编号15位的0-32768
-**			 isApp: [输入/出] trueapp false=boot
-  *
-  * @返回值:无
-  * @注:无
-  *-----------------------------Jyen-2023-09-14-------------------------------------- */
-
-void JHAL_versionsCreatInfo(JHAL_VersionsInfo  *versions, u16 productID,bool isApp  );
 
 
-/** ----------------------------JHAL_bootParseUpdateInfo4App----------------------------------- 
-  * @描述：由APP调用，传入远程来的数据判断是否要升级，升级的是APP还是Boot
-  *
-  * @参数：
-**	  	 data: [输入 ] 远程来的信息 7个字节 要和编码一致
-**			 productID: [输入 ] 产品ID
-**			 bootStatus: [输入 ] 哪种方式升级 can uart
-  *
-  * @返回值:无
-  * @注:无
-  *-----------------------------Jyen-2023-09-14-------------------------------------- */
 
-void JHAL_bootParseUpdateInfo4App( u8 *data,u8 productID,JHAL_BootStatus bootStatus) ;
 
-/** ----------------------------JHAL_versionsEncode-----------------------------------
-  * @描述：版本信息转码成7byte数组
-  *
-  * @参数：
-**	  	 data: [输 出]  起始地址 长度为7
-**			 versions: [输入 ]
-  *
-  * @返回值:无
-  * @注:无
-  *-----------------------------Jyen-2023-09-14-------------------------------------- */
-
-void JHAL_versionsEncode( uint8_t *data, JHAL_VersionsInfo *versions );
- bool JHAL_versionsDecode(JHAL_VersionsInfo  *versions, uint8_t *data );
+#define BOOT_DataHead 0xA5
 
 #ifdef CplusPlus
 }

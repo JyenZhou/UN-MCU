@@ -41,7 +41,7 @@ static bool __JHAL_isdelayInited=false;
  * @param  None
  * @return None
  */
-void  JHAL_delayInit(JHAL_DealyConfig config)
+void  JHAL_delayOpen(JHAL_Delay  config)
 {
     SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
     __delay_fac_us=Get_SystemCoreClock()/1000000;

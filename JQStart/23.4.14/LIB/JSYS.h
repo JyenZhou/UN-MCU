@@ -75,7 +75,6 @@ extern "C" {
 
 
 
-
     /*GCC¶¨Òå*/
 #define OS_NORETURN __attribute__((__noreturn__))
 #define OS_NOTHROW __attribute__((__nothrow__))
@@ -206,6 +205,12 @@ extern "C" {
 #define	 max3(a,b,c)		((c>b&&c>a)?c:(a>b)?a:b)
 #define  min3(a,b,c)    ((c<a&&c<b)?c:(a<b)?a:b)
 
+
+    typedef enum {
+        JHAL_Align_Center=0,
+        JHAL_Align_Left,
+        JHAL_Align_Right,
+    } JHAL_Align;
 
 
 #ifdef __cplusplus

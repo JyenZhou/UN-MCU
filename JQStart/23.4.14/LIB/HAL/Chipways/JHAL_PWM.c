@@ -1,18 +1,37 @@
-#include "../JHAL_PWM.h"
+/**
+  ****************************JHAL_PWM.c******************************************
+  * @brief     
+  *
+    ******************************************************************************
+  * @file     JHAL_PWM.c
+  * @author   Jyen
+  * @version  v1.0
+  * @date     2023-09-18 
+  * @attention
+  * This software is supplied under the terms of a license
+  * agreement or non-disclosure agreement.
+  * Passing on and copying of this document,and communication
+  * of its contents is not permitted without prior written
+  * authorization.
+  *
+  *         (C) Copyright 2023,Jyen,China. All Rights Reserved
+  ********************************************************************************
+  */
+  #include "../JHAL_PWM.h"
 #include "xl_ftm.h"
 #include <xl_sim.h>
 
 
 
 
-void __JHAL_jpwm2ftm(JHAL_PWM pwm,FTM_Type **FTMx, u8 *chX)
+void __JHAL_jpwm2ftm(u8 dev,FTM_Type **FTMx, u8 *chX)
 {
-    if(pwm==JHAL_PWM0)
+    if( dev==0)
     {
         *FTMx=FTM1;
         *chX=3;
     }
-    if(pwm==JHAL_PWM1)
+    if( dev==1)
     {
         *FTMx=FTM0;
         *chX=1;
@@ -28,10 +47,10 @@ void __JHAL_jpwm2ftm(JHAL_PWM pwm,FTM_Type **FTMx, u8 *chX)
 }
 
 //PWM触发AD采集的接口
-u8 __JHAL_jpwm2adcTriggerSoureValue(JHAL_PWM pwm)
+u8 __JHAL_jpwm2adcTriggerSoureValue(u8 dev)
 {
 
-    if(pwm==JHAL_PWM1)
+    if( dev==0 )
     {
         return ADC_HT_FTM0CH1MAP;
     } else {
@@ -48,11 +67,11 @@ u8 __JHAL_jpwm2adcTriggerSoureValue(JHAL_PWM pwm)
   * 输入   无
   * 返回   无
   */
-void __JHAL_pwmInit(JHAL_PWM pwm,JHAL_PWMConfig *config )
+void __JHAL_pwmOpen(JHAL_PWM  *config )
 {
-    FTM_Type *FTMx;
+    FTM_Type * FTMx;
     u8 chX;
-    __JHAL_jpwm2ftm(pwm,&FTMx,&chX);
+    __JHAL_jpwm2ftm(config ->dev ,&FTMx,&chX);
     FTM_InitTypeDef FTM_InitStructure;
     if(config->frequency==JHAL_PWM_750HZ)
     {
@@ -74,7 +93,7 @@ void __JHAL_pwmInit(JHAL_PWM pwm,JHAL_PWMConfig *config )
         {
             SIM_SCGC1_Cmd(SIM_SCGC1_FTM0F, ENABLE);
         }
-        if(pwm==JHAL_PWM1)
+        if(config->dev==1)
         {
             SIM_PINSEL_FTM0CH1(FTM0CH1_PS_PTB3);
         }
@@ -90,7 +109,7 @@ void __JHAL_pwmInit(JHAL_PWM pwm,JHAL_PWMConfig *config )
         {
             SIM_SCGC1_Cmd(SIM_SCGC1_FTM1F, ENABLE);
         }
-        if(pwm==JHAL_PWM0)
+        if(config->dev==0)
         {
             SIM_PINSEL_FTM1CH3(FTM1CH3_PS_PTE3);
         }
@@ -108,16 +127,7 @@ void __JHAL_pwmInit(JHAL_PWM pwm,JHAL_PWMConfig *config )
 
 }
 
-bool __JHAL_pwmIsENCheak(JHAL_PWM id, bool isEN) {
-    static bool sEN[JHAL_PWM_Number]= {false};
-    if(sEN[(u8)id]!=isEN)
-    {
-        sEN[(u8)id]=isEN;
-        return true;
-    }
-    return  false;
-}
-
+ 
 
 /*
 JHAL_PWM0 ->  PTE3->FTM1_CH3
@@ -138,23 +148,26 @@ prescaler 预分频系数 0->FTM_CLOCK_PS_DIV1 ...
 #define FTM_CLOCK_PS_DIV64               		6              < 64分频
 #define FTM_CLOCK_PS_DIV128              		7              < 128分频
 */
-void JHAL_pwmInit(JHAL_PWM pwm,JHAL_PWMConfig *config )
+bool JHAL_pwmOpen(JHAL_PWM *config   )
 {
-    if(__JHAL_pwmIsENCheak(pwm,true)) {
+    if(! config-> __info.isOpen) {
 
 
 
 //设置初始值大于最大值
         while(config->initialValue>config->maxValue);
-        __JHAL_pwmInit(pwm,config);
+        __JHAL_pwmOpen( config);
+			  
+			return  config-> __info.isOpen=true; 
     }
+		return false;
 }
 
-void  JHAL_pwmDeInit(JHAL_PWM pwm) {
-    if(__JHAL_pwmIsENCheak(pwm,false)) {
+bool  JHAL_pwmClose(JHAL_PWM * pwm) {
+    if(pwm-> __info.isOpen) {
         FTM_Type *FTMx;
         u8 chX;
-        __JHAL_jpwm2ftm(pwm,&FTMx,&chX);
+        __JHAL_jpwm2ftm(pwm->dev,&FTMx,&chX);
 
         if(FTMx == FTM0)
         {
@@ -174,20 +187,22 @@ void  JHAL_pwmDeInit(JHAL_PWM pwm) {
             SIM_SCGC1_Cmd(SIM_SCGC1_FTM2F, DISABLE);
             SIM_SCGC_Cmd(SIM_SCGC_FTM2,DISABLE);
         }
-
+				
+				 pwm-> __info.isOpen=false;
+return true;
     }
-
+	return false;
 
 
 }
 
 
 
-void JHAL_pwmSetValue(JHAL_PWM pwm,u16 value)
+void JHAL_pwmSetValue(JHAL_PWM *pwm,u16 value)
 {
     FTM_Type *FTMx;
     u8 chX;
-    __JHAL_jpwm2ftm(pwm,&FTMx,&chX);
+    __JHAL_jpwm2ftm(pwm->dev,&FTMx,&chX);
 
 
     FTM_SetChannelValue(FTMx,chX,  value);

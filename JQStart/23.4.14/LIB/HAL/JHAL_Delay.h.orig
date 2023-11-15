@@ -21,18 +21,27 @@ extern "C" {
 //主频
         u8 basicFrequency;
 
-    } JHAL_DealyConfig;
+    } JHAL_Delay;
 
-		   
-		//JHAL_delayInit((JHAL_DealyConfig){NULL});
-    void  JHAL_delayInit(JHAL_DealyConfig config);
+
+
+    u32 JHAL_uidGetHigh(void);
+    u32 JHAL_uidGetMiddle(void);
+    u32 JHAL_uidGetLow(void);
+// 96位UID相当于3个32位变量  每8位变量相当于一个字符  所以最大需要4*3+1 =13个字符空间 为了兼容 低位uid先存 
+    void uid2string(char* string,int buffSize );
+
+
+
+    //  JHAL_delayOpen((JHAL_Delay){NULL});
+    void  JHAL_delayOpen(JHAL_Delay config);
     void  JHAL_delayMs(u32 ms);
     void  JHAL_delayUs(u32 us);
-		void  JHAL_delay(JHAL_TimeUnits timeUntis,u16 value);
+    void  JHAL_delay(JHAL_TimeUnits timeUntis,u16 value);
 
     //异常检查 这里主要防止未初始化调用
     void  JHAL_delayTryCheckedExceptions(void);
-		
+
 
 
 

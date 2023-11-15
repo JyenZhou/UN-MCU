@@ -17,28 +17,30 @@
 extern "C" {
 #endif
 
-    typedef enum
-    {
-        JHAL_RTC0=0,
-        JHAL_RTC_Number
-    } JHAL_RTC;
-
 
 
 
 
     typedef struct {
+        bool isOpen:1;
 
+    } __JHAL_RTC_OtherInfo;
+
+
+    typedef struct {
+        u8 dev:3;
         JHAL_TimeUnits itTimeUnit;
 //itTimeValue 中断时间值 0-1000
         u16 itTimeValue;
 
-    } JHAL_RTCConfig;
+        __JHAL_RTC_OtherInfo __info;
 
-    void JHAL_rtcInit(JHAL_RTC rtc,JHAL_RTCConfig config);
+    } JHAL_RTC;
+
+    bool JHAL_rtcOpen(JHAL_RTC *rtc  );
 //RTC中断回调
-    void JHAL_rtcInterruptCallBack(JHAL_RTC rtc);
-    void  JHAL_rtcDeInit(JHAL_RTC rtc);
+    void JHAL_rtcInterruptCallBack(u8 dev);
+    bool  JHAL_rtcClose(JHAL_RTC *rtc);
 #ifdef CplusPlus
 }
 #endif

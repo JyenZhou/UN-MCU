@@ -29,11 +29,11 @@ typedef struct
     u8  sclPin;
     JHAL_IO_Port sdaPort;
     u8  sdaPin;
-	//7位器件地址相当于写地址 如果是非标8位需要左移一位传进来
+    //7位器件地址相当于写地址 如果是非标8位需要左移一位传进来
     u16 slaveAddress;
     JHAL_IIC_Device_Type deviceType;
 //IO是否推挽模式 否则开漏
-    bool isIO_Mode_PP;
+	bool isIO_Mode_PP:1;
 
 } JHAL_IICConfig;
 

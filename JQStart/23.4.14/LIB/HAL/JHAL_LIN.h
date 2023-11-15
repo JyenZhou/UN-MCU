@@ -5,12 +5,7 @@
 extern "C" {
 #endif
 
-
-    typedef enum
-    {
-        JHAL_LIN0=0,
-        JHAL_LIN_Number
-    } JHAL_LIN;
+#include "JHAL_Uart.h"
 
 
     typedef enum
@@ -23,9 +18,9 @@ extern "C" {
     typedef struct
     {
 
-        u8 id;
+        u8 id ;
 //是否只是帧头 接收时判断 发送无效
-        bool isOnlyHead;
+        bool isOnlyHead:1;
 //  JHAL_LIN_FrameClass 接收数据过滤时允许多种校验 直接或上即可  注意为了防误触这里每次上电后走通一个协议后就不再支持多协议
         //接收头模式无法自动设置
         u8 frameclass;
@@ -63,7 +58,7 @@ extern "C" {
     {
         JHAL_LinBox *box;
 //是否使能
-        volatile    bool enable;
+        volatile    bool enable:1;
 //记数
         u8 count;
 //当前传输的步骤
@@ -83,30 +78,40 @@ extern "C" {
 
 
     typedef struct {
+        JHAL_UART uart ;
+
+    } __JHAL_LIN_therInfo;
+
+
+    typedef struct {
+        u8 dev:3;
         uint32_t baudRate;
         JHAL_LIN_RXConfig rxConfig;
 
         __JHAL_Lin_RxTxInfo __linRxInfo;
         __JHAL_Lin_RxTxInfo __linTxInfo;
         JHAL_LinBox __txBox;
-    } JHAL_LINConfig;
+        __JHAL_LIN_therInfo __info;
+
+
+    } JHAL_LIN;
 
 
 
     /*单帧中断发送； 返回false代表上一组还未发送完；  masterMode是主机模式发送:  主机发送头模式接收的数据在回调中 */
-    bool JHAL_linSendData4IT(JHAL_LIN lin,bool isMasterMode,JHAL_LinBox box );
+    bool JHAL_linSendData4IT(JHAL_LIN *lin,bool isMasterMode,JHAL_LinBox box );
 //获取中断发送状态 true发送已空闲
-    bool JHAL_linGetStatus4SendData4IT(JHAL_LIN lin);
+    bool JHAL_linGetStatus4SendData4IT(JHAL_LIN *lin);
 
-    /*config 必须全局的不能被释放*/
-    bool JHAL_linInit(JHAL_LIN lin,JHAL_LINConfig *config);
 
-    bool  JHAL_linDeInit(JHAL_LIN lin);
+    bool JHAL_linOpen(JHAL_LIN *lin);
+
+    bool  JHAL_linClose(JHAL_LIN *lin);
 
 //接收中断单帧使能 接收信息在JHAL_linInit的config中指定
-    void JHAL_linEnableReceiveIT (JHAL_LIN lin);
+    void JHAL_linEnableReceiveIT (JHAL_LIN *lin);
 //立即失能接收
-    void  JHAL_linAbortReceiveIT (JHAL_LIN lin);
+    void  JHAL_linAbortReceiveIT (JHAL_LIN *lin);
 
 
 

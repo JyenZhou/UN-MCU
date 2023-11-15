@@ -20,25 +20,25 @@ extern "C" {
 #ifdef XXOS_MAXTASK
 #include "xxddq-1.2.3.h"
 #endif
-#include "FML/THTB/NTC/NTC.h"
+
 #include "FML/ADPD188BI/adpdDrv.h"
-#if defined GasUtil4ICRA_GasSensorNumber 
+#if defined GasUtil4ICRA_GasSensorNumber
 #include "FML/GAS/GasUtil4ICRA.h"
 #endif
 
-#if  defined GasUtil4ICRA2_GasSensorNumber 
+#if  defined GasUtil4ICRA2_GasSensorNumber
 #include "FML/GAS/GasUtil4ICRA2.h"
 #endif
 
 //ADS1115电压采集芯片
- 
+
 #include "FML/ADC/ADS1115/ADS1115.h"
 
-//温湿度传感器
+ 
 /*温湿度*/
-#ifdef SHT20_EN
-#include "BISP/BSP/TemperatureAndHumidity/SHT20/SHT20.h"
-#endif
+#include "FML/THTB/NTC/NTC.h"
+#include "FML/THTB/SHTxx/SHT3x.h"
+ 
 
 #ifdef PT100_MAX31865_EN
 #include "BISP/BSP/TAndH/PT100_MAX31865/PT100_MAX31865.h"
@@ -48,7 +48,7 @@ extern "C" {
 
 
 
- 
+
 
 // ad7608
 #ifdef AD7608_EN

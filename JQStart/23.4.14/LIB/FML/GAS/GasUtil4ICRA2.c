@@ -201,14 +201,14 @@ void GasUtil4ICRA2_PushData(float *vl)
     float rsShieldMaxRs=0;
     float rsShieldMinRs=0x7f7fffff;
     //当前系统运行的计时
-    uint32 nowTime = jsystemSec;
+    uint32 nowTime = jsystemMs;
 
-    if(jsystemSec<=gas_lastAcqTime)
+    if(nowTime<=gas_lastAcqTime)
     {
 //间隔不足一秒的不计算
         return;
     }
-    uint32 intervalSec = jsystemSec-gas_lastAcqTime;
+    uint32 intervalSec = nowTime-gas_lastAcqTime;
     gas_lastAcqTime = nowTime;
 
 

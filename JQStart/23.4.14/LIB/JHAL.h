@@ -16,6 +16,10 @@ extern "C" {
     *********@作者*Jyen******************@作者*Jyen***********************@作者*Jyen********************/
 
 
+
+
+//JHAL_delayOpen((JHAL_Delay){NULL});
+
     /*通用外设驱动API*/
 #include  "HAL/JHAL_Delay.h"
 #include  "HAL/JHAL_ADC.h"
@@ -31,10 +35,10 @@ extern "C" {
 #include "HAL/JHAL_LIN.h"
 #include "HAL/JHAL_Uart.h"
 #include "HAL/JHAL_WDG.h"
- 
+#include "HAL/JHAL_DAC.h"
 
 
- 
+
 
 
 

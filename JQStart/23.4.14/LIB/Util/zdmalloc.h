@@ -37,7 +37,7 @@ u8 my_mem_free(u32 offset);		 //内存释放
 u8 my_mem_perused(void);				 //获得内存使用率 
 ////////////////////////////////////////////////////////////////////////////////
 //用户调用函数
-void my_mem_init(void);					 //内存管理初始化函数
+ 
 void myfree(void *ptr);  			//内存释放
 void *mymalloc(u32 size);			//内存分配
 void *myrealloc(void *ptr,u32 size);//重新分配内存

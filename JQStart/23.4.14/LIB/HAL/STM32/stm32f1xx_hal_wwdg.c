@@ -116,7 +116,7 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f1xx_hal.h"
+#include "Jhal.h"
 
 /** @addtogroup STM32F1xx_HAL_Driver
   * @{

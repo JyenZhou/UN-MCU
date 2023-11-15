@@ -16,7 +16,7 @@
 //GPIO定义的转换
 u8 __JHAL_jio2io(JHAL_IO_Port port,u8 pin)
 {
-    return  port*8+pin;
+    return  (port-1)*8+pin;
 }
 
 

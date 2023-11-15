@@ -11,10 +11,10 @@ c语言支持版本： C99  （c98不支持）
 
 
 API模式：
-初始化与反初始化：init和deInit组成，init参数为config  
-——若config是指针类型  外部使用前不可释放（一般定义为全局/静态变量） 初始化后自动使能/启动  
+初始化与反初始化：init和deInit组成，init参数为config
+——若config是指针类型  外部使用前不可释放（一般定义为全局/静态变量） 初始化后自动使能/启动
 ——返回值 true代表成功  false失败的原因一般是已经是当前状态了本次设置无效 该模式满足常用需求
-—— 不考虑底层初始化失败 有失败的会进行3次重试后返回false  保证每次顺序为交替后若还有false则可定为底层初始化失败 
+—— 不考虑底层初始化失败 有失败的会进行3次重试后返回false  保证每次顺序为交替后若还有false则可定为底层初始化失败
 ——需要自行处理逻辑
 中断, 外部直接使用内部已经请过标志位
 发送：一般输入的是指针未发送完请勿修改值
@@ -60,13 +60,13 @@ JHAL_delayInit( *(JHAL_DealyConfig *)NULL  );
 
 
 使用软件IIC 需要定义  JHAL_IIC_Number 数量
- 
+
   *
     ******************************************************************************
   * @file     JQStart.c
   * @author   Jyen
   * @version  v1.0
-  * @date     2022-11-11 
+  * @date     2022-11-11
   * @attention
   * This software is supplied under the terms of a license
   * agreement or non-disclosure agreement.
@@ -77,7 +77,7 @@ JHAL_delayInit( *(JHAL_DealyConfig *)NULL  );
   *         (C) Copyright 2022,Jyen,China. All Rights Reserved
   ********************************************************************************
   */
-  
+
 
 
 
@@ -216,8 +216,9 @@ LR_IROM1 0x00000000  0x00020000  {    ; load region size_region
   }
   }
 
+bootLoder时候只要修改上面的就行了  使用外部sc Target修改无效的 为了好看可以同步 另外下载中不需要修改了不然还会影响芯片识别
 
-
+考虑到hex存在bug影响bin文件 后面都用自己的上位机解析hex
 生成BIN文件指令  魔术棒->user->after build 勾选Run1后面填写
 
 fromelf.exe --bin --bincombined --bincombined_padding=1,0xff --output !L.bin !L
@@ -244,10 +245,10 @@ ADC
 
 
 #include "JFML.h"
- 
 
-char  UIDString[25];
- 
+
+
+
 
 
 
@@ -255,13 +256,13 @@ char  UIDString[25];
 #include "Util/JHAL_CRC.c"
 #include "Util/JHAL_Math.c"
 #include "Util/JHAL_NumberConverter.c"
+#include "Util/JHAL_JSON.c"
 #include "Util/zdmalloc.c"
 #include "SystemSelfTest.c"
 
+ #include "HAL/JHAL_SoftwareIIC.c"
 
- 
-#include "HAL/JHAL_SoftwareIIC.c"
- 
+
 // XL6600A402L6 Flash 128K  RAM16K
 
 #ifdef XL6600A402L6
@@ -284,27 +285,27 @@ char  UIDString[25];
 
 void JHAL_systemReset()
 {
-	NVIC_SystemReset();
+    NVIC_SystemReset();
 }
 u32 JHAL_uidGetHigh()
 {
-	return 0;
+    return 0;
 }
 u32 JHAL_uidGetMiddle()
 {
-	return 0;
+    return 0;
 }
 u32 JHAL_uidGetLow()
 {
-	return SIM_GetUUIDL();
+    return SIM_GetUUIDL();
 }
 #endif
 
-#ifdef ASM31X003 
+#ifdef ASM31X003
 #include  "HAL/Setenvi/JHAL_GPIO.c"
-#include  "HAL/Setenvi/JHAL_RTC.c" 
-#include  "HAL/Setenvi/JHAL_Delay.c" 
-#include  "HAL/Setenvi/JHAL_Flash.c" 
+#include  "HAL/Setenvi/JHAL_RTC.c"
+#include  "HAL/Setenvi/JHAL_Delay.c"
+#include  "HAL/Setenvi/JHAL_Flash.c"
 #include  "HAL/Setenvi/JHAL_Uart.c"
 #include  "HAL/Setenvi/JHAL_LIN.c"
 #include  "HAL/Setenvi/JHAL_Timer.c"
@@ -315,55 +316,37 @@ u32 JHAL_uidGetLow()
 
 
 
-#ifdef USE_HAL_DRIVER 
+#ifdef USE_HAL_DRIVER
 
 
 void JHAL_systemReset()
 {
-	NVIC_SystemReset();
+    NVIC_SystemReset();
 }
-u32 JHAL_uidGetHigh()
-{
-	return HAL_GetUIDw2();
-}
-u32 JHAL_uidGetMiddle()
-{
-	return HAL_GetUIDw1();
-}
-u32 JHAL_uidGetLow()
-{
-	return HAL_GetUIDw0();
-}  
-	
 
-#include  "HAL/STM32/JHAL_CAN.c"	
-#include  "HAL/STM32/JHAL_GPIO.c"	
-#include  "HAL/STM32/JHAL_Delay.c" 
-#include  "HAL/STM32/JHAL_Uart.c"	
-#include  "HAL/STM32/JHAL_Flash.c" 
 
-#include  "HAL/STM32/stm32f1xx_hal_wwdg.c" 
+#include  "HAL/STM32/JHAL_ADC.c"
+#include  "HAL/STM32/JHAL_DAC.c"
+#include  "HAL/STM32/JHAL_CAN.c"
+#include  "HAL/STM32/JHAL_GPIO.c"
+#include  "HAL/STM32/JHAL_Delay.c"
+#include  "HAL/STM32/JHAL_Uart.c"
+#include  "HAL/STM32/JHAL_Flash.c"
+#include  "HAL/STM32/JHAL_Wdg.c"
 
 #endif
 
 
 
 
- 
-	
+
+
 
 
 
 #include "HAL/JHAL_BootLoader.c"
 
 
-
-void uid2string()
-{
- 
-    snprintf(UIDString, sizeof(UIDString), "%08X%08X%08X", JHAL_uidGetHigh(), JHAL_uidGetMiddle(), JHAL_uidGetLow());
- 
-}
 
 
 
@@ -372,12 +355,15 @@ void uid2string()
 #include "FML/ADPD188BI/smoke_detect.c"
 #endif
 
-#include "FML/THTB/NTC/NTC.c"
+#include "FML/ADC/ADS1115/ads1115.c"
 
-#ifdef GasUtil4ICRA_GasSensorNumber 
+#include "FML/THTB/NTC/NTC.c"
+#include "FML/THTB/SHTxx/SHT3x.c"
+
+#ifdef GasUtil4ICRA_GasSensorNumber
 #include "FML/GAS/GasUtil4ICRA.c"
 #endif
-#ifdef GasUtil4ICRA2_GasSensorNumber 
+#ifdef GasUtil4ICRA2_GasSensorNumber
 #include "FML/GAS/GasUtil4ICRA2.c"
 #endif
 
@@ -432,11 +418,11 @@ volatile u64 jsystemMs=0;
 
 
 
-/** ----------------------------JHAL_autoInit----------------------------------- 
-  * 描述：累计的一些通用的可能必要的自初始化 不受外设和MCU影响  
+/** ----------------------------JHAL_autoInit-----------------------------------
+  * 描述：累计的一些通用的可能必要的自初始化 不受外设和MCU影响
   *
   * 参数：
-**	  	 : [输入/出] 
+**	  	 : [输入/出]
   *
   * 返回值:无
   * 注:无
@@ -444,7 +430,7 @@ volatile u64 jsystemMs=0;
 
 OS_BEFORE_MAIN_EXE void __JHAL_selfInit()
 {
-  __JHAL_systemSelfTest();
+    __JHAL_systemSelfTest();
 }
 
 /*------------------Jyen--------------------------Jyen-----------------------
@@ -461,48 +447,47 @@ OS_BEFORE_MAIN_EXE void __JHAL_selfInit()
 
 void JQStart()
 {
-	uid2string();
-	my_mem_init();
- 
-#ifdef USE_HAL_DRIVER 
-  
-JHAL_delayInit((JHAL_DealyConfig){NULL});
- 
- 
 
-  
+
+
+#ifdef USE_HAL_DRIVER
+
+
+
+
+
 #ifdef HAL_WWDG_MODULE_ENABLED
-//当debug时候不要初始化看门狗  默认提前喂狗  最好在主程序主动喂 
+//当debug时候不要初始化看门狗  默认提前喂狗  最好在主程序主动喂
     if (!(CoreDebug->DHCSR & 1))    //check C_DEBUGEN == 1 -> Debugger Connected
-    {			
-     JHAL_wdgInit(JHAL_WDG_WWDG,(JHAL_WDGConfig){NULL});
+    {
+        JHAL_wdgOpen(  NULL );
     }
-#endif  
+#endif
 
 
     /*使用定时器 */
 #if  UTTIL_TIMER
     utilTimer_Init();
 #endif
- 
- 
+
+
 
 #if defined HAL_CAN_MODULE_ENABLED
     bisp_CANUtil_Init();
 #endif
 
- 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /*************************************************************************************************
@@ -681,53 +666,39 @@ JHAL_delayInit((JHAL_DealyConfig){NULL});
 
 void  JHAL_disableInterrupts()
 {
-	__disable_irq();
+    __disable_irq();
 }
 void  JHAL_enableInterrupts()
 {
-	__enable_irq();
+    __enable_irq();
 }
 
- 
+
 
 /**
-*  
+*
 *程序跑飞后会进入该方法
 */
- 
+
 void JHAL_HardFault_Handler(void)
 {
-     
-	#ifdef USE_HAL_DRIVER
+
+#ifdef USE_HAL_DRIVER
     if (CoreDebug->DHCSR & 1)    //check C_DEBUGEN == 1 -> Debugger Connected
     {
         __breakpoint(0);  // halt program execution here
     }
-    
+
 #endif
-		JHAL_systemReset();
+    JHAL_systemReset();
 }
- 
-
- 
-
-//
-//0.1->产品ID
-//2->5A升级Boot  A9升级APP
-//3->date0
-//4->date1
-//5->date2
-//6.7->CRC_Mudbus16
-void JHAL_bootLoaderTryUpdate(u8 *data)
-{
-	
-	
-}
- 
 
 
 
- 
+
+
+
+
 
 
 

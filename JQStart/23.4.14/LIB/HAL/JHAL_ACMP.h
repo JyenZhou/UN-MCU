@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 #include "JUTIL.h"
-    void  JHAL_acmpInit(bool  isEN);
+    void  JHAL_acmpOpen( void);
 #ifdef CplusPlus
 }
 #endif
