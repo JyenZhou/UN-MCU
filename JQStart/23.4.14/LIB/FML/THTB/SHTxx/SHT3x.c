@@ -155,7 +155,7 @@ bool SHT3xGet(SHT3x  *config,  float *  temperature,float * humidity )
     {
         //参考上面温度的代码
         data= (readbuff[3] << 8) | readbuff[4];
-        *humidity =   100.0f *  data / 65535.0   ;
+        *humidity =   100.0f *  data / 65535.0f   ;
 
     }
     else

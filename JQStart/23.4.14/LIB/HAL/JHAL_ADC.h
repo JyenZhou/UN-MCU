@@ -21,9 +21,9 @@ extern "C" {
 
     typedef struct
     {
-        uint32_t maxAD;
-        uint32_t minAD;
-        uint32_t ad;
+        int32 maxAD;
+        int32 minAD;
+        int32 ad;
     } JHAL_ADCValue;
     typedef struct
     {

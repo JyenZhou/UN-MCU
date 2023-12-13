@@ -23,8 +23,8 @@ typedef enum
 
 typedef struct
 {
-/* 这个是延时系数   里面单位是us为基准 要是降低速率可以修改这里值  注意IO有翻转时间的间隔太小可能导致占空比不对 大部分IIC可以容忍的 这个目前没有做校准
-  STM32逻辑分析仪对应频率(写的时候频率比较低，读的时候频率比较高,0是开漏读取sht3x不行的) 
+/* 这个是延时系数   里面单位是us为基准 要是降低速率可以修改这里值  注意IO有翻转时间的间隔太小可能导致占空比不对 采用边沿触发时钟的IIC是可以容忍的 这个目前没有做校准
+  STM32 64M逻辑分析仪对应频率(写的时候频率比较低，读的时候频率比较高,0是开漏读取sht3x不行的) 
 	0: 125-142K
   1: 91-111K
 	5:43-61K
@@ -54,7 +54,7 @@ void JHAL_i2csfOpen( JHAL_I2CSF *init );
 //只有器件地址的操作
 //发送/读取  一个寄存器中N个数据
 bool  JHAL_i2csfTransmit(JHAL_I2CSF *handle,  uint8_t *pData, u8 dataSize);
-bool JHAL_i2csfReceice(JHAL_I2CSF  * config, u8* memData,u8 memLength,u8 *readDataBuff, u8 dataSize);
+bool JHAL_i2csfReceice(JHAL_I2CSF  * config, u8* memData,u8 memLength,bool isStop, u8 *readDataBuff, u8 dataSize);
 
 
 

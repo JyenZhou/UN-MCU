@@ -117,6 +117,7 @@ extern "C" {
     u16 JHAL_uartRxFinsh(JHAL_UART *uart);
 
 //中断回调 返回false将视为取消配置中接收封装方法  JHAL_uartRxFinsh将无效  配置中*dataBuff 不会得到赋值
+		//中断回调  注意这里对应的是uart实例 id 不是传进去的dev  因为两个dev可能实际上是一个uart 只是引脚不一样
     bool JHAL_uartRxITCallback(u8 realityId);
 
 

@@ -11,21 +11,35 @@
 
 
 
-//96位UID相当于3个32bit位变量  每8bit位变量相当于一个字符  所以最大需要4*3+1 =13个字符空间 为了兼容 低位uid先存 
-void uid2string(char* string,int buffSize )
-{
 
-    snprintf(string, buffSize, "%X%X%X",  JHAL_uidGetLow(), JHAL_uidGetMiddle(),JHAL_uidGetHigh());
- 
- 
+
+	OS_WEAK void     JHAL_delayOsUs (u32 ms) 
+
+{
+	JHAL_delayUs(ms);
 }
 
 
+	OS_WEAK void     JHAL_delayOsMs (u32 ms) 
+
+{
+	JHAL_delayMs(ms);
+}
 
 
+	OS_WEAK void     JHAL_delayOs (JHAL_TimeUnits timeUntis,u16 value) 
+
+{
+	JHAL_delayOs(timeUntis,value);
+}
+ 
+	OS_WEAK void     JHAL_timerInterruptCallBack (u8 realityId) 
+	 
+{
+   
 
 
-
+}
 
 
 

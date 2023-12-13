@@ -1,6 +1,6 @@
 #ifndef _ads_1115
 #define _ads_1115
-//https://www.jianshu.com/p/e0b448995316
+ 
 #include "JHAL.h"
 
 
@@ -23,6 +23,7 @@ typedef enum
     010 : AINP = AIN1 and AINN = AIN3            110 : AINP = AIN2 and AINN = GND
     011 : AINP = AIN2 and AINN = AIN3            111 : AINP = AIN3 and AINN = GND
     */
+
     ADS1115Channel_Diff_01       =           (0x0U << 4), // 差分输入0引脚和1引脚
     ADS1115Channel_Diff_03     =             (0x1U << 4),  // 差分输入0引脚和3引脚
     ADS1115Channel_Diff_13     =             (0x2U << 4),  // 差分输入1引脚和3引脚
@@ -34,6 +35,18 @@ typedef enum
 
 
 } ADS1115Channel ; //通道选择 输入引脚选择和输入方式选择
+
+/*
+FSR LSB SIZE
+±6.144 V
+(1) 187.5 μV
+±4.096 V
+(1) 125 μV
+±2.048 V 62.5 μV
+±1.024 V 31.25 μV
+±0.512 V 15.625 μV
+±0.256 V 7.8125 μ
+*/
 
 typedef enum
 {
@@ -49,8 +62,14 @@ typedef enum
 
 
 
+
+
+
+
 //ADS1115_Speed_SPS_8    每秒能采样8次 的每个采样周期的时间间隔（毫秒） = 1000毫秒 / 8 = 125毫秒
 //ADS1115_Speed_SPS_860 每秒能采样800次0  每个采样周期的时间间隔（毫秒） = 1000毫秒 / 860 ≈ 1.1628毫秒
+
+
 
 typedef enum
 {
@@ -67,11 +86,10 @@ typedef enum
 
 
 
-
 typedef struct
 {
 
-//i2c.delayMultiple=10 是可以的
+//stm32 i2c.delayMultiple=10 是可以的
 
     JHAL_I2CSF i2c;
 
@@ -82,13 +100,12 @@ typedef struct
     //true=单次转换 false=连续转换
     bool isSingleConversion :1;
 
-    //可选配置 转换完成低电平判断引脚  连续转换模式下无效
-    JHAL_IO_Port alert_rdy_Port;
-    u8 alert_rdy_Pin;
     //采样多次滤波配置
     JHAL_FilteredMode  filteredModel;
     //采样次数小于等于1时则只返回原数据
     u8 samplingCount4filter;
+
+
 
 }  ADS1115;
 

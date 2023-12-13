@@ -84,6 +84,11 @@ int __JHAL_u8CompareOrderByDescend(const void *a, const void *b)
   * @注:传进来数组顺序将被修改
   *-----------------------------Jyen-2022-11-22-------------------------------------- */
 
+void JHAL_sort32ArrayAsc( int32* array, u32 length)
+{
+    qsort(array, length, sizeof(u32), __JHAL_u32CompareOrderByAscend);
+}
+
 void JHAL_sortU32ArrayAsc( u32* array, u32 length)
 {
     qsort(array, length, sizeof(u32), __JHAL_u32CompareOrderByAscend);

@@ -35,6 +35,7 @@ extern "C" {
     {
         /*!< 输入模式*/
         JHAL_IO_IN=0,
+	  	 
         //中断输入下降沿触发 Falling Edge Trigger
         JHAL_IO_IN_EXTI_FET,
         //上升沿Rising Edge Trigger
@@ -43,10 +44,12 @@ extern "C" {
         JHAL_IO_IN_EXTI_FET_RET,
         /*!< 推挽输出模式*/
         JHAL_IO_PP,
+			  JHAL_IO_PP_UP,
+			  JHAL_IO_PP_DOWN,
         /*!开漏输出模式 上拉/下拉*/
         JHAL_IO_OD,
         JHAL_IO_OD_UP,
-        JHAL_IO_OD_DOWM,
+        JHAL_IO_OD_DOWN,
 
     } JHAL_IO_MODE;
 
@@ -64,7 +67,7 @@ extern "C" {
     void JHAL_gpioInterruptCallback(void);
     void JHAL_gpio4IRKeyInterruptCallback(void);
 
-    JHAL_IO_Port JHAL_port2jport(GPIO_TypeDef * port ) ;
+  
     u8  JHAL_pin2jpin ( u16 pin );
 
 

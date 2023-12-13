@@ -2,11 +2,11 @@
 
 
 
-/** ----------------------------__JHAL_instructionTest----------------------------------- 
+/** ----------------------------__JHAL_instructionTest-----------------------------------
   * 描述：指令测试-常用操作符
   *
   * 参数：
-**	  	 : [输入/出] 
+**	  	 : [输入/出]
   *
   * 返回值:无
   * 注:无
@@ -15,7 +15,9 @@
 void __JHAL_instructionTest()
 
 {
+	  u8 _8op1,_8op2;
     u32_t op1, op2, op3, result;
+	  float fop1, fop2, fop3   ;
     u32_t ret;
 
     ret = 0u;
@@ -113,6 +115,30 @@ void __JHAL_instructionTest()
     {
         ret = 0xFFFFFFFFu;
     }
+		
+		 /* 自动升型测试 */
+		 _8op1=1;
+		 
+		fop1 =0.999999 ;
+		fop2 = 9.99998;
+	 
+		if (!_8op1>fop1 )
+		{
+			ret=1;
+		}
+		
+		_8op1=10;
+		if( ! _8op1*fop1>fop2)
+		{
+			ret=2;
+		} 
+		_8op2=26;
+			if(  _8op2*_8op1<_8op2)
+		{
+			ret=3;
+		} 
+		
+		
     // 指令测试失败
     while(ret!=0u);
 

@@ -254,7 +254,7 @@ ADC
 #include "Util/JHAL_CRC.c"
 #include "Util/JHAL_Math.c"
 #include "Util/JHAL_NumberConverter.c"
-#include "Util/JHAL_JSON.c"
+
 #include "Util/zdmalloc.c"
 #include "SystemSelfTest.c"
 
@@ -331,7 +331,7 @@ void JHAL_systemReset()
 #include  "HAL/STM32/JHAL_Uart.c"
 #include  "HAL/STM32/JHAL_Flash.c"
 #include  "HAL/STM32/JHAL_Wdg.c"
-
+#include  "HAL/STM32/JHAL_Timer.c"
 #endif
 
 
@@ -352,8 +352,8 @@ void JHAL_systemReset()
 #include "FML/ADPD188BI/AdpdDrv.c"
 #include "FML/ADPD188BI/smoke_detect.c"
 #endif
-
-#include "FML/ADC/ADS1115/ads1115.c"
+#include "FML/ADC/ADS111x/ads1110.c"
+#include "FML/ADC/ADS111x/ads1115.c"
 
 #include "FML/THTB/NTC/NTC.c"
 #include "FML/THTB/SHTxx/SHT3x.c"
@@ -678,7 +678,7 @@ void  JHAL_enableInterrupts()
 *程序跑飞后会进入该方法
 */
 
-void JHAL_HardFault_Handler(void)
+void JHAL_Fault_Handler(void)
 {
 
 #ifdef USE_HAL_DRIVER
@@ -694,6 +694,15 @@ void JHAL_HardFault_Handler(void)
 
 
 
+
+//96位UID相当于3个32bit位变量  每8bit位变量相当于一个字符  所以最大需要4*3+1 =13个字符空间 为了兼容 低位uid先存 
+void uid2string(char* string,int buffSize )
+{
+
+    snprintf(string, buffSize, "%X%X%X",  JHAL_uidGetLow(), JHAL_uidGetMiddle(),JHAL_uidGetHigh());
+ 
+ 
+}
 
 
 

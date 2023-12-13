@@ -15,7 +15,9 @@
 void __JHAL_instructionTest()
 
 {
+    u8 _8op1,_8op2;
     u32_t op1, op2, op3, result;
+    float fop1, fop2      ;
     u32_t ret;
 
     ret = 0u;
@@ -113,8 +115,33 @@ void __JHAL_instructionTest()
     {
         ret = 0xFFFFFFFFu;
     }
+
+    /* ×Ô¶¯ÉýÐÍ²âÊÔ */
+    _8op1=1;
+
+    fop1 =0.999999 ;
+    fop2 = 9.99998;
+
+    if (!_8op1>fop1 )
+    {
+        ret=1;
+    }
+
+    _8op1=10;
+    if( ! _8op1*fop1>fop2)
+    {
+        ret=2;
+    }
+    _8op2=26;
+    if(  _8op2*_8op1<_8op2)
+    {
+        ret=3;
+    }
+
+#ifndef  NO_JSystemSelfTest
     // Ö¸Áî²âÊÔÊ§°Ü
     while(ret!=0u);
+#endif		
 
 }
 

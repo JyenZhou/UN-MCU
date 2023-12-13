@@ -33,6 +33,8 @@ extern "C" {
 //itTimeValue 中断时间值 0-1000
         u16 itTimeValue;
         __JHAL_Timer_therInfo __info;
+			//			如果内部使用了这个变量一定要先赋值
+        void*  timer;
     } JHAL_Timer;
 
 

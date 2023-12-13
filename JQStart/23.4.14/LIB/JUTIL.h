@@ -10,7 +10,7 @@ extern "C" {
 #include "Util/JHAL_Math.h"
 #include "Util/JHAL_NumberConverter.h"
 #include "Util/zdmalloc.h"
-#include "Util/JHAL_JSON.h"
+ 
 
 #define JSMN_STATIC
 #include "Util/jsmn/jsmn.h"
@@ -39,9 +39,17 @@ extern "C" {
 
 
 
+
+    u32 JHAL_uidGetHigh(void);
+    u32 JHAL_uidGetMiddle(void);
+    u32 JHAL_uidGetLow(void);
+// 96位UID相当于3个32位变量  每8位变量相当于一个字符  所以最大需要4*3+1 =13个字符空间 为了兼容 低位uid先存
+    void uid2string(char* string,int buffSize );
+
     void JHAL_systemReset(void);
 
 
+   void JHAL_Fault_Handler(void);
 
     void  JHAL_enableInterrupts(void);
     void  JHAL_disableInterrupts(void);

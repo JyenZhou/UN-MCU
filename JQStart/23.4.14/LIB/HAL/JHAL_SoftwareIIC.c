@@ -20,12 +20,12 @@ void __JHAL_i2csfStop(JHAL_I2CSF  *config)
     if(config->isIO_Mode_PP)
     {
 
-        JHAL_gpioModeSet(config->sclPort,config->sclPin,JHAL_IO_PP);
+        JHAL_gpioModeSet(config->sclPort,config->sclPin,JHAL_IO_PP_UP);
 
-        JHAL_gpioModeSet(config->sdaPort,config->sdaPin,JHAL_IO_PP);
+        JHAL_gpioModeSet(config->sdaPort,config->sdaPin,JHAL_IO_PP_UP);
     } else {
-        JHAL_gpioModeSet(config->sdaPort,config->sdaPin,JHAL_IO_OD);
-        JHAL_gpioModeSet(config->sclPort,config->sclPin,JHAL_IO_OD);
+        JHAL_gpioModeSet(config->sdaPort,config->sdaPin,JHAL_IO_OD_UP);
+        JHAL_gpioModeSet(config->sclPort,config->sclPin,JHAL_IO_OD_UP);
 
     }
 		 /* 当SCL高电平时，SDA出现一个上跳沿表示SHT20_IIC总线停止信号 */
@@ -36,7 +36,7 @@ void __JHAL_i2csfStop(JHAL_I2CSF  *config)
  
   
 
-
+  JHAL_enableInterrupts();
 }
 
 
@@ -59,6 +59,7 @@ void JHAL_i2csfOpen(JHAL_I2CSF  *config  )
 //产生IIC起始信号
 void __JHAL_i2csfStart(JHAL_I2CSF  *config)
 {
+	  JHAL_disableInterrupts();
 /* 当SCL高电平时，SDA出现一个下跳沿表示SHT20_IIC总线启动信号 */
     JHAL_gpioWitePin(config->sdaPort,config->sdaPin,true);
     JHAL_gpioWitePin(config->sclPort,config->sclPin,true);
@@ -96,7 +97,7 @@ void __JHAL_i2csfStart(JHAL_I2CSF  *config)
     JHAL_gpioWitePin(config->sclPort,config->sclPin,false);
     if(config->isIO_Mode_PP)
     {
-        JHAL_gpioModeSet(config->sdaPort,config->sdaPin,JHAL_IO_PP);
+        JHAL_gpioModeSet(config->sdaPort,config->sdaPin,JHAL_IO_PP_UP);
 
     }
  JHAL_delayUs( config->delayMultiple);
@@ -179,7 +180,7 @@ u8 __JHAL_i2csfReadByte(JHAL_I2CSF  *config,bool ack)
     if(config->isIO_Mode_PP)
     {
 
-        JHAL_gpioModeSet(config->sdaPort,config->sdaPin,JHAL_IO_PP);
+        JHAL_gpioModeSet(config->sdaPort,config->sdaPin,JHAL_IO_PP_UP);
 
     }
 
@@ -190,12 +191,7 @@ u8 __JHAL_i2csfReadByte(JHAL_I2CSF  *config,bool ack)
 }
  
 
-
-
-
-
-
-
+ 
 
 
 bool JHAL_i2csfMemWrite(JHAL_I2CSF  *config, u16 memAddress,bool memSizeIs16,  u8 *pData,  u8 dataSize)
@@ -230,13 +226,14 @@ bool JHAL_i2csfMemWrite(JHAL_I2CSF  *config, u16 memAddress,bool memSizeIs16,  u
 
 bool  JHAL_i2csfTransmit(JHAL_I2CSF  * config, uint8_t *pData, u8 dataSize)
 {
-    JHAL_disableInterrupts();
+  
     __JHAL_i2csfStart(config);
     __JHAL_i2csfSendByte(config,config->slaveAddress );
 
     if(!__JHAL_i2csfWaitAck(config))
     {
-        JHAL_enableInterrupts();
+			  __JHAL_i2csfStop(config);
+      
         return false;
     }
 
@@ -245,12 +242,12 @@ bool  JHAL_i2csfTransmit(JHAL_I2CSF  * config, uint8_t *pData, u8 dataSize)
         __JHAL_i2csfSendByte(config,pData[i]);
         if(!__JHAL_i2csfWaitAck(config))
         {
-            JHAL_enableInterrupts();
+             __JHAL_i2csfStop(config);
             return false;
         }
     }
     __JHAL_i2csfStop(config);
-    JHAL_enableInterrupts();
+  
     return true;
 
 
@@ -258,16 +255,16 @@ bool  JHAL_i2csfTransmit(JHAL_I2CSF  * config, uint8_t *pData, u8 dataSize)
 
 
 
-
-bool JHAL_i2csfReceice(JHAL_I2CSF  * config, u8* memData,u8 memLength,u8 *readDataBuff, u8 dataSize)
+//isStop  写寄存器后一般会停止后再restart读   
+bool JHAL_i2csfReceice(JHAL_I2CSF  * config, u8* memData,u8 memLength,bool isStop, u8 *readDataBuff, u8 dataSize)
 {
-    JHAL_disableInterrupts();
+   
     __JHAL_i2csfStart(config);
     __JHAL_i2csfSendByte(config,config->slaveAddress);
     if(!__JHAL_i2csfWaitAck(config))
     {
         __JHAL_i2csfStop(config);
-        JHAL_enableInterrupts();
+       
         return false;
     }
 
@@ -278,9 +275,13 @@ bool JHAL_i2csfReceice(JHAL_I2CSF  * config, u8* memData,u8 memLength,u8 *readDa
         if(!__JHAL_i2csfWaitAck(config))
         {
             __JHAL_i2csfStop(config);
-            JHAL_enableInterrupts();
+           
             return false;
         }
+				if(isStop)
+				{
+					  __JHAL_i2csfStop(config);
+				}
 
     }
 
@@ -290,7 +291,7 @@ bool JHAL_i2csfReceice(JHAL_I2CSF  * config, u8* memData,u8 memLength,u8 *readDa
 
     if(!__JHAL_i2csfWaitAck(config))
     {
-        JHAL_enableInterrupts();
+        __JHAL_i2csfStop(config);
         return false;
     }
     for(uint8 i=0; i<dataSize-1; i++)
@@ -303,12 +304,12 @@ bool JHAL_i2csfReceice(JHAL_I2CSF  * config, u8* memData,u8 memLength,u8 *readDa
     readDataBuff[dataSize-1]= __JHAL_i2csfReadByte(config,false);
 
     __JHAL_i2csfStop(config);
-    JHAL_enableInterrupts();
+   
     return true;
 
 
 }
-
+ //封装一个常用的读8/16位器件地址的方法（内部会stop后再读 如需非标准器件手动调用读）
 bool JHAL_i2csfMemRead(JHAL_I2CSF  * config, u16 memAddress,bool memSizeIs16,u8 *pData, u8 dataSize)
 {
     u8 memData[2];
@@ -322,10 +323,11 @@ bool JHAL_i2csfMemRead(JHAL_I2CSF  * config, u16 memAddress,bool memSizeIs16,u8 
         memData[index++]=(u8)(memAddress);
     }
 
-    JHAL_i2csfReceice(config,memData,memSizeIs16+1,pData,dataSize);
+		
+  return  JHAL_i2csfReceice(config,memData,memSizeIs16+1,true,pData,dataSize);
 
 
-    return true;
+      
 
 }
 

@@ -25,11 +25,6 @@ extern "C" {
 
 
 
-    u32 JHAL_uidGetHigh(void);
-    u32 JHAL_uidGetMiddle(void);
-    u32 JHAL_uidGetLow(void);
-// 96位UID相当于3个32位变量  每8位变量相当于一个字符  所以最大需要4*3+1 =13个字符空间 为了兼容 低位uid先存
-    void uid2string(char* string,int buffSize );
 
 
 
@@ -39,11 +34,14 @@ extern "C" {
     void  JHAL_delayUs(u32 us);
     void  JHAL_delay(JHAL_TimeUnits timeUntis,u16 value);
 
-    //异常检查 这里主要防止未初始化调用
-    void  JHAL_delayTryCheckedExceptions(void);
+		//上面的延时是和通信相关的不可打断   准确度较高 使用时中断被屏蔽下也可正常使用    当osDelay满足这里条件时则可以同用
+   
+		//关于os delay 默认可以不实现  已使用弱定义调用上面硬延时
+	  void  JHAL_delayOsMs (u32 ms); 
+    void  JHAL_delayOsUs(u32 us);
+    void  JHAL_delayOs(JHAL_TimeUnits timeUntis,u16 value);
 
-
-
+ 
 
 #ifdef CplusPlus
 }

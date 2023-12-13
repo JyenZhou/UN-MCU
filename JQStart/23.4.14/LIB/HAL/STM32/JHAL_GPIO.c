@@ -11,7 +11,7 @@
 *********Jyen******************Jyen************************Jyen*****************************************/
 
 //GPIO定义的转换
-GPIO_TypeDef * __JHAL_port2port(JHAL_IO_Port port )
+GPIO_TypeDef * __JHAL_jport2port(JHAL_IO_Port port )
 {
 
 
@@ -37,13 +37,14 @@ GPIO_TypeDef * __JHAL_port2port(JHAL_IO_Port port )
 #endif
     else {
 
-        while(1);
+       JHAL_Fault_Handler();
+			return  GPIOA;
     }
 
 
 
 }
-JHAL_IO_Port JHAL_port2jport(GPIO_TypeDef * port ) {
+JHAL_IO_Port __JHAL_port2jport(GPIO_TypeDef * port ) {
 
     if(port==GPIOA ) {
         return  	 JHAL_IOA;
@@ -71,6 +72,8 @@ JHAL_IO_Port JHAL_port2jport(GPIO_TypeDef * port ) {
 
 }
 
+ 
+
 u16 __JHAL_jpin2pin ( u8 pin )
 {
 
@@ -95,12 +98,12 @@ u8  JHAL_pin2jpin ( u16 pin )
 bool  JHAL_gpioReadPin(JHAL_IO_Port port,u8 pin)
 {
 
-    return  HAL_GPIO_ReadPin(__JHAL_port2port(port ),__JHAL_jpin2pin(pin));
+    return  HAL_GPIO_ReadPin(__JHAL_jport2port(port ),__JHAL_jpin2pin(pin));
 }
 //设置IO电平
 void  JHAL_gpioWitePin(JHAL_IO_Port port,u8 pin,bool level)
 {
-    HAL_GPIO_WritePin(__JHAL_port2port(port ),__JHAL_jpin2pin(pin),(GPIO_PinState)level);
+    HAL_GPIO_WritePin(__JHAL_jport2port(port ),__JHAL_jpin2pin(pin),(GPIO_PinState)level);
 }
 //gpio模式设置  0输入 1输出 2开漏
 void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,JHAL_IO_MODE mode)
@@ -129,14 +132,24 @@ void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,JHAL_IO_MODE mode)
     } else if(JHAL_IO_PP==mode) {
         GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 
-    } else if(JHAL_IO_OD==mode) {
+    } else if(JHAL_IO_PP_UP==mode) {
+			  GPIO_InitStruct.Pull =GPIO_PULLUP;
+        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+
+    } else if(JHAL_IO_PP_DOWN==mode) {
+			  GPIO_InitStruct.Pull =GPIO_PULLDOWN;
+        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+
+    } 
+		
+		else if(JHAL_IO_OD==mode) {
 
         GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
     } else if(JHAL_IO_OD_UP==mode) {
         GPIO_InitStruct.Pull =GPIO_PULLUP;
         GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
 
-    } else if(JHAL_IO_OD_DOWM==mode) {
+    } else if(JHAL_IO_OD_DOWN==mode) {
 
         GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
         GPIO_InitStruct.Pull =GPIO_PULLDOWN;
@@ -144,13 +157,13 @@ void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,JHAL_IO_MODE mode)
 
 
 
-    HAL_GPIO_Init(__JHAL_port2port(port ), &GPIO_InitStruct);
+    HAL_GPIO_Init(__JHAL_jport2port(port ), &GPIO_InitStruct);
 
 }
 //IO翻转
 void  JHAL_gpioTogglePin(JHAL_IO_Port port,u8 pin)
 {
-    HAL_GPIO_TogglePin(__JHAL_port2port(port ),__JHAL_jpin2pin(pin));
+    HAL_GPIO_TogglePin(__JHAL_jport2port(port ),__JHAL_jpin2pin(pin));
 }
 
 OS_WEAK void JHAL_gpioInterruptCallback()

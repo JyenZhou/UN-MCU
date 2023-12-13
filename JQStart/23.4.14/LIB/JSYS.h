@@ -68,9 +68,17 @@ extern "C" {
 
     /**函数指针类型为void/uint8_t函数 */
     typedef void         (*FuncPtrArg1)(uint8_t u8Param);
+		
+		    /**函数指针类型为void/uint8_t函数 */
+    typedef void         (*FuncPtrArg1x)(uint8_t *u8Param);
+		 typedef void         (*FuncPtrArg2)(uint8_t u8Param,uint8_t u8Param2);
+
 
     /**函数指针类型为void/uint8_t函数 */
     typedef u8         (*FuncPtrArg1Ret1)(uint8_t u8Param);
+		
+		 
+  
 
 
 

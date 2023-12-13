@@ -4,8 +4,9 @@
  *                                                                   *
 *                                                                     *
 
+本程序兼容 sgm58031
 
-					坑  5V输入时不需要做IIC的电平转换 否则会读不到值
+					坑  5V输入时不需要做IIC的电平转换 否则会读不到值(应该是板级设计问题  该iic应该兼容3.3v为高电平)
 
 
 
@@ -45,6 +46,8 @@ return dianya;
 
 
 
+ 
+
 bool  __ads115Init( ADS1115  *config,  ADS1115Channel ch )
 {
 
@@ -63,55 +66,39 @@ bool  __ads115Init( ADS1115  *config,  ADS1115Channel ch )
         }
     }
 
-    u8 delayMs=0;
-    if(config->speed<=ADS1115_Speed_SPS_128)
-    {
-        delayMs=1000/(  8<<config->speed)+1;
-    } else if(config->speed==ADS1115_Speed_SPS_250)
-    {
-
-        delayMs=5;
-
-    }
-
-
-
-
-
-    JHAL_delayMs(delayMs);
     return true;
 }
 
 bool  ads1115Open( ADS1115  *config)
 {
     JHAL_i2csfOpen(	&config->i2c);
-    return  __ads115Init(config,ADS1115Channel_SINGLE_0);
+
+
+    return     true;
 }
 
-bool __ads1115GetAD(ADS1115  *config, uint32_t *conv_data )
+bool __ads1115GetAD(ADS1115  *config, int32 *conv_data )
 
 {
-
-    if(config->alert_rdy_Port!=JHAL_IO_NoSet)
-    {
-        u32 timeCountOut=0;
-        while(JHAL_gpioReadPin(config->alert_rdy_Port,config->alert_rdy_Pin))
-        {
-            if(timeCountOut++>0xFFFFF)
-            {
-                return false;
-            }
-        }
-
-    } else {
-        JHAL_delayMs(10);
-    }
-
-
     /*指向ADS1115指针寄存器用于准备读取数据*/
     uint8_t	readbuff[2];
 
+//通过OS寄存器判断是否转化完成 可以防止延时带来的不准 主要是兼容sgm58031 使用1115给定的延时不够
 
+    while(1) {
+		 
+        if(  !JHAL_i2csfMemRead(&config->i2c,1,false,readbuff,1))
+        {
+
+            return false ;
+        }
+        JHAL_delayOsMs(1);
+        if(readbuff[0]&0x80)
+        {
+            break;
+        }
+ 
+    }
 
     /*读取数据**/
 
@@ -119,43 +106,35 @@ bool __ads1115GetAD(ADS1115  *config, uint32_t *conv_data )
     {
         return false ;
     }
-
-
+ 
     *conv_data=(readbuff[0]<<8)|readbuff[1];
-
+ 
     if(*conv_data > 0x8000)//负电压时候
     {
-        *conv_data = 0xffff-*conv_data;
+        *conv_data =-(0xffff-*conv_data);
+			
     }
-
-
-
+ 
     return true ;
-
+ 
 }
-
-
 
 
 bool ads1115GetVoltage(ADS1115  *config,ADS1115Channel ch, JHAL_ADCInfo  *adcInfo  )
 
 {
-
-
+ 
     if(config->isSingleConversion)
     {
         __ads115Init(config,ch);
+
     }
-
-
-
-
-
+ 
     u8 samplingCount=config->samplingCount4filter;
     if(samplingCount>1)
     {
 
-        u32 adcBuff[ samplingCount];
+        int32  adcBuff[ samplingCount];
 
         for(u8 i=0; i< samplingCount; i++)
         {
@@ -166,7 +145,7 @@ bool ads1115GetVoltage(ADS1115  *config,ADS1115Channel ch, JHAL_ADCInfo  *adcInf
         }
 
 
-        JHAL_sortU32ArrayAsc( adcBuff, samplingCount);
+        JHAL_sort32ArrayAsc( adcBuff, samplingCount);
 
         adcInfo->adcValue.minAD=adcBuff[0];
         adcInfo->adcValue.maxAD=adcBuff[samplingCount-1];
@@ -191,15 +170,16 @@ bool ads1115GetVoltage(ADS1115  *config,ADS1115Channel ch, JHAL_ADCInfo  *adcInf
         }
 
     } else {
+
+
+
         if(! __ads1115GetAD(config,& adcInfo->adcValue.ad))
         {
             return false;
         }
 
     }
-
-
-
+ 
     if(config->pga==ADS1115_PGA_6) {
         adcInfo->voltage=adcInfo->adcValue.ad*0.0001875;
         adcInfo->maxVoltage=adcInfo->adcValue.maxAD*0.0001875;
@@ -227,14 +207,9 @@ bool ads1115GetVoltage(ADS1115  *config,ADS1115Channel ch, JHAL_ADCInfo  *adcInf
         adcInfo->maxVoltage=adcInfo->adcValue.maxAD*0.0000078125;
         adcInfo->minVoltage=adcInfo->adcValue.minAD*0.0000078125;
     }
-
-
-
-
-
+ 
     return true;
-
-
+ 
 }
 
 
