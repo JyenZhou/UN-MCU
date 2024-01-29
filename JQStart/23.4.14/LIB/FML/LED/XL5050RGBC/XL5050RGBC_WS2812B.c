@@ -26,11 +26,6 @@
 
 
 
-
-
-
-
-
 void XL_5050RGBC_WS2812B_open(XL_5050RGBC_WS2812B_Config *config)
 {
 
