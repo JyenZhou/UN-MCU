@@ -114,13 +114,13 @@ static JHAL_UART_RXConfig  *__rXConfig[__UART_Number];
 bool JHAL_uartOpen( JHAL_UART  *config)
 {
 		if(!	config->__info.isOpen ){
-    UART_Type *  __uartX=__JHAL_juart2uart(config->dev);
+    UART_Type *  __uartX=__JHAL_juart2uart(config->id);
     UART_InitTypeDef UART_InitStructure;
-    if(config->dev == 0)
+    if(config->id == 0)
     {
         SIM_SCGC_Cmd(SIM_SCGC_UART1,ENABLE);
         SIM_PINSEL_UART1(UART1_PS_PTC7_PTC6);
-    } else   if(config->dev == 1)
+    } else   if(config->id == 1)
     {
         SIM_SCGC_Cmd(SIM_SCGC_UART1,ENABLE);
         SIM_PINSEL_UART1(UART1_PS_PTF3_PTF2);
@@ -142,7 +142,7 @@ bool JHAL_uartOpen( JHAL_UART  *config)
     UART_Init(__uartX, &UART_InitStructure);
     __Uart_Interrupt_Init(__uartX);
 
-    __rXConfig[__JHAL_juart2Id(config->dev)]=&(config->rxConfig);
+    __rXConfig[__JHAL_juart2Id(config->id)]=&(config->rxConfig);
 
 
     UART_EnableCmd(__uartX, ENABLE);
@@ -185,9 +185,9 @@ static void __JHAL_uartReceiveIT( u8 uartID, UART_Type *uart)
 
 //使能接收
 void JHAL_uartEnableReceiveIT (JHAL_UART *uart)
-{   u8 uartID=__JHAL_juart2Id(uart->dev);
+{   u8 uartID=__JHAL_juart2Id(uart->id);
     __rXConfig[uartID]->__info.itEN=true;
-    __JHAL_uartReceiveIT(uartID,__JHAL_juart2uart(uart->dev));
+    __JHAL_uartReceiveIT(uartID,__JHAL_juart2uart(uart->id));
 
 }
 //接收中断失能
@@ -202,7 +202,7 @@ void __JHAL_uartAbortReceiveIT (u8 id)
 //接收中断失能
 void JHAL_uartAbortReceiveIT (JHAL_UART *uart)
 {
-    __JHAL_uartAbortReceiveIT(__JHAL_juart2Id(uart->dev));
+    __JHAL_uartAbortReceiveIT(__JHAL_juart2Id(uart->id));
 }
 
 
@@ -261,8 +261,8 @@ bool  JHAL_uartClose(JHAL_UART *juart)
 {
 if(  juart->__info.isOpen){
 	
-    __JHAL_uartAbortReceiveIT(__JHAL_juart2Id(juart->dev));
-    UART_Type *uart=__JHAL_juart2uart(juart->dev);
+    __JHAL_uartAbortReceiveIT(__JHAL_juart2Id(juart->id));
+    UART_Type *uart=__JHAL_juart2uart(juart->id);
     UART_DeInit(uart);
     UART_EnableCmd(uart, DISABLE);
  juart->__info.isOpen =false;

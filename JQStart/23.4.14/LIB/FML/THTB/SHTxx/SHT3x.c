@@ -44,7 +44,7 @@ MPS：measurement per second
  
 
 
-bool  SHT3xOpen( SHT3x  *config)
+bool  sht3xOpen( SHT3x  *config)
 {
     JHAL_i2csfOpen(	&config->i2c); 
     // 0x2130  表示定期数据采集模式 这个比较通用   对时间要求高的需要重新封装
@@ -68,7 +68,7 @@ bool  SHT3xOpen( SHT3x  *config)
 
  
 
-int  crc8_compute(u8 *check_data, u8 num_of_data)
+int  sht3x_crc8_compute(u8 *check_data, u8 num_of_data)
 {
     uint8_t bit;        // bit mask
     uint8_t crc = 0xFF; // calculated checksum
@@ -92,7 +92,7 @@ int  crc8_compute(u8 *check_data, u8 num_of_data)
 bool sht30_crc8_check(u8 *p,u8 num_of_data,u8 CrcData)
 {
     uint8_t crc;
-    crc = crc8_compute(p, num_of_data);// calculates 8-Bit checksum
+    crc = sht3x_crc8_compute(p, num_of_data);// calculates 8-Bit checksum
     if(crc != CrcData)
     {
         return false;
@@ -101,7 +101,7 @@ bool sht30_crc8_check(u8 *p,u8 num_of_data,u8 CrcData)
 }
 
 
-bool SHT3xGet(SHT3x  *config,  float *  temperature,float * humidity )
+bool sht3xGet(SHT3x  *config,  float *  temperature,float * humidity )
 {
 //这里和前面的一样，也是写一个命令给SHT30，0xe000这个命令是访问SHT30转换结果的寄存器的
 

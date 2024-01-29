@@ -1,0 +1,961 @@
+Dependencies for Project 'TEST', Target 'MM32Series': (DO NOT MODIFY !)
+F (..\DEVICE\MM32F0010\Source\system_mm32f0010.c)(0x608280B8)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\system_mm32f0010.o --omf_browse .\obj\system_mm32f0010.crf --depend .\obj\system_mm32f0010.d)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\Source\KEIL_StartAsm\startup_mm32f0010_keil.s)(0x610CDF30)(--cpu Cortex-M0 -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 525"--list .\obj\startup_mm32f0010_keil.lst --xref -o .\obj\startup_mm32f0010_keil.o --depend .\obj\startup_mm32f0010_keil.d)
+F (..\HARDWARE\LED\led.c)(0x61827685)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\led.o --omf_browse .\obj\led.crf --depend .\obj\led.d)
+I (..\HARDWARE\LED\led.h)(0x617A448A)
+I (..\USER\main.h)(0x61761E75)
+I (D:\keil\ARM\ARMCC\include\string.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdlib.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\math.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_conf.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_misc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uart.h)(0x6038FA5E)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uid.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_redefine.h)(0x5FA285AA)
+I (..\SYSTEM\DELAY\delay.h)(0x60823C10)
+I (..\HARDWARE\WWDG\wwdg.h)(0x6180FCB1)
+I (..\HARDWARE\TIM\bsp_tim.h)(0x617A482E)
+I (..\HARDWARE\BSP_IO\bsp_io.h)(0x61761EC5)
+I (..\HARDWARE\EEPROM\sim_eeprom.h)(0x60823F5F)
+I (..\HARDWARE\ADC\adc.h)(0x61761389)
+I (..\HARDWARE\BSP_IO\ldo.h)(0x6176154B)
+I (..\SYSTEM\UART\uart.h)(0x6176186E)
+I (..\USER\module.h)(0x617FA60A)
+F (..\HARDWARE\TIM\bsp_tim.c)(0x618275E2)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\bsp_tim.o --omf_browse .\obj\bsp_tim.crf --depend .\obj\bsp_tim.d)
+I (..\HARDWARE\TIM\bsp_tim.h)(0x617A482E)
+I (..\USER\main.h)(0x61761E75)
+I (D:\keil\ARM\ARMCC\include\string.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdlib.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\math.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_conf.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_misc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uart.h)(0x6038FA5E)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uid.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_redefine.h)(0x5FA285AA)
+I (..\SYSTEM\DELAY\delay.h)(0x60823C10)
+I (..\HARDWARE\WWDG\wwdg.h)(0x6180FCB1)
+I (..\HARDWARE\LED\led.h)(0x617A448A)
+I (..\HARDWARE\BSP_IO\bsp_io.h)(0x61761EC5)
+I (..\HARDWARE\EEPROM\sim_eeprom.h)(0x60823F5F)
+I (..\HARDWARE\ADC\adc.h)(0x61761389)
+I (..\HARDWARE\BSP_IO\ldo.h)(0x6176154B)
+I (..\SYSTEM\UART\uart.h)(0x6176186E)
+I (..\USER\module.h)(0x617FA60A)
+F (..\HARDWARE\EEPROM\sim_eeprom.c)(0x617609B3)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\sim_eeprom.o --omf_browse .\obj\sim_eeprom.crf --depend .\obj\sim_eeprom.d)
+I (..\HARDWARE\EEPROM\sim_eeprom.h)(0x60823F5F)
+I (..\USER\main.h)(0x61761E75)
+I (D:\keil\ARM\ARMCC\include\string.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdlib.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\math.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_conf.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_misc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uart.h)(0x6038FA5E)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uid.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_redefine.h)(0x5FA285AA)
+I (..\SYSTEM\DELAY\delay.h)(0x60823C10)
+I (..\HARDWARE\WWDG\wwdg.h)(0x6180FCB1)
+I (..\HARDWARE\LED\led.h)(0x617A448A)
+I (..\HARDWARE\TIM\bsp_tim.h)(0x617A482E)
+I (..\HARDWARE\BSP_IO\bsp_io.h)(0x61761EC5)
+I (..\HARDWARE\ADC\adc.h)(0x61761389)
+I (..\HARDWARE\BSP_IO\ldo.h)(0x6176154B)
+I (..\SYSTEM\UART\uart.h)(0x6176186E)
+I (..\USER\module.h)(0x617FA60A)
+F (..\HARDWARE\ADC\adc.c)(0x61826D4D)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\adc.o --omf_browse .\obj\adc.crf --depend .\obj\adc.d)
+I (..\HARDWARE\ADC\adc.h)(0x61761389)
+I (..\USER\main.h)(0x61761E75)
+I (D:\keil\ARM\ARMCC\include\string.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdlib.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\math.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_conf.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_misc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uart.h)(0x6038FA5E)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uid.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_redefine.h)(0x5FA285AA)
+I (..\SYSTEM\DELAY\delay.h)(0x60823C10)
+I (..\HARDWARE\WWDG\wwdg.h)(0x6180FCB1)
+I (..\HARDWARE\LED\led.h)(0x617A448A)
+I (..\HARDWARE\TIM\bsp_tim.h)(0x617A482E)
+I (..\HARDWARE\BSP_IO\bsp_io.h)(0x61761EC5)
+I (..\HARDWARE\EEPROM\sim_eeprom.h)(0x60823F5F)
+I (..\HARDWARE\BSP_IO\ldo.h)(0x6176154B)
+I (..\SYSTEM\UART\uart.h)(0x6176186E)
+I (..\USER\module.h)(0x617FA60A)
+F (..\HARDWARE\BSP_IO\ldo.c)(0x61826D38)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\ldo.o --omf_browse .\obj\ldo.crf --depend .\obj\ldo.d)
+I (..\HARDWARE\BSP_IO\ldo.h)(0x6176154B)
+I (..\USER\main.h)(0x61761E75)
+I (D:\keil\ARM\ARMCC\include\string.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdlib.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\math.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_conf.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_misc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uart.h)(0x6038FA5E)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uid.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_redefine.h)(0x5FA285AA)
+I (..\SYSTEM\DELAY\delay.h)(0x60823C10)
+I (..\HARDWARE\WWDG\wwdg.h)(0x6180FCB1)
+I (..\HARDWARE\LED\led.h)(0x617A448A)
+I (..\HARDWARE\TIM\bsp_tim.h)(0x617A482E)
+I (..\HARDWARE\BSP_IO\bsp_io.h)(0x61761EC5)
+I (..\HARDWARE\EEPROM\sim_eeprom.h)(0x60823F5F)
+I (..\HARDWARE\ADC\adc.h)(0x61761389)
+I (..\SYSTEM\UART\uart.h)(0x6176186E)
+I (..\USER\module.h)(0x617FA60A)
+F (..\HARDWARE\WWDG\wwdg.c)(0x61826ECE)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\wwdg.o --omf_browse .\obj\wwdg.crf --depend .\obj\wwdg.d)
+I (..\HARDWARE\WWDG\wwdg.h)(0x6180FCB1)
+I (..\USER\main.h)(0x61761E75)
+I (D:\keil\ARM\ARMCC\include\string.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdlib.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\math.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_conf.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_misc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uart.h)(0x6038FA5E)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uid.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_redefine.h)(0x5FA285AA)
+I (..\SYSTEM\DELAY\delay.h)(0x60823C10)
+I (..\HARDWARE\LED\led.h)(0x617A448A)
+I (..\HARDWARE\TIM\bsp_tim.h)(0x617A482E)
+I (..\HARDWARE\BSP_IO\bsp_io.h)(0x61761EC5)
+I (..\HARDWARE\EEPROM\sim_eeprom.h)(0x60823F5F)
+I (..\HARDWARE\ADC\adc.h)(0x61761389)
+I (..\HARDWARE\BSP_IO\ldo.h)(0x6176154B)
+I (..\SYSTEM\UART\uart.h)(0x6176186E)
+I (..\USER\module.h)(0x617FA60A)
+F (..\HARDWARE\BSP_IO\bsp_io.c)(0x61761ECC)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\bsp_io.o --omf_browse .\obj\bsp_io.crf --depend .\obj\bsp_io.d)
+I (..\HARDWARE\BSP_IO\bsp_io.h)(0x61761EC5)
+I (..\USER\main.h)(0x61761E75)
+I (D:\keil\ARM\ARMCC\include\string.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdlib.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\math.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_conf.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_misc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uart.h)(0x6038FA5E)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uid.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_redefine.h)(0x5FA285AA)
+I (..\SYSTEM\DELAY\delay.h)(0x60823C10)
+I (..\HARDWARE\WWDG\wwdg.h)(0x6180FCB1)
+I (..\HARDWARE\LED\led.h)(0x617A448A)
+I (..\HARDWARE\TIM\bsp_tim.h)(0x617A482E)
+I (..\HARDWARE\EEPROM\sim_eeprom.h)(0x60823F5F)
+I (..\HARDWARE\ADC\adc.h)(0x61761389)
+I (..\HARDWARE\BSP_IO\ldo.h)(0x6176154B)
+I (..\SYSTEM\UART\uart.h)(0x6176186E)
+I (..\USER\module.h)(0x617FA60A)
+F (..\SYSTEM\DELAY\delay.c)(0x60823C26)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\delay.o --omf_browse .\obj\delay.crf --depend .\obj\delay.d)
+I (..\SYSTEM\DELAY\delay.h)(0x60823C10)
+I (D:\keil\ARM\ARMCC\include\string.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+F (..\SYSTEM\SYS\sys.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\sys.o --omf_browse .\obj\sys.crf --depend .\obj\sys.d)
+I (D:\keil\ARM\ARMCC\include\string.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+I (..\SYSTEM\SYS\sys.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_conf.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_misc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uart.h)(0x6038FA5E)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uid.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_redefine.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
+F (..\SYSTEM\UART\uart.c)(0x617A7A29)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\uart.o --omf_browse .\obj\uart.crf --depend .\obj\uart.d)
+I (..\SYSTEM\UART\uart.h)(0x6176186E)
+I (..\USER\main.h)(0x61761E75)
+I (D:\keil\ARM\ARMCC\include\string.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdlib.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\math.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_conf.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_misc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uart.h)(0x6038FA5E)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uid.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_redefine.h)(0x5FA285AA)
+I (..\SYSTEM\DELAY\delay.h)(0x60823C10)
+I (..\HARDWARE\WWDG\wwdg.h)(0x6180FCB1)
+I (..\HARDWARE\LED\led.h)(0x617A448A)
+I (..\HARDWARE\TIM\bsp_tim.h)(0x617A482E)
+I (..\HARDWARE\BSP_IO\bsp_io.h)(0x61761EC5)
+I (..\HARDWARE\EEPROM\sim_eeprom.h)(0x60823F5F)
+I (..\HARDWARE\ADC\adc.h)(0x61761389)
+I (..\HARDWARE\BSP_IO\ldo.h)(0x6176154B)
+I (..\USER\module.h)(0x617FA60A)
+F (..\USER\main.c)(0x61827DC0)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\main.o --omf_browse .\obj\main.crf --depend .\obj\main.d)
+I (..\USER\main.h)(0x61761E75)
+I (D:\keil\ARM\ARMCC\include\string.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdlib.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\math.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_conf.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_misc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uart.h)(0x6038FA5E)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uid.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_redefine.h)(0x5FA285AA)
+I (..\SYSTEM\DELAY\delay.h)(0x60823C10)
+I (..\HARDWARE\WWDG\wwdg.h)(0x6180FCB1)
+I (..\HARDWARE\LED\led.h)(0x617A448A)
+I (..\HARDWARE\TIM\bsp_tim.h)(0x617A482E)
+I (..\HARDWARE\BSP_IO\bsp_io.h)(0x61761EC5)
+I (..\HARDWARE\EEPROM\sim_eeprom.h)(0x60823F5F)
+I (..\HARDWARE\ADC\adc.h)(0x61761389)
+I (..\HARDWARE\BSP_IO\ldo.h)(0x6176154B)
+I (..\SYSTEM\UART\uart.h)(0x6176186E)
+I (..\USER\module.h)(0x617FA60A)
+I (..\USER\StandardSensorModule.h)(0x61827A29)
+F (..\USER\module.c)(0x61826D64)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\module.o --omf_browse .\obj\module.crf --depend .\obj\module.d)
+I (..\USER\module.h)(0x617FA60A)
+I (..\USER\main.h)(0x61761E75)
+I (D:\keil\ARM\ARMCC\include\string.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdlib.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\math.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_conf.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_misc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uart.h)(0x6038FA5E)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uid.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_redefine.h)(0x5FA285AA)
+I (..\SYSTEM\DELAY\delay.h)(0x60823C10)
+I (..\HARDWARE\WWDG\wwdg.h)(0x6180FCB1)
+I (..\HARDWARE\LED\led.h)(0x617A448A)
+I (..\HARDWARE\TIM\bsp_tim.h)(0x617A482E)
+I (..\HARDWARE\BSP_IO\bsp_io.h)(0x61761EC5)
+I (..\HARDWARE\EEPROM\sim_eeprom.h)(0x60823F5F)
+I (..\HARDWARE\ADC\adc.h)(0x61761389)
+I (..\HARDWARE\BSP_IO\ldo.h)(0x6176154B)
+I (..\SYSTEM\UART\uart.h)(0x6176186E)
+I (..\USER\StandardSensorModule.h)(0x61827A29)
+F (..\USER\StandardSensorModule.c)(0x61827A36)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\standardsensormodule.o --omf_browse .\obj\standardsensormodule.crf --depend .\obj\standardsensormodule.d)
+I (..\USER\StandardSensorModule.h)(0x61827A29)
+I (D:\keil\ARM\ARMCC\include\stdlib.h)(0x5E8E2EB2)
+I (..\USER\module.h)(0x617FA60A)
+I (..\USER\main.h)(0x61761E75)
+I (D:\keil\ARM\ARMCC\include\string.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\math.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\mm32_device.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg.h)(0x6110D832)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\mm32_reg_redefine_v1.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_conf.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_misc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_syscfg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uart.h)(0x6038FA5E)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uid.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_redefine.h)(0x5FA285AA)
+I (..\SYSTEM\DELAY\delay.h)(0x60823C10)
+I (..\HARDWARE\WWDG\wwdg.h)(0x6180FCB1)
+I (..\HARDWARE\LED\led.h)(0x617A448A)
+I (..\HARDWARE\TIM\bsp_tim.h)(0x617A482E)
+I (..\HARDWARE\BSP_IO\bsp_io.h)(0x61761EC5)
+I (..\HARDWARE\EEPROM\sim_eeprom.h)(0x60823F5F)
+I (..\HARDWARE\ADC\adc.h)(0x61761389)
+I (..\HARDWARE\BSP_IO\ldo.h)(0x6176154B)
+I (..\SYSTEM\UART\uart.h)(0x6176186E)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_adc.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_adc.o --omf_browse .\obj\hal_adc.crf --depend .\obj\hal_adc.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_crc.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_crc.o --omf_browse .\obj\hal_crc.crf --depend .\obj\hal_crc.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_crc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_crc.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_dbg.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_dbg.o --omf_browse .\obj\hal_dbg.crf --depend .\obj\hal_dbg.d)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_dbg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_exti.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_exti.o --omf_browse .\obj\hal_exti.crf --depend .\obj\hal_exti.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_exti.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_exti.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_flash.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_flash.o --omf_browse .\obj\hal_flash.crf --depend .\obj\hal_flash.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_flash.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_flash.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_gpio.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_gpio.o --omf_browse .\obj\hal_gpio.crf --depend .\obj\hal_gpio.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_i2c.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_i2c.o --omf_browse .\obj\hal_i2c.crf --depend .\obj\hal_i2c.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_i2c.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_iwdg.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_iwdg.o --omf_browse .\obj\hal_iwdg.crf --depend .\obj\hal_iwdg.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_iwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_misc.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_misc.o --omf_browse .\obj\hal_misc.crf --depend .\obj\hal_misc.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_misc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_pwr.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_pwr.o --omf_browse .\obj\hal_pwr.crf --depend .\obj\hal_pwr.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_pwr.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_rcc.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_rcc.o --omf_browse .\obj\hal_rcc.crf --depend .\obj\hal_rcc.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_spi.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_spi.o --omf_browse .\obj\hal_spi.crf --depend .\obj\hal_spi.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_spi.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_tim.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_tim.o --omf_browse .\obj\hal_tim.crf --depend .\obj\hal_tim.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_tim.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_tim.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_uart.c)(0x6110D08F)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_uart.o --omf_browse .\obj\hal_uart.crf --depend .\obj\hal_uart.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uart.h)(0x6038FA5E)
+I (..\DEVICE\MM32F0010\Include\reg_uart.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_gpio.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_gpio.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_uid.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_uid.o --omf_browse .\obj\hal_uid.crf --depend .\obj\hal_uid.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_uid.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_ver.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_ver.o --omf_browse .\obj\hal_ver.crf --depend .\obj\hal_ver.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_ver.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_dbg.h)(0x5FA285AA)
+F (..\DEVICE\MM32F0010\HAL_Lib\Src\hal_wwdg.c)(0x5FA285AA)(--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\DEVICE\MM32F0010\Include -I ..\DEVICE\MM32F0010\HAL_Lib\Inc -I ..\DEVICE\CMSIS\KEIL_Core -I ..\USER -I ..\SYSTEM\UART -I ..\SYSTEM\SYS -I ..\SYSTEM\DELAY -I ..\HARDWARE\LED -I ..\HARDWARE\KEY -I ..\HARDWARE\TIM -I ..\HARDWARE\EEPROM -I ..\HARDWARE\ADC -I ..\HARDWARE\BSP_IO -I ..\HARDWARE\WWDG-I.\RTE\_MM32Series-ID:\keil\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER-o .\obj\hal_wwdg.o --omf_browse .\obj\hal_wwdg.crf --depend .\obj\hal_wwdg.d)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\types.h)(0x5FA285AA)
+I (D:\keil\ARM\ARMCC\include\stdint.h)(0x5E8E2EB2)
+I (D:\keil\ARM\ARMCC\include\stdbool.h)(0x5E8E2EB2)
+I (..\DEVICE\MM32F0010\Include\reg_wwdg.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_rcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_common.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\core_cm0.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h)(0x5FA285AA)
+I (..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_adc.h)(0x5FA285AA)
+I (..\DEVICE\MM32F0010\Include\reg_rcc.h)(0x5FA285AA)

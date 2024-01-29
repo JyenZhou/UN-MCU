@@ -31,7 +31,7 @@ DMA
 
 
 #ifdef HAL_DAC_MODULE_ENABLED
-extern DAC_HandleTypeDef hdac;
+ 
 
 
 
@@ -40,53 +40,55 @@ extern DAC_HandleTypeDef hdac;
 
 
 
-DAC_HandleTypeDef* __JHAL_jdac2dac(u8 dev)
-{
-    if(dev==0)
-    {
-
-        return &hdac;
-    } else {
-//不存在或未实现
-        while(true);
-    }
-}
-
+ 
 
 
 
 bool  JHAL_dacOpen( JHAL_DAC *dac)
 
 {
-
-    HAL_DAC_Start(&hdac,   DAC_CHANNEL_1);
+		for(u8 channelIndex=0;channelIndex<dac->channelsNumber;channelIndex++)
+			{
+				//TIM_CHANNEL_ALL  实测cubemx 1.8.5在pwm中无任何输出 不知道是不是bug
+				if(dac->channels[channelIndex]==DAC_CHANNEL_1 || dac->channels[channelIndex]==DAC_CHANNEL_2    )
+				{
+					
+					 	    HAL_DAC_Start((DAC_HandleTypeDef*)(dac->dev),   dac->channels[channelIndex]);
+				}else{
+					   JHAL_Fault_Handler("JHAL_dacOpen");
+					return false;
+				}
+					
+			}
+			
+			
+ 
     return true;
 }
 
 
 
-
-void JHAL_dacSetVoltage (JHAL_DAC *adc,float voltage)
+  void JHAL_dacSetVoltage (JHAL_DAC *dac,u8 channelIndex,float voltage)
 {
-    u32 dac=voltage*4096.0f/DAC_VREF;
-    if(dac>4095)
+    u32 dacValue=voltage*4096.0f/DAC_VREF;
+    if(dacValue>4095)
     {
-        dac=4095;
+        dacValue=4095;
     }
-    HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R,dac );
+    HAL_DAC_SetValue((DAC_HandleTypeDef*)(dac->dev),  dac->channels[channelIndex], DAC_ALIGN_12B_R,dacValue );
 
 
 
 }
 
-void JHAL_dacSetDA (JHAL_DAC *adc,u16 da)
+void JHAL_dacSetDA (JHAL_DAC *dac,u8 channelIndex,u16 da)
 {
    
     if(da>4095)
     {
         da=4095;
     }
-    HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R,da );
+    HAL_DAC_SetValue((DAC_HandleTypeDef*)(dac->dev),  dac->channels[channelIndex], DAC_ALIGN_12B_R,da );
 
 
 

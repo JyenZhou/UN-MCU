@@ -23,16 +23,16 @@ typedef enum
 
 typedef struct
 {
-/* 这个是延时系数   里面单位是us为基准 要是降低速率可以修改这里值  注意IO有翻转时间的间隔太小可能导致占空比不对 采用边沿触发时钟的IIC是可以容忍的 这个目前没有做校准
-  STM32 64M逻辑分析仪对应频率(写的时候频率比较低，读的时候频率比较高,0是开漏读取sht3x不行的) 
-	0: 125-142K
-  1: 91-111K
-	5:43-61K
-	10:25-37K
-	15：19-27K
-	50：6-9K
-	*/
-	u8 delayMultiple;
+    /* 这个是延时系数   里面单位是us为基准 要是降低速率可以修改这里值  注意IO有翻转时间的间隔太小可能导致占空比不对 采用边沿触发时钟的IIC是可以容忍的 这个目前没有做校准
+      STM32 64M逻辑分析仪对应频率(写的时候频率比较低，读的时候频率比较高,0是开漏读取sht3x不行的)
+    	0: 125-142K
+      1: 91-111K
+    	5:43-61K
+    	10:25-37K
+    	15：19-27K
+    	50：6-9K
+    	*/
+    u8 delayMultiple;
     JHAL_IO_Port sclPort;
     u8  sclPin;
     JHAL_IO_Port sdaPort;
@@ -61,7 +61,7 @@ bool JHAL_i2csfReceice(JHAL_I2CSF  * config, u8* memData,u8 memLength,bool isSto
 //器件地址+寄存器地址的操作
 //从往指定寄存器写一些数据
 bool JHAL_i2csfMemWrite(JHAL_I2CSF *handle, u16 memAddress,bool memSizeIs16,  u8 *pData,  u8 dataSize);
-//从指定寄存器中读出一些数据
+//封装一个常用的读8/16位器件地址的方法（内部默认不调用 stop  一般可以兼容时序上要stop的  内部不会把stop当做重要标志而是依靠寄存器地址 ）
 bool JHAL_i2csfMemRead(JHAL_I2CSF *handle, u16 memAddress,bool memSizeIs16, u8 *pData, u8 dataSize);
 
 

@@ -90,13 +90,13 @@ extern "C" {
 
 
     typedef struct {
-        u8 dev:3;
+        u8 id:3;
         u32 baudRate;
         JHAL_UART_RXConfig rxConfig;
         __JHAL_Uart__OtherInfo __info;
         // 给第三方适配用的 例如stm32使用cubemx配置后直接将那边定义的变量传进来 不需要内部重新赋值等
 //			如果内部使用了这个变量一定要先赋值
-        void*  uart;
+        void*  dev;
 
     } JHAL_UART ;
 
@@ -117,7 +117,7 @@ extern "C" {
     u16 JHAL_uartRxFinsh(JHAL_UART *uart);
 
 //中断回调 返回false将视为取消配置中接收封装方法  JHAL_uartRxFinsh将无效  配置中*dataBuff 不会得到赋值
-		//中断回调  注意这里对应的是uart实例 id 不是传进去的dev  因为两个dev可能实际上是一个uart 只是引脚不一样
+    //中断回调  注意这里对应的是uart实例 id 不是传进去的dev  因为两个dev可能实际上是一个uart 只是引脚不一样
     bool JHAL_uartRxITCallback(u8 realityId);
 
 

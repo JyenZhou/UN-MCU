@@ -76,6 +76,7 @@ u8  __JHAL_crc8_XOR( u8 *data, u16 length)
 {
     u8  xordata;
     xordata = data[0];
+	
     for( u8  i=1; i<length-1; i++)
     {
         xordata ^=data[i];

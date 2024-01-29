@@ -1,5 +1,5 @@
 #include "../JHAL_Uart.h"
-#if (!defined STM32F407xx ||defined HAL_UART_MODULE_ENABLED ||defined HAL_USART_MODULE_ENABLED)
+#if (  defined HAL_UART_MODULE_ENABLED ||defined HAL_USART_MODULE_ENABLED)
 /**
  //使用空闲中断 (JHAL_UART_ReceiveITMode_IT_DMA_IDLE)  还需要这样操作
 //1.cubemx中->DMA Seetings->add =rx     //无特殊要求时mode=  当mode等于 Circular 相当于单个空闲中断，   不然连续的相当于空闲和满的时候都中断  反而产生粘包或者说适用于定长但是错包又得处理
@@ -44,8 +44,8 @@ USART_TypeDef* __JHAL_dev2uartInstance(u8 dev)
 
     else {
 
-//不存在或未实现
-        while(true);
+      JHAL_Fault_Handler("__JHAL_dev2uartInstance");
+			return USART1;
 
     }
 }
@@ -71,8 +71,8 @@ u8 __JHAL_uartInstance2dev (USART_TypeDef*  instance )
 
     else {
 
-//不存在或未实现
-        while(true);
+     JHAL_Fault_Handler("__JHAL_uartInstance2dev");
+			return 0;
 
     }
 }
@@ -83,19 +83,19 @@ u8 __JHAL_uartInstance2dev (USART_TypeDef*  instance )
 
 bool JHAL_uartOpen( JHAL_UART *config)
 {
-    UART_HandleTypeDef *uart=   (UART_HandleTypeDef * ) (config->uart) ;
+    UART_HandleTypeDef *uart=   (UART_HandleTypeDef * ) (config->dev) ;
 
 
-    u8 dev=__JHAL_uartInstance2dev(uart->Instance);
-    config->dev=dev;
+    u8 id=__JHAL_uartInstance2dev(uart->Instance);
+    config->id=id;
 
 
-    __uartConfig[config->dev]=  config  ;
+    __uartConfig[id]=  config  ;
 
 
-    if(!__uartIsInit[ config->dev])
+    if(!__uartIsInit[id])
     {   //Cumbex 会自动打开 所以打开时候先关上再开
-        __uartIsInit[ config->dev]=   config->__info.isOpen =true;
+        __uartIsInit[id]=   config->__info.isOpen =true;
 
         JHAL_uartClose(config);
 
@@ -129,14 +129,14 @@ bool JHAL_uartOpen( JHAL_UART *config)
 }
 
 
-void __JHAL_uartAbortReceiveIT (u8 dev )
+void __JHAL_uartAbortReceiveIT (u8 id )
 {
 
-    UART_HandleTypeDef *uart= (UART_HandleTypeDef * ) (  __uartConfig[dev]->uart);
+    UART_HandleTypeDef *uart= (UART_HandleTypeDef * ) (  __uartConfig[id]->dev);
 
 
 
-    if( __uartConfig[dev]->rxConfig.receiveMode== JHAL_UART_ReceiveITMode_IT_DMA_IDLE)
+    if( __uartConfig[id]->rxConfig.receiveMode== JHAL_UART_ReceiveITMode_IT_DMA_IDLE)
     {
         HAL_UART_DMAStop(uart);
     }
@@ -172,9 +172,9 @@ void JHAL_uartAbortReceiveIT (JHAL_UART *juart )
 
 
 
-    __uartConfig[juart->dev]->rxConfig.__info.itEN=false;
+    __uartConfig[juart->id]->rxConfig.__info.itEN=false;
 
-    __JHAL_uartAbortReceiveIT(juart->dev);
+    __JHAL_uartAbortReceiveIT(juart->id);
 
 
 
@@ -188,7 +188,7 @@ void  __JHAL_uartEnableReceiveIT( u8 dev )
 {
 
 
-    UART_HandleTypeDef *uart= (UART_HandleTypeDef * ) (  __uartConfig[dev]->uart);
+    UART_HandleTypeDef *uart= (UART_HandleTypeDef * ) (  __uartConfig[dev]->dev);
 
 
 
@@ -219,14 +219,14 @@ void  JHAL_uartEnableReceiveIT( JHAL_UART *uart  )
 {
 
 
-    __uartConfig[uart->dev]->rxConfig.__info.start = false;
-    __uartConfig[uart->dev]->rxConfig.__info.dataCount=0;
-    __uartConfig[uart->dev]->rxConfig.__info.end=false;
-    __uartConfig[uart->dev]->rxConfig.__info.itEN=true;
+    __uartConfig[uart->id]->rxConfig.__info.start = false;
+    __uartConfig[uart->id]->rxConfig.__info.dataCount=0;
+    __uartConfig[uart->id]->rxConfig.__info.end=false;
+    __uartConfig[uart->id]->rxConfig.__info.itEN=true;
 
 
 
-    __JHAL_uartEnableReceiveIT(uart->dev);
+    __JHAL_uartEnableReceiveIT(uart->id);
 }
 
 
@@ -347,7 +347,7 @@ bool  JHAL_uartClose(JHAL_UART *juart)
 
         JHAL_uartAbortReceiveIT(juart);
 
-        HAL_UART_DeInit( (UART_HandleTypeDef * ) (  __uartConfig[juart->dev]->uart));
+        HAL_UART_DeInit( (UART_HandleTypeDef * ) (  __uartConfig[juart->id]->dev));
 
 
         juart->__info.isOpen =false;
@@ -369,7 +369,7 @@ bool JHAL_uartSendDatas(JHAL_UART *juart,u8* data,u16  length,JHAL_CRC_Mode mode
 {
 
 
-    bool receiveITEN=     __uartConfig[  juart->dev]->rxConfig.__info.itEN ;
+    bool receiveITEN=     __uartConfig[  juart->id]->rxConfig.__info.itEN ;
 
     if(receiveITEN)
     {
@@ -379,7 +379,7 @@ bool JHAL_uartSendDatas(JHAL_UART *juart,u8* data,u16  length,JHAL_CRC_Mode mode
 
     JHAL_crcAutoWirte( mode,data, length);
 
-    UART_HandleTypeDef *uart= (UART_HandleTypeDef * ) (  __uartConfig[juart->dev]->uart);
+    UART_HandleTypeDef *uart= (UART_HandleTypeDef * ) (  __uartConfig[juart->id]->dev);
 
     uint16_t i=0;
     while(uart->gState != HAL_UART_STATE_READY )
@@ -413,8 +413,8 @@ bool JHAL_uartSendDatas(JHAL_UART *juart,u8* data,u16  length,JHAL_CRC_Mode mode
 
 u16 JHAL_uartRxFinsh(JHAL_UART *juart) {
 
-    if(    __uartConfig[  juart->dev]->rxConfig.__info.end) {
-        return __uartConfig[  juart->dev]->rxConfig.__info.dataCount;
+    if(    __uartConfig[  juart->id]->rxConfig.__info.end) {
+        return __uartConfig[  juart->id]->rxConfig.__info.dataCount;
     }
     return 0;
 }

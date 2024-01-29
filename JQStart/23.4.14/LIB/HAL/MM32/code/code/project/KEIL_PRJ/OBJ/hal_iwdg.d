@@ -1,0 +1,10 @@
+.\obj\hal_iwdg.o: ..\DEVICE\MM32F0010\HAL_Lib\Src\hal_iwdg.c
+.\obj\hal_iwdg.o: ..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_iwdg.h
+.\obj\hal_iwdg.o: ..\DEVICE\MM32F0010\Include\types.h
+.\obj\hal_iwdg.o: H:\AYY\Keil\ARM\ARMCC\Bin\..\include\stdint.h
+.\obj\hal_iwdg.o: H:\AYY\Keil\ARM\ARMCC\Bin\..\include\stdbool.h
+.\obj\hal_iwdg.o: ..\DEVICE\MM32F0010\Include\reg_iwdg.h
+.\obj\hal_iwdg.o: ..\DEVICE\MM32F0010\Include\reg_common.h
+.\obj\hal_iwdg.o: ..\DEVICE\CMSIS\KEIL_Core\core_cm0.h
+.\obj\hal_iwdg.o: ..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h
+.\obj\hal_iwdg.o: ..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h

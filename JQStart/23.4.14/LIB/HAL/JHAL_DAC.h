@@ -29,6 +29,10 @@ extern "C" {
     JHAL_DAC_ReferSoure;
 
 
+
+
+
+
     typedef struct
     {   //电压系数计算
         float calculationCoefficient;
@@ -40,12 +44,14 @@ extern "C" {
 
     typedef struct
     {
-        u8 dev:3;
+        u8 id:3;
+        u8 *channels;
+        u8 channelsNumber;
+
         JHAL_DAC_ReferSoure vref;
-
-
         float vrefVoltageValue;
         __JHAL_DACOtherInfo __other;
+        void *dev;
     } JHAL_DAC;
 
 
@@ -55,9 +61,9 @@ extern "C" {
 
     bool  JHAL_dacCloase(JHAL_DAC *dac  );
 
-    void JHAL_dacSetVoltage (JHAL_DAC *dac,float voltage);
+    void JHAL_dacSetVoltage (JHAL_DAC *dac,u8 channelIndex,float voltage);
 
-    void JHAL_dacSetDA(JHAL_DAC *dac,u16 da );
+    void JHAL_dacSetDA(JHAL_DAC *dac,u8 channelIndex,u16 da );
 
 
 #ifdef CplusPlus

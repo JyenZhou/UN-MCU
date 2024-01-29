@@ -52,7 +52,7 @@ extern "C" {
         filterRxIDList：只接受指定数据帧ID发来的数据的数组
         filterRxIDNumber： 过滤帧的长度*/
     typedef struct {
-        u8 dev:3;
+        u8 id:3;
         JHAL_CANBaudRate baudRate;
         u32  *filterRxIDList;
         u8 filterRxIDNumber;

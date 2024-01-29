@@ -82,6 +82,7 @@ bool __ads1115GetAD(ADS1115  *config, int32 *conv_data )
 {
     /*指向ADS1115指针寄存器用于准备读取数据*/
     uint8_t	readbuff[2];
+	   u32 timeoutCount=0X7FFFFF ;
 
 //通过OS寄存器判断是否转化完成 可以防止延时带来的不准 主要是兼容sgm58031 使用1115给定的延时不够
 
@@ -97,6 +98,10 @@ bool __ads1115GetAD(ADS1115  *config, int32 *conv_data )
         {
             break;
         }
+				if(timeoutCount--==0)
+				{
+					return false ;
+				}
  
     }
 

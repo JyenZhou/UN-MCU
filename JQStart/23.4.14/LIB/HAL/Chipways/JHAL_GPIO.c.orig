@@ -16,7 +16,7 @@
 //GPIO定义的转换
 u8 __JHAL_jio2io(JHAL_IO_Port port,u8 pin)
 {
-    return  port*8+pin;
+    return  (port-1)*8+pin;
 }
 
 
@@ -40,32 +40,35 @@ void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,JHAL_IO_MODE mode)
 {
     if((u8)mode<(u8)JHAL_IO_PP)
     {
+			
         GPIO_SetPinDir(__JHAL_jio2io(port,pin),GPIO_Direction_Input);
 
         if(mode!= JHAL_IO_IN )
         {
             SIM_SCGC_Cmd(SIM_SCGC_IRQ,ENABLE);   //IRQ时钟使能
             //手册247页
-            SIM_PINSEL_IRQ(port/2);	//映射第4组引脚 PTGx + PTHx  IRQ_PS_GROUP4
+            SIM_PINSEL_IRQ((u8)(port/2));	//映射第4组引脚 PTGx + PTHx  IRQ_PS_GROUP4
 
 
             NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
             NVIC_InitTypeDef NVIC_InitStruct;
-            NVIC_InitStruct.NVIC_IRQChannel = EXTI0_IRQn+pin;
+            NVIC_InitStruct.NVIC_IRQChannel = EXTI0_IRQn+((port%2)*8)+pin;
             NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
             NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 2;
             NVIC_InitStruct.NVIC_IRQChannelSubPriority = 2;
             NVIC_Init(&NVIC_InitStruct); //中断-》处理函数
 
+			
             IRQ_InitTypeDef IRQ_InitStruct;
-					IRQ_InitStruct.IRQ_EdgeSelect = JHAL_IO_IN_EXTI_RET==mode? IRQ_Riseedge_Highlevel:IRQ_Falledge_Lowlevel;
+            IRQ_InitStruct.IRQ_EdgeSelect = JHAL_IO_IN_EXTI_RET==mode? IRQ_Riseedge_Highlevel:IRQ_Falledge_Lowlevel;
             IRQ_InitStruct.IRQ_ModeSelect = IRQ_Detect_Edge;
-					//define  EXTI0                 0                     /*!< 外部中断通道0. */
-            IRQ_Init(IRQ, pin, &IRQ_InitStruct); //中断触发设置  下降沿
-            IRQ_PinEnableCmd(IRQ, pin, ENABLE); //引脚使能
-            IRQ_InterruptEn(IRQ, pin, ENABLE);//中断使能
-            IRQ_PullDevDisableCmd(IRQ,pin,ENABLE);
+            //define  EXTI0                 0                     < 外部中断通道0.
+            IRQ_Init(IRQ,((port%2)*8)+ pin, &IRQ_InitStruct); //中断触发设置  下降沿
+            IRQ_PinEnableCmd(IRQ, ((port%2)*8)+pin, ENABLE); //引脚使能
+            IRQ_InterruptEn(IRQ, ((port%2)*8)+pin, ENABLE);//中断使能
+            IRQ_PullDevDisableCmd(IRQ,((port%2)*8)+pin,ENABLE);
         }
+		
 
     } else if((u8)mode<(u8)JHAL_IO_OD)
     {
@@ -87,11 +90,7 @@ OS_WEAK void JHAL_gpioInterruptCallback()
 
 }
 
-OS_WEAK void JHAL_gpio4IRKeyInterruptCallback()
-{
-
-}
-
+ 
 /**
  * @brief  中断函数
  */
@@ -106,6 +105,7 @@ void EXTI0_IRQHandler(void)
     }
 
 }
+
 void EXTI1_IRQHandler(void)
 {
     if(IRQ_GetFlag(IRQ, EXTI1))
@@ -285,4 +285,7 @@ void EXTI15_IRQHandler(void)
     }
 
 }
+
+
+
 

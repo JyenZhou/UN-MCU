@@ -38,11 +38,11 @@ bool isSingleConversion;
 
 
 
-bool  SHT3xOpen( SHT3x  *config);
+bool  sht3xOpen( SHT3x  *config);
 
 //mdianNumbe 中位数个数
 //true读取成功 false 读取失败
-bool SHT3xGet (SHT3x  *config, float *  temperature,float * humidity );
+bool sht3xGet (SHT3x  *config, float *  temperature,float * humidity );
 
 
 

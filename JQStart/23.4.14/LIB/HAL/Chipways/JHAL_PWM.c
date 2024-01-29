@@ -24,14 +24,14 @@
 
 
 
-void __JHAL_jpwm2ftm(u8 dev,FTM_Type **FTMx, u8 *chX)
+void __JHAL_jpwm2ftm(u8 id,FTM_Type **FTMx, u8 *chX)
 {
-    if( dev==0)
+    if( id==0)
     {
         *FTMx=FTM1;
         *chX=3;
     }
-    if( dev==1)
+    if( id==1)
     {
         *FTMx=FTM0;
         *chX=1;
@@ -47,10 +47,10 @@ void __JHAL_jpwm2ftm(u8 dev,FTM_Type **FTMx, u8 *chX)
 }
 
 //PWM触发AD采集的接口
-u8 __JHAL_jpwm2adcTriggerSoureValue(u8 dev)
+u8 __JHAL_jpwm2adcTriggerSoureValue(u8 id)
 {
 
-    if( dev==0 )
+    if( id==0 )
     {
         return ADC_HT_FTM0CH1MAP;
     } else {
@@ -71,7 +71,7 @@ void __JHAL_pwmOpen(JHAL_PWM  *config )
 {
     FTM_Type * FTMx;
     u8 chX;
-    __JHAL_jpwm2ftm(config ->dev ,&FTMx,&chX);
+    __JHAL_jpwm2ftm(config ->id ,&FTMx,&chX);
     FTM_InitTypeDef FTM_InitStructure;
     if(config->frequency==JHAL_PWM_750HZ)
     {
@@ -93,7 +93,7 @@ void __JHAL_pwmOpen(JHAL_PWM  *config )
         {
             SIM_SCGC1_Cmd(SIM_SCGC1_FTM0F, ENABLE);
         }
-        if(config->dev==1)
+        if(config->id==1)
         {
             SIM_PINSEL_FTM0CH1(FTM0CH1_PS_PTB3);
         }
@@ -109,7 +109,7 @@ void __JHAL_pwmOpen(JHAL_PWM  *config )
         {
             SIM_SCGC1_Cmd(SIM_SCGC1_FTM1F, ENABLE);
         }
-        if(config->dev==0)
+        if(config->id==0)
         {
             SIM_PINSEL_FTM1CH3(FTM1CH3_PS_PTE3);
         }
@@ -117,9 +117,9 @@ void __JHAL_pwmOpen(JHAL_PWM  *config )
     FTM_WriteProtectDisable(FTMx);
     FTM_CenterAlignedPWMInit(FTMx, chX, FTM_PWM_HIGHTRUEPULSE);
     FTM_ChannelIntCmd(FTMx,chX,DISABLE);
-    FTM_SetChannelValue(FTMx,chX,   config->initialValue);
+    FTM_SetChannelValue(FTMx,chX,   config->channels->initialValue);
     FTM_SetCountInitValue(FTMx,0);
-    FTM_SetModValue(FTMx, config->maxValue);
+    FTM_SetModValue(FTMx, config->channels->maxValue);
     FTM_OverflowITCmd(FTMx,DISABLE);
     FTM_Init(FTMx,&FTM_InitStructure);
     FTM_SetChnTriggerCmd(FTMx, chX,  ENABLE);
@@ -155,7 +155,7 @@ bool JHAL_pwmOpen(JHAL_PWM *config   )
 
 
 //设置初始值大于最大值
-        while(config->initialValue>config->maxValue);
+        while(config->channels->initialValue>config->channels->maxValue);
         __JHAL_pwmOpen( config);
 			  
 			return  config-> __info.isOpen=true; 
@@ -167,7 +167,7 @@ bool  JHAL_pwmClose(JHAL_PWM * pwm) {
     if(pwm-> __info.isOpen) {
         FTM_Type *FTMx;
         u8 chX;
-        __JHAL_jpwm2ftm(pwm->dev,&FTMx,&chX);
+        __JHAL_jpwm2ftm(pwm->id,&FTMx,&chX);
 
         if(FTMx == FTM0)
         {
@@ -198,11 +198,11 @@ return true;
 
 
 
-void JHAL_pwmSetValue(JHAL_PWM *pwm,u16 value)
+    void JHAL_pwmSetValue(JHAL_PWM *pwm,u8 channelIndex,u16 value)
 {
     FTM_Type *FTMx;
     u8 chX;
-    __JHAL_jpwm2ftm(pwm->dev,&FTMx,&chX);
+    __JHAL_jpwm2ftm(pwm->id,&FTMx,&chX);
 
 
     FTM_SetChannelValue(FTMx,chX,  value);

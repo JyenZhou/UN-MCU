@@ -5,9 +5,12 @@
 CUBEMX 配置
 TIMER
 1.Clock Source->internal clock  时钟源选择
+//参数-Count Setting
 2.Prescaler 预分频器值0-65535 72M晶振用7199对应100us记数一次
 3.Counter Period   计数器周期  与上面一起配合使用1000次正好是 1s中断一次 (有自己做的工具)
-4.勾选中断 update interrupt  
+4. auto-reload preload (自动重装载 使能)
+//中断
+5.勾选中断 update interrupt  
  
 *                                                                     *
   *                                                                 *
@@ -17,7 +20,7 @@ TIMER
  
 #include "../JHAL_Timer.h"
 
-
+#ifdef HAL_TIM_MODULE_ENABLED
 
 
 TIM_TypeDef* __JHAL_dev2timerInstance(u8 dev)
@@ -60,8 +63,9 @@ TIM_TypeDef* __JHAL_dev2timerInstance(u8 dev)
     else {
 
 //不存在或未实现
-        while(true);
-
+       
+      JHAL_Fault_Handler("__JHAL_dev2timerInstance");
+   return TIM1;
     }
 }
  
@@ -110,8 +114,8 @@ u8 __JHAL_timerInstance2dev (TIM_TypeDef*  instance )
 
     else {
 
-//不存在或未实现
-        while(true);
+   JHAL_Fault_Handler("__JHAL_timerInstance2dev");
+   return 0;
 
     }
 }
@@ -121,7 +125,7 @@ u8 __JHAL_timerInstance2dev (TIM_TypeDef*  instance )
  
  bool JHAL_timerOpen(JHAL_Timer *timer ) 
 {
-	HAL_TIM_Base_Start_IT( (TIM_HandleTypeDef *)(timer->timer));
+	HAL_TIM_Base_Start_IT( (TIM_HandleTypeDef *)(timer->dev));
 	return true;
 } 
 
@@ -139,4 +143,4 @@ u8 __JHAL_timerInstance2dev (TIM_TypeDef*  instance )
 	 JHAL_timerInterruptCallBack(__JHAL_timerInstance2dev(htim->Instance));
  }
 
- 
+ #endif

@@ -19,7 +19,7 @@ extern "C" {
 
     typedef enum
     {
-        JHAL_IO_NoSet=0,
+        JHAL_IO_NONE=0,
         JHAL_IOA,
         JHAL_IOB,
         JHAL_IOC,
@@ -31,27 +31,60 @@ extern "C" {
         JHAL_IOI,
     } JHAL_IO_Port;
 
+
+
     typedef enum
     {
-        /*!< 输入模式*/
-        JHAL_IO_IN=0,
-	  	 
-        //中断输入下降沿触发 Falling Edge Trigger
-        JHAL_IO_IN_EXTI_FET,
-        //上升沿Rising Edge Trigger
-        JHAL_IO_IN_EXTI_RET,
-        //上升下降都触发
-        JHAL_IO_IN_EXTI_FET_RET,
-        /*!< 推挽输出模式*/
-        JHAL_IO_PP,
-			  JHAL_IO_PP_UP,
-			  JHAL_IO_PP_DOWN,
-        /*!开漏输出模式 上拉/下拉*/
-        JHAL_IO_OD,
-        JHAL_IO_OD_UP,
-        JHAL_IO_OD_DOWN,
+        JHAL_IOMODE_PullResistor_None=0x00000U,
+        JHAL_IOMODE_PullResistor_Up=0x10000U,
+        JHAL_IOMODE_PullResistor_Down=0x20000U,
+        __JHAL_IOMODE_PullResistor_Mask=0xF0000U
 
-    } JHAL_IO_MODE;
+    } JHAL_IOMODE_PullResistor;
+
+    typedef enum
+    {
+        JHAL_IOMODE_IO_Input=0x0000U,
+        JHAL_IOMODE_IO_OutputPushPull  =0x1000U,
+        JHAL_IOMODE_IO_OutputDrain =0x2000U,
+        __JHAL_IOMODE_IO_Mask=0xF000U
+    } JHAL_IOMODE_IO;
+
+    typedef enum
+    {
+        //不使能
+        JHAL_IOMODE_EXTI_Trigger_High_None=0x000,
+        //高电平、上升沿
+        JHAL_IOMODE_EXTI_Trigger_High_Rising=0x100U,
+        JHAL_IOMODE_EXTI_Trigger_Low_Falling=0x200U,
+        JHAL_IOMODE_EXTI_Trigger_HightLow_Rising_Falling=0x300U,
+        __JHAL_IOMODE_EXTI_Trigger_Mask=0xF00U
+    } JHAL_IOMODE_EXTI_Trigger;
+
+    typedef enum
+    {
+        //边沿触发
+        JHAL_IOMODE_EXTI_TriggerMode_Edge=0x00U,
+        //高低电平触发
+        JHAL_IOMODE_EXTI_TriggerMode_Levle=0x10U,
+        JHAL_IOMODE_EXTI_TriggerMode_All=0x20U,
+        __JHAL_IOMODE_EXTI_TriggerMode_Mask=0xF0U
+    } JHAL_IOMODE_EXTI_TriggerMode;
+
+
+    typedef enum
+    {
+        JHAL_IOMODE_Speed_High=0U,
+        JHAL_IOMODE_Speed_Low=0x01U,
+        JHAL_IOMODE_Speed_Medium=0X02U,
+        JHAL_IOMODE_Speed_VeryHigh=0x03U,
+        __JHAL_IOMODE_Speed_Mask=0x0FU
+    } JHAL_IOMODE_Speed;
+
+//预设的下拉中断输入
+#define JHAL_IOMODE_Preset_Exit_High_Rising  (JHAL_IOMODE_EXTI_Trigger_High_Rising|JHAL_IOMODE_PullResistor_Down)
+//预设的上拉中断输入
+#define JHAL_IOMODE_Preset_Exit_Low_Falling  (JHAL_IOMODE_EXTI_Trigger_Low_Falling|JHAL_IOMODE_PullResistor_Up)
 
 
 
@@ -59,15 +92,16 @@ extern "C" {
     bool  JHAL_gpioReadPin(JHAL_IO_Port port,u8 pin);
 //设置IO状态  true高阻态/电平 false低电平
     void  JHAL_gpioWitePin(JHAL_IO_Port port,u8 pin,bool level);
-//模式设置
-    void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,JHAL_IO_MODE mode);
+//通过MODE相关枚举|进来
+    void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,u32 mode);
+
 //IO翻转  输出模式下生效
     void  JHAL_gpioTogglePin(JHAL_IO_Port port,u8 pin);
 
     void JHAL_gpioInterruptCallback(void);
     void JHAL_gpio4IRKeyInterruptCallback(void);
 
-  
+
     u8  JHAL_pin2jpin ( u16 pin );
 
 

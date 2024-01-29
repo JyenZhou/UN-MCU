@@ -7,7 +7,6 @@ extern "C" {
  
 
 
-//JHAL_delayOpen((JHAL_Delay){NULL});
 
     /*通用外设驱动API*/
 #include  "HAL/JHAL_Delay.h"

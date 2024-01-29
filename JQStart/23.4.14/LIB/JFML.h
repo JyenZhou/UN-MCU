@@ -11,6 +11,10 @@ extern "C" {
 #include "xxddq-1.2.3.h"
 #endif
 
+
+
+ #include "FML/Key/JHAL_IRKeyListeningTask.h"
+
 #include "FML/ADPD188BI/adpdDrv.h"
 #if defined GasUtil4ICRA_GasSensorNumber
 #include "FML/GAS/GasUtil4ICRA.h"
@@ -24,11 +28,14 @@ extern "C" {
 
 #include "FML/ADC/ADS111x/ADS1115.h"
 #include "FML/ADC/ADS111x/ADS1110.h"
-
+//²ÊµÆ RGB LED
+ #include "FML/LED/XL5050RGBC/XL5050RGBC_WS2812B.h"
+ //¶ÏÂëÆÁ
+  #include "FML/Display/HT1621/HT1621.h"
  
 /*ÎÂÊª¶È*/
 #include "FML/THTB/NTC/NTC.h"
-#include "FML/THTB/SHTxx/SHT3x.h"
+#include "FML/THTB/SHTxx/sht3x.h"
  
 
 #ifdef PT100_MAX31865_EN

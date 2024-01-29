@@ -28,7 +28,7 @@ extern "C" {
 
 
     typedef struct {
-        u8 dev:3;
+        u8 id:3;
         JHAL_TimeUnits itTimeUnit;
 //itTimeValue 中断时间值 0-1000
         u16 itTimeValue;

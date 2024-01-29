@@ -1,0 +1,10 @@
+.\obj\hal_ver.o: ..\DEVICE\MM32F0010\HAL_Lib\Src\hal_ver.c
+.\obj\hal_ver.o: ..\DEVICE\MM32F0010\HAL_Lib\Inc\hal_ver.h
+.\obj\hal_ver.o: ..\DEVICE\MM32F0010\Include\reg_common.h
+.\obj\hal_ver.o: H:\AYY\Keil\ARM\ARMCC\Bin\..\include\stdint.h
+.\obj\hal_ver.o: H:\AYY\Keil\ARM\ARMCC\Bin\..\include\stdbool.h
+.\obj\hal_ver.o: ..\DEVICE\MM32F0010\Include\types.h
+.\obj\hal_ver.o: ..\DEVICE\CMSIS\KEIL_Core\core_cm0.h
+.\obj\hal_ver.o: ..\DEVICE\CMSIS\KEIL_Core\cmsis_compiler.h
+.\obj\hal_ver.o: ..\DEVICE\CMSIS\KEIL_Core\cmsis_armcc.h
+.\obj\hal_ver.o: ..\DEVICE\MM32F0010\Include\reg_dbg.h

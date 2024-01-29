@@ -95,9 +95,9 @@ extern "C" {
 
 
 
-  // packed本来是为了防止不同编译器下导致对齐方式不一致影响加解码和占用字节不一样 后面考到还有mcu大小端不一样  与上位机发来的固定包不一致  就取消memcpy手动加解包了
-		//考虑到这个变量不常用 packed 就留下以空间节省为主 
-     typedef struct  __attribute__((packed))
+    // packed本来是为了防止不同编译器下导致对齐方式不一致影响加解码和占用字节不一样 后面考到还有mcu大小端不一样  与上位机发来的固定包不一致  就取消memcpy手动加解包了
+    //考虑到这个变量不常用 packed 就留下以空间节省为主
+    typedef struct  __attribute__((packed))
     {
 
         u16 productID  : 15;
@@ -120,8 +120,8 @@ extern "C" {
         //设置boot初始状态
         JHAL_BootStatus bootStatus;
         u16	productID:15;
-        u8  canDev :3;
-        u8  uartDev:3;
+        u8  canId :3;
+        u8  uartId:3;
         bool canIsExtendFrame:1;
         JHAL_CANBaudRate canBaudRate;
 

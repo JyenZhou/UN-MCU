@@ -37,7 +37,7 @@ GPIO_TypeDef * __JHAL_jport2port(JHAL_IO_Port port )
 #endif
     else {
 
-       JHAL_Fault_Handler();
+       JHAL_Fault_Handler("__JHAL_jport2port");
 			return  GPIOA;
     }
 
@@ -66,7 +66,8 @@ JHAL_IO_Port __JHAL_port2jport(GPIO_TypeDef * port ) {
 #endif
     else {
 
-        while(1);
+      JHAL_Fault_Handler("__JHAL_port2jport");
+			return JHAL_IOA;
     }
 
 
@@ -106,7 +107,7 @@ void  JHAL_gpioWitePin(JHAL_IO_Port port,u8 pin,bool level)
     HAL_GPIO_WritePin(__JHAL_jport2port(port ),__JHAL_jpin2pin(pin),(GPIO_PinState)level);
 }
 //gpio模式设置  0输入 1输出 2开漏
-void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,JHAL_IO_MODE mode)
+void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,u32 mode)
 {
 
     GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -116,47 +117,32 @@ void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,JHAL_IO_MODE mode)
     GPIO_InitStruct.Pull = GPIO_NOPULL;
 
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+ 
+		
+   
 
-    if(JHAL_IO_IN==mode ) {
-        GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-
-    } else if(JHAL_IO_IN_EXTI_FET==mode) {
+		if(mode|JHAL_IOMODE_EXTI_Trigger_Low_Falling==JHAL_IOMODE_EXTI_Trigger_Low_Falling) {
         GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
 
-    } else if(JHAL_IO_IN_EXTI_RET==mode) {
+    } else if(JHAL_IOMODE_EXTI_Trigger_High_Rising|mode==JHAL_IOMODE_EXTI_Trigger_High_Rising) {
 
         GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-    } else if(JHAL_IO_IN_EXTI_FET_RET==mode) {
+    } else if(JHAL_IOMODE_EXTI_Trigger_HightLow_Rising_Falling|mode==JHAL_IOMODE_EXTI_Trigger_HightLow_Rising_Falling) {
         GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
 
-    } else if(JHAL_IO_PP==mode) {
+    } else if(mode|JHAL_IOMODE_IO_Input ==JHAL_IOMODE_IO_Input ) {
+        GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+
+    } else if(mode|JHAL_IOMODE_IO_OutputPushPull==JHAL_IOMODE_IO_OutputPushPull) {
         GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 
-    } else if(JHAL_IO_PP_UP==mode) {
-			  GPIO_InitStruct.Pull =GPIO_PULLUP;
-        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    }  
+		else if(mode|JHAL_IOMODE_IO_OutputDrain==JHAL_IOMODE_IO_OutputDrain) {
 
-    } else if(JHAL_IO_PP_DOWN==mode) {
-			  GPIO_InitStruct.Pull =GPIO_PULLDOWN;
-        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-
-    } 
+        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+    }  
 		
-		else if(JHAL_IO_OD==mode) {
-
-        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
-    } else if(JHAL_IO_OD_UP==mode) {
-        GPIO_InitStruct.Pull =GPIO_PULLUP;
-        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
-
-    } else if(JHAL_IO_OD_DOWN==mode) {
-
-        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
-        GPIO_InitStruct.Pull =GPIO_PULLDOWN;
-    }
-
-
-
+	  GPIO_InitStruct.Pull =(	__JHAL_IOMODE_PullResistor_Mask&mode)/JHAL_IOMODE_PullResistor_Up;
     HAL_GPIO_Init(__JHAL_jport2port(port ), &GPIO_InitStruct);
 
 }
@@ -166,14 +152,6 @@ void  JHAL_gpioTogglePin(JHAL_IO_Port port,u8 pin)
     HAL_GPIO_TogglePin(__JHAL_jport2port(port ),__JHAL_jpin2pin(pin));
 }
 
-OS_WEAK void JHAL_gpioInterruptCallback()
-{
 
-}
-
-OS_WEAK void JHAL_gpio4IRKeyInterruptCallback()
-{
-
-}
 
 

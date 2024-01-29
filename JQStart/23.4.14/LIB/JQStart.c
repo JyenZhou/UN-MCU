@@ -258,7 +258,7 @@ ADC
 #include "Util/zdmalloc.c"
 #include "SystemSelfTest.c"
 
- #include "HAL/JHAL_SoftwareIIC.c"
+#include "HAL/JHAL_SoftwareIIC.c"
 
 
 // XL6600A402L6 Flash 128K  RAM16K
@@ -281,10 +281,7 @@ ADC
 #include "HAL/Chipways/JHAL_WDG.c"
 
 
-void JHAL_systemReset()
-{
-    NVIC_SystemReset();
-}
+ 
 u32 JHAL_uidGetHigh()
 {
     return 0;
@@ -317,10 +314,6 @@ u32 JHAL_uidGetLow()
 #ifdef USE_HAL_DRIVER
 
 
-void JHAL_systemReset()
-{
-    NVIC_SystemReset();
-}
 
 
 #include  "HAL/STM32/JHAL_ADC.c"
@@ -332,7 +325,38 @@ void JHAL_systemReset()
 #include  "HAL/STM32/JHAL_Flash.c"
 #include  "HAL/STM32/JHAL_Wdg.c"
 #include  "HAL/STM32/JHAL_Timer.c"
+#include  "HAL/STM32/JHAL_PWM.c"
 #endif
+
+
+#ifdef USE_STDPERIPH_DRIVER
+
+#include  "HAL/MM32/Manufacturer/hal_rcc.c"
+#include  "HAL/MM32/Manufacturer/hal_dbg.c"
+#include  "HAL/MM32/Manufacturer/hal_flash.c"
+#include  "HAL/MM32/Manufacturer/hal_exti.c"
+#include  "HAL/MM32/Manufacturer/hal_crc.c"
+#include  "HAL/MM32/Manufacturer/hal_adc.c"
+#include  "HAL/MM32/Manufacturer/hal_gpio.c"
+#include  "HAL/MM32/Manufacturer/hal_iwdg.c"
+#include  "HAL/MM32/Manufacturer/hal_misc.c"
+#include  "HAL/MM32/Manufacturer/hal_pwr.c"
+#include  "HAL/MM32/Manufacturer/hal_spi.c"
+#include  "HAL/MM32/Manufacturer/hal_uid.c"
+#include  "HAL/MM32/Manufacturer/hal_usart.c"
+#include  "HAL/MM32/Manufacturer/hal_tim.c"
+#include  "HAL/MM32/Manufacturer/hal_i2c.c"
+
+#include  "HAL/MM32/JHAL_Delay.c"
+#include  "HAL/MM32/JHAL_GPIO.c"
+#include  "HAL/MM32/JHAL_ADC.c"
+#include "HAL/MM32/JHAL_Timer.c"
+#include  "HAL/MM32/JHAL_Flash.c"
+
+
+
+#endif
+
 
 
 
@@ -344,8 +368,8 @@ void JHAL_systemReset()
 
 #include "HAL/JHAL_BootLoader.c"
 
-
-
+//通用的独立按键状态检查逻辑 纯软件 
+#include "FML/Key/JHAL_IRKeyListeningTask.c"
 
 
 #ifdef ADPD_IIC_ID
@@ -358,14 +382,18 @@ void JHAL_systemReset()
 #include "FML/THTB/NTC/NTC.c"
 #include "FML/THTB/SHTxx/SHT3x.c"
 
+//彩灯 RGB led
+#include "FML/LED/XL5050RGBC/XL5050RGBC_WS2812B.c"
+//断码屏
+#include "FML/Display/HT1621/HT1621.c"
+
+
 #ifdef GasUtil4ICRA_GasSensorNumber
 #include "FML/GAS/GasUtil4ICRA.c"
 #endif
 #ifdef GasUtil4ICRA2_GasSensorNumber
 #include "FML/GAS/GasUtil4ICRA2.c"
 #endif
-
-
 
 
 
@@ -396,26 +424,9 @@ volatile u64 jsystemMs=0;
 
 
 
+ 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 /** ----------------------------JHAL_autoInit-----------------------------------
   * 描述：累计的一些通用的可能必要的自初始化 不受外设和MCU影响
   *
@@ -425,12 +436,16 @@ volatile u64 jsystemMs=0;
   * 返回值:无
   * 注:无
   *-----------------------------Jyen-2022-11-22-------------------------------------- */
-
 OS_BEFORE_MAIN_EXE void __JHAL_selfInit()
 {
     __JHAL_systemSelfTest();
+	 
 }
 
+ 
+ 
+
+ 
 /*------------------Jyen--------------------------Jyen-----------------------
 ******************************************************************************
 *@ 函数功能或简介: 封装的调度器启动， 同时通用的初始化自动初始化
@@ -662,6 +677,103 @@ void JQStart()
 
 }
 
+
+#ifdef FlashStartAddr
+
+//flash按也存的 我的数据就也按照页来 从最后一页起存
+u32 __JHAL_flashPage2Addr(u16 page)
+{
+
+    //flash大小超出
+    while(page>(FlashMaxSize/FlashPageSize)||page==0);
+
+    return	FlashEndAddr-page*FlashPageSize;
+}
+
+
+
+/*写falsh
+startAddr 起始地址
+data 可以是结构体
+size  数据大小多少个字节(u8)
+isbefoErase 是否在写入前擦除 需要注意擦除是整页擦除 有些MCU需要是扇区首地址才能擦除
+length 数据长度  注意后面若接着写需要注意被覆盖假设前面用的长度是1-3  后面都要是从4（32位对齐）+4从（crc）即从8开始
+重试次数10  错误后返回false
+ */
+
+bool JHAL_flashWirte(u32 page,void *data,u16 length)
+{
+    u8 missionsRetriedCount=10;
+    JHAL_disableInterrupts();
+    do
+    {
+        //CRC占用1个   //暂时只支持一页操作
+        while((length+8>FlashPageSize));
+        u32 startAddr=__JHAL_flashPage2Addr(page);
+        if(!JHAL_flashErasePage(startAddr,startAddr+length+8))
+        {
+            continue;
+        }
+        u32  flashCrc=JHAL_crc(JHAL_CRC_Mode_16_Modbus,data, length);
+        if(!JHAL_flashWriteNByte(startAddr,(u8*)&flashCrc,8))
+        {
+            continue;
+        }
+        if(!JHAL_flashWriteNByte(startAddr+8,data,length))
+        {
+            continue;
+        }
+
+        if(flashCrc!=JHAL_crc(JHAL_CRC_Mode_16_Modbus,(u8 *)startAddr+8, length))
+        {
+            continue;
+        }
+        break;
+    } while(--missionsRetriedCount!=0);
+    JHAL_enableInterrupts();
+    if(missionsRetriedCount>0)
+    {
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
+
+
+//默认通过指针直接读 方便兼容不同单片机
+
+bool JHAL_flashRead(u32 page,void *data,u16 length)
+{
+    //CRC占用1个
+    while((length+8>FlashPageSize));
+    u32 startAddr=__JHAL_flashPage2Addr(page);
+    u32  flashCrc=*((u32 *)startAddr);
+    startAddr+=8;
+
+    uint16 crc= JHAL_crc(JHAL_CRC_Mode_16_Modbus,(u8 *)startAddr,length);
+    if(flashCrc ==crc)
+    {
+        for(u16 i=0; i<length; i++)
+        {
+            ((u8*)data)[i]= *((u8 *)startAddr++);
+        }
+
+        return true;
+    } else {
+        return false;
+
+    }
+}
+
+
+
+#endif
+
+ 
+
+ OS_WEAK UpdateDateTime
 void  JHAL_disableInterrupts()
 {
     __disable_irq();
@@ -678,18 +790,36 @@ void  JHAL_enableInterrupts()
 *程序跑飞后会进入该方法
 */
 
-void JHAL_Fault_Handler(void)
+void JHAL_Fault_Handler(char  * msg)
 {
-
-#ifdef USE_HAL_DRIVER
+   char   debugMsg [50];
+ 
+	memcpy(debugMsg,msg,sizeof(debugMsg));
+	 
+ 
+	    //__ARM_ARCH_7M__ Cortex-M3内核，__ARM_ARCH_7EM__表示ARM Cortex-M4和Cortex-M7处理器架构
+#if (defined __ARM_ARCH_7M__) ||(defined __ARM_ARCH_7EM__)
     if (CoreDebug->DHCSR & 1)    //check C_DEBUGEN == 1 -> Debugger Connected
     {
         __breakpoint(0);  // halt program execution here
+			return;
     }
-
-#endif
-    JHAL_systemReset();
+#else
+	u32 timeout=0x7FFFFF;
+while(--timeout!=0)
+{
+if(timeout==0x7FFFFF)
+{
+	return;
 }
+}	
+	  JHAL_systemReset();
+#endif
+ 
+  
+}
+
+
 
 
 
@@ -704,6 +834,16 @@ void uid2string(char* string,int buffSize )
  
 }
 
+
+
+void JHAL_systemReset()
+{
+	#if defined(__ARMCC_VERSION)  
+    NVIC_SystemReset();
+#endif
+
+ 
+}
 
 
 

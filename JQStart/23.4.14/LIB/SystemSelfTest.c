@@ -140,7 +140,9 @@ void __JHAL_instructionTest()
 
 #ifndef  NO_JSystemSelfTest
     // ÷∏¡Ó≤‚ ‘ ß∞‹
-    while(ret!=0u);
+    if(ret!=0u){
+		JHAL_Fault_Handler("NO_JSystemSelfTest");
+		}
 #endif		
 
 }

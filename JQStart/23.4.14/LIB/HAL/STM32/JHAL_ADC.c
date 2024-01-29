@@ -5,9 +5,9 @@
  *                                                                   *
 *                                                                     *
 
-CUBEMX 配置
+CUBEMX 配置  注意stm32中默认启用了verf  需要把最后一个通道配置成这个引脚或使用JHAL_ADC_ReferVoltage_NONE
 ADC
-1.number of Conversion 选择要连续转换的通道数与这儿.h一致(为了兼容这里的程序 只有一个的话 可以加个温度或基准通道 剩下的不用管)
+1.number of Conversion 选择要连续转换的通道数与这儿.h一致(为了兼容这里的连续程序 只有一个的话 可以加个温度或基准通道 剩下的不用管)
 2.continuos Conversion mode ->ENABLE 使能连续转换模式
 3.扫描转换   需要使能
 3.配置转换通道数Rank
@@ -28,8 +28,7 @@ DMA
    *                                                              *
 *********@作者*Jyen******************@作者*Jyen***********************@作者*Jyen********************/
 #ifdef HAL_ADC_MODULE_ENABLED
-extern ADC_HandleTypeDef hadc1;
-extern DMA_HandleTypeDef hdma_adc1;
+ 
 //对于12位的ADC，3.3V的ADC值为0xfff,温度为25度时对应的电压值为1.43V即0x6EE
 
 #define VREFINT 1.2f
@@ -39,21 +38,7 @@ extern DMA_HandleTypeDef hdma_adc1;
 
 
 
-
-
-ADC_HandleTypeDef* __JHAL_jadc2adc(u8 dev)
-{
-    if(dev==0)
-    {
-
-        return &hadc1;
-    } else {
-//不存在或未实现
-        while(true);
-    }
-}
-
-
+ 
 
 
 
@@ -81,7 +66,7 @@ void  __JHAL_adcUpdateVoltageCalculationCoefficient( JHAL_ADC *adc)
         adc->__info.calculationCoefficient=adc->vrefVoltageValue/4095;
         break;
     case	JHAL_ADC_ReferVoltage_NONE:
-        adc->__info.calculationCoefficient=1;
+        adc->__info.calculationCoefficient=3.3f/4096;
         break;
     }
 
@@ -117,7 +102,7 @@ bool  JHAL_adcOpen(JHAL_ADC *adc )
         while(true)  ;
     }
 
-    ADC_HandleTypeDef*  hadc=__JHAL_jadc2adc(  adc->dev);
+    ADC_HandleTypeDef*  hadc=   (ADC_HandleTypeDef *)adc->dev ;
 #ifndef STM32F407xx
     HAL_ADCEx_Calibration_Start(hadc);
 #endif

@@ -48,7 +48,7 @@ JHAL_ADCValue __JHAL_adcAqcSingleCollector(JHAL_ADC* adc,u8 adc_channel)
     uint32_t t_adcBuffer[  adc->samplingCount]  ;
     for(uint16_t t_count = 0; t_count <  adc->samplingCount; t_count++)
     {
-        t_adcValue =__JHAL_adcAqcSingle(   __JHAL_id2adc( adc->dev) ,adc->channelsNumber);
+        t_adcValue =__JHAL_adcAqcSingle(   __JHAL_id2adc( adc->id) ,adc_channel);
         t_adcBuffer[t_count] = t_adcValue;
         if(t_adcValue==0)
         {
@@ -115,7 +115,11 @@ bool  JHAL_adcOpen(JHAL_ADC *jadc )
    if(   !jadc->__info.isOpen ) 
 	 {
 		 jadc->__info.isOpen=true;
-        ADC_Type* adc=__JHAL_id2adc(jadc->dev);
+		 if(jadc->samplingCount==0)
+		 {
+			 jadc->samplingCount=5;
+		 }
+        ADC_Type* adc=__JHAL_id2adc(jadc->id);
         JHAL_delayOpen(*(JHAL_Delay  *)NULL);
         ADC_InitTypeDef ADC_InitStruct= {0};
         ADC_FIFOTypeDef ADC_FIFOStruct= {0};
@@ -182,7 +186,7 @@ bool JHAL_adcClose(JHAL_ADC *jadc)
 	 {
 	 
 	
-        ADC_DeInit(__JHAL_id2adc(jadc->dev));
+        ADC_DeInit(__JHAL_id2adc(jadc->id));
      
 		 jadc->__info.isOpen=false ;
     return true; 
@@ -190,10 +194,13 @@ bool JHAL_adcClose(JHAL_ADC *jadc)
 	 return false; 
 }
 
-JHAL_ADCInfo JHAL_adcAqcSingle(JHAL_ADC *jadc,u8 adc_channel)
-{   ADC_Type* adc=__JHAL_id2adc(jadc->dev);
+JHAL_ADCInfo JHAL_adcAqcSingle(JHAL_ADC *jadc,u8 channelIndex)
+{  
+	 ADC_Type* adc=__JHAL_id2adc(jadc->id);
+	
+	
     JHAL_ADCInfo adcInfo= {0};
-    adcInfo.adcValue=__JHAL_adcAqcSingleCollector(jadc,adc_channel);
+    adcInfo.adcValue=__JHAL_adcAqcSingleCollector(jadc, jadc->channels[channelIndex]);
     adcInfo.minVoltage=adcInfo.adcValue.minAD*jadc->__info.calculationCoefficient;
     adcInfo.voltage=adcInfo.adcValue.ad*jadc->__info.calculationCoefficient;
     adcInfo.maxVoltage=adcInfo.adcValue.maxAD*jadc->__info.calculationCoefficient;
@@ -202,7 +209,7 @@ JHAL_ADCInfo JHAL_adcAqcSingle(JHAL_ADC *jadc,u8 adc_channel)
 
 bool  JHAL_adcAqcMultiple (JHAL_ADC *jadc )
 {
-    ADC_Type* adc=__JHAL_id2adc(jadc->dev);
+    ADC_Type* adc=__JHAL_id2adc(jadc->id);
 
 
     if(!ADC_GetFlagStatus(adc, ADC_FLAG_CONV_FINISH))

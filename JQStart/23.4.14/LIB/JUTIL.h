@@ -34,11 +34,25 @@ extern "C" {
 
 
 #endif
-//全局变量时候可以不用初始化这个  局部变量以防万一必须要
+
+
+#ifdef  USE_STDPERIPH_DRIVER
+#include "HAL/MM32/Manufacturer/hal_conf.h"
+#include "HAL/MM32/Manufacturer/mm32_device.h"
+
+
+ 
+#endif
+
+//全局变量时候可以不用初始化这个  局部变量/默认是打开的必须要  内部实现时尽量默认关闭
 #define  JHAL_DEV_INIT         .__info.isOpen=false
+#define  JHAL_DEV_DEINIT         .__info.isOpen=true
 
 
+ void JHAL_getDateTimeString( char dateStr[12], char timeStr[9]);
 
+ #define UpdateDateTime void JHAL_getDateTimeString( char dateStr[12], char timeStr[9]){strncpy(dateStr, __DATE__, 12 - 1);dateStr[12 - 1] = '\0';strncpy(timeStr, __TIME__, 9 - 1); timeStr[9 - 1] = '\0';}
+ 
 
     u32 JHAL_uidGetHigh(void);
     u32 JHAL_uidGetMiddle(void);
@@ -49,7 +63,7 @@ extern "C" {
     void JHAL_systemReset(void);
 
 
-   void JHAL_Fault_Handler(void);
+   void JHAL_Fault_Handler(char  * msg);
 
     void  JHAL_enableInterrupts(void);
     void  JHAL_disableInterrupts(void);

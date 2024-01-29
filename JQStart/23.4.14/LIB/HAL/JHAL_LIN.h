@@ -84,7 +84,7 @@ extern "C" {
 
 
     typedef struct {
-        u8 dev:3;
+        u8 id:3;
         uint32_t baudRate;
         JHAL_LIN_RXConfig rxConfig;
 

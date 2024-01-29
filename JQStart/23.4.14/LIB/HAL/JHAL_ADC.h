@@ -27,10 +27,12 @@ extern "C" {
     } JHAL_ADCValue;
     typedef struct
     {
-        double maxVoltage;
-        double minVoltage;
+        //最大最小值是多次采集时用到
         double voltage;
         JHAL_ADCValue adcValue;
+
+        double maxVoltage;
+        double minVoltage;
     } JHAL_ADCInfo;
 
 //映射的基准源
@@ -38,6 +40,7 @@ extern "C" {
         JHAL_ADC_ReferVoltage_BandGap,
         JHAL_ADC_ReferVoltage_VDD,
         JHAL_ADC_ReferVoltage_Vref,
+        //不是用以上的基准源
         JHAL_ADC_ReferVoltage_NONE
     }
     JHAL_ADC_ReferSoure;
@@ -58,19 +61,7 @@ extern "C" {
 
     } __JHAL_ADCOtherInfo;
 
-#ifdef  	XL6600A402L6
-    // ADC_CHANNEL_TEMPSENSOR;    /*!< ADC输入通道内部温度传感器 FF*/
-#define JHAL_ADC_CHANNEL_TEMPSENSOR 0x16
-    //ADC_CHANNEL_BANDGAP ;  /*!< ADC采样基准电压 */
-#define JHAL_ADC_CHANNEL_BANDGAP       0x17
-//ADC_CHANNEL_VSS  ;    /*!< ADC输入通道VSS */
-#define JHAL_ADC_CHANNEL_VSS           0x1a
-//     		ADC_CHANNEL_VREFH   ;    /*!< ADC输入通道Vrefh */
-#define JHAL_ADC_CHANNEL_VREFH  0x1d
-//		ADC_CHANNEL_VREFL;    /*!< ADC输入通道Vrefl */
-#define JHAL_ADC_CHANNEL_VREFL      0x1e
-#define JHAL_ADC_CHANNEL_VREF      JHAL_ADC_CHANNEL_VREFH
-#endif
+
     typedef enum
     {
         //去极值平均滤波  也就是说最少需要3个以上的值才会被平均
@@ -83,10 +74,10 @@ extern "C" {
 
     typedef struct
     {
-        u8 dev :3;
+        u8 id :3;
 //是否是多通道模式
         bool isMultichannelMode:1;
-        //通道数量  t如果使用bangdgap温度这个也要算上
+        //通道数量  如果使用bangdgap、温度这个也要算上
         u8 channelsNumber:4;
 
         //这里是泛型传进来的与JHAL外设枚举一致 使用软件时无须配置该值
@@ -97,7 +88,7 @@ extern "C" {
 //多通道模式下AD接收缓冲区
         JHAL_ADCInfo* adcInfosBuff;
 
-//adc通道数组中的值0-0xff 带隙基准及温度等常见内部通道用 JHAL_ADC_CHANNEL_XXX 表示
+//考虑到通道不仅有数值还有温度,及获取电压时业务分离，  这里传进来的直接是厂家定义的通道  内部不做转换
         u8* channels;
 
         JHAL_ADC_ReferSoure vref;
@@ -110,6 +101,8 @@ extern "C" {
 
 
         __JHAL_ADCOtherInfo __info;
+
+        void *dev;
     } JHAL_ADC;
 
 
@@ -122,8 +115,8 @@ extern "C" {
     vrefValue 参考电压的值
     */
     bool  JHAL_adcOpen(  JHAL_ADC *adc);
-//单通道单次采集  返回值ADC码值
-    JHAL_ADCInfo  JHAL_adcAqcSingle(JHAL_ADC *adc,u8 channel);
+//单通道单次采集
+    JHAL_ADCInfo  JHAL_adcAqcSingle(JHAL_ADC *adc,u8 channelIndex);
 //判断多通道转化是否完成 完成则接收到缓冲区并开启下次转化  实际接收数据在初始化的 dataBuff
     bool  JHAL_adcAqcMultiple (JHAL_ADC *adc);
 

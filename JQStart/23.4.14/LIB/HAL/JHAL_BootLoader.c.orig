@@ -1,11 +1,28 @@
-
+/**
+  ****************************JHAL_BootLoader.c******************************************
+  * @brief     使用时需要保证每次编译宏定义函数 UpdateDateTime 才会正确更新时间版本信息
+  * 
+    ******************************************************************************
+  * @file     JHAL_BootLoader.c
+  * @author   Jyen
+  * @version  v1.0
+  * @date     2024-01-17 
+  * @attention
+  * This software is supplied under the terms of a license
+  * agreement or non-disclosure agreement.
+  * Passing on and copying of this document,and communication
+  * of its contents is not permitted without prior written
+  * authorization.
+  *
+  *         (C) Copyright 2024,Jyen,China. All Rights Reserved
+  ********************************************************************************
+  */
+  
 
 #include "JHAL_BootLoader.h"
 
 
-
-
-#ifndef __UART_Number
+#ifndef __JHAL_Uart_Exist
 
 
 
@@ -236,7 +253,7 @@ void   __JHAL_bootUpdating(JHAL_BootInfo bootInfo,bool isUpdateApp)
 
         if(bootInfo. bootStatus==BootStatus_Update4Uart) {
 
-            __boot_uartConfig.dev=bootInfo.uartDev;
+            __boot_uartConfig.id=bootInfo.uartId;
             __boot_uartConfig.baudRate=bootInfo.uartBaudRate;
             JHAL_UART_RXConfig rxConfig;
             //定义8个长度是为了方便兼容can还节省空间
@@ -422,10 +439,14 @@ void __JHAL_versionsEncode( uint8_t *data, __JHAL_VersionsInfo *versions )
   * @注:无
   *-----------------------------Jyen-2023-09-14-------------------------------------- */
 
-void __JHAL_versionsCreatInfo(__JHAL_VersionsInfo  *versions, u16 productID,bool isApp  )
+  void __JHAL_versionsCreatInfo(__JHAL_VersionsInfo  *versions, u16 productID,bool isApp  )
 {
-    const char* dateStr = __DATE__;
-    const char* timeStr = __TIME__;
+	
+	 char dateStr[12] ;
+   char timeStr[9] ;
+	
+ JHAL_getDateTimeString(dateStr,timeStr);
+
 
     versions->year = GET_YEAR_2Bit(dateStr);
     versions->month = GET_MONTH(dateStr);
@@ -559,10 +580,10 @@ void JHAL_bootParseUpdateInfo4App( u8 *data,u8 productID,JHAL_BootStatus bootSta
     __JHAL_VersionsInfo remoteVersions;
     __JHAL_VersionsInfo localversions;
 
- if(!   __JHAL_versionsDecode(&remoteVersions,data ))
- {
-	    return;
- }
+    if(!   __JHAL_versionsDecode(&remoteVersions,data ))
+    {
+        return;
+    }
 
     if(remoteVersions.productID!=productID)
     {

@@ -27,14 +27,14 @@ extern "C" {
 
     typedef struct {
 
-        u8 dev;
+        u8 id;
 //中断的时间单位
         JHAL_TimeUnits itTimeUnit;
 //itTimeValue 中断时间值 0-1000
         u16 itTimeValue;
         __JHAL_Timer_therInfo __info;
-			//			如果内部使用了这个变量一定要先赋值
-        void*  timer;
+        //			如果内部使用了这个变量一定要先赋值
+        void*  dev;
     } JHAL_Timer;
 
 
@@ -50,7 +50,7 @@ extern "C" {
     **			 config: [输入/出]
       *
       * 返回值:无
-      *
+      *  JHAL_timerOpen(( JHAL_Timer *) NULL);
      **/
     /* -----------------------------Jyen-2022-11-07-------------------------------------- */
 
