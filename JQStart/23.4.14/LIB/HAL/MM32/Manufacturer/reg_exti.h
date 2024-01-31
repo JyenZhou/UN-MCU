@@ -38,7 +38,7 @@
 #define __REG_EXTI_H
 
 /* Files includes ------------------------------------------------------------*/
-#include  "./CMSIS_Creo/core_cm0.h"
+#include  "core_cm0.h"
 
 
 #ifdef __cplusplus

@@ -101,9 +101,11 @@ extern "C" {
     void JHAL_gpioInterruptCallback(void);
     void JHAL_gpio4IRKeyInterruptCallback(void);
 
-
-    u8  JHAL_pin2jpin ( u16 pin );
-
+//当使用自动生成工具时才会用的到
+    JHAL_IO_Port JHAL_gpioPort2jport(void * port );
+    u8  JHAL_gpioPin2jpin ( u16 pin );
+		//适用于端口和pin定义在一起的那种
+    void JHAL_gpioIo2jio(void * io,JHAL_IO_Port *port,u8 *pin);
 
 
 #ifdef CplusPlus

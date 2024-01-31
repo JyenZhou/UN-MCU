@@ -1,3 +1,4 @@
+#include "JFML.h"
 /**
   ****************************JQStart.c******************************************
 
@@ -216,11 +217,10 @@ LR_IROM1 0x00000000  0x00020000  {    ; load region size_region
   }
   }
 
-bootLoder时候只要修改上面的就行了  使用外部sc Target修改无效的 为了好看可以同步 另外下载中不需要修改了不然还会影响芯片识别
+bootLoder时候只要修改上面的就行了  使用外部sct Target中修改无效的 为了好看可以同步 另外下载中不需要修改了不然还会影响芯片识别
 
 考虑到hex存在bug影响bin文件 后面都用自己的上位机解析hex
 生成BIN文件指令  魔术棒->user->after build 勾选Run1后面填写
-
 fromelf.exe --bin --bincombined --bincombined_padding=1,0xff --output !L.bin !L
 
 
@@ -244,9 +244,19 @@ ADC
 
 
 
-#include "JFML.h"
+
+#ifdef  TC04
+
+#include "HAL/TC/Manufacturer/TC04/system_tc04xx.c"
+#include "HAL/TC/Manufacturer/TC04/tc04xx_uart.c"
+#include "HAL/TC/Manufacturer/TC04/tc04xx_debug.c"
+#include "HAL/TC/Manufacturer/TC04/tc04xx_delay.c"
+#include "HAL/TC/Manufacturer/TC04/tc04xx_gpio.c"
 
 
+#include "HAL/TC/JHAL_GPIO.c"
+#include "HAL/TC/JHAL_Delay.c"
+#endif
 
 
 
@@ -254,7 +264,7 @@ ADC
 #include "Util/JHAL_CRC.c"
 #include "Util/JHAL_Math.c"
 #include "Util/JHAL_NumberConverter.c"
-
+#include "Util/FontLib/jfontLib.c"
 #include "Util/zdmalloc.c"
 #include "SystemSelfTest.c"
 
@@ -330,7 +340,13 @@ u32 JHAL_uidGetLow()
 
 
 #ifdef USE_STDPERIPH_DRIVER
+#ifdef MM32G0001
+#include  "HAL/MM32/Manufacturer/system_mm32g0001.c"
+#else
 
+#error 未知的芯片型号
+
+#endif
 #include  "HAL/MM32/Manufacturer/hal_rcc.c"
 #include  "HAL/MM32/Manufacturer/hal_dbg.c"
 #include  "HAL/MM32/Manufacturer/hal_flash.c"
@@ -384,9 +400,12 @@ u32 JHAL_uidGetLow()
 
 //彩灯 RGB led
 #include "FML/LED/XL5050RGBC/XL5050RGBC_WS2812B.c"
-//断码屏
+//断码屏驱动
 #include "FML/Display/HT1621/HT1621.c"
+//OLED-0.96/0.91寸驱动
+//#include "FML/Display/SSD1306/SSD1306.c"
 
+ 
 
 #ifdef GasUtil4ICRA_GasSensorNumber
 #include "FML/GAS/GasUtil4ICRA.c"
@@ -394,11 +413,6 @@ u32 JHAL_uidGetLow()
 #ifdef GasUtil4ICRA2_GasSensorNumber
 #include "FML/GAS/GasUtil4ICRA2.c"
 #endif
-
-
-
-
-
 
 
 
@@ -532,10 +546,7 @@ void JQStart()
 #ifdef LCD12864_M
     mInitLCD();
 #endif
-    /*OLED0.96寸的液晶屏初始化*/
-#ifdef OLED_96
-    OLED_Init();//OLED初始化
-#endif
+
 #ifdef S4_74HC595
     S4_74HC595_init();
 #endif

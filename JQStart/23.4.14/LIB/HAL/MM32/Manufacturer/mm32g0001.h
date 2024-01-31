@@ -133,7 +133,7 @@ typedef enum IRQn {
     USART1_IRQn                         = 27,                                   /*!< USART1 Interrupt */
     USART2_IRQn                         = 28,                                   /*!< USART2 Interrupt */
 } IRQn_Type;
-#include  "./CMSIS_Creo/core_cm0.h"
+#include  "core_cm0.h"
 #include <stdint.h>
 #include <stdbool.h>
 

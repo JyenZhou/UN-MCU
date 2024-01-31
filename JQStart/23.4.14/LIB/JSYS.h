@@ -3,7 +3,8 @@
 #ifdef __CplusPlus
 extern "C" {
 #endif
-
+//将厂家的放在最前面是为了产生重复定义好处理
+#include <manufacturer.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
@@ -206,12 +207,21 @@ extern "C" {
 #define  M2Ohm M2KOhm*K2Ohm
 
 
-//这样定义的好处能够自动进行类型匹配()不能少不然会被拆分造成第一个a与别的地方运算了
-#define max(a,b) (a>b?a:b)
-#define min(a,b) (a<b?a:b)
 
-#define	 max3(a,b,c)		((c>b&&c>a)?c:(a>b)?a:b)
-#define  min3(a,b,c)    ((c<a&&c<b)?c:(a<b)?a:b)
+
+//这样定义的好处能够自动进行类型匹配()不能少不然会被拆分造成第一个a与别的地方运算了
+#ifdef 		min
+		#undef min
+#endif		
+		
+#ifdef 		max
+		#undef max
+#endif		
+
+#define min( a, b )  ((a) < (b) ? (a) : (b))
+#define max( a, b )  ((a) > (b) ? (a) : (b))
+#define	 max3(a,b,c)		(((c)>(b)&&(c)>(a))?(c):((a)>(b))?(a):(b))
+#define  min3(a,b,c)    (((c)<(a)&&(c)<(b))?(c):((a)<(b))?(a):(b))
 
 
     typedef enum {

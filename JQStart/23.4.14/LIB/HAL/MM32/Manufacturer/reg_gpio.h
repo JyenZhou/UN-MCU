@@ -32,7 +32,7 @@
 #define __REG_GPIO_H
 
 /* Files includes ------------------------------------------------------------*/
-#include  "./CMSIS_Creo/core_cm0.h"
+#include  "core_cm0.h"
 
 
 #ifdef __cplusplus

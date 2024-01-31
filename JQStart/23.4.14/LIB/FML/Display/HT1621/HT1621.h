@@ -22,8 +22,8 @@ typedef struct
 
 
 
-void ht1621ShowBits(HT1621 *dev,u8 segment,u8 offsetBitAddr,u8 bits,u8 bitLength);
-void ht1621ShowBytes(HT1621 *dev,u8 startSegment,u8 *data,u8 length);
+void ht1621DisplayBits(HT1621 *dev,u8 segment,u8 offsetBitAddr,u8 bits,u8 bitLength);
+void ht1621DisplayBytes(HT1621 *dev,u8 startSegment,u8 *data,u8 length);
 void ht1621Open(HT1621 *dev);
 void ht1621ClearScreen (HT1621 *dev,bool level );
 void ht1621BuzzerConter (HT1621 *dev,bool isOpen );

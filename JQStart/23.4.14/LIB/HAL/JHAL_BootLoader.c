@@ -314,7 +314,7 @@ void   __JHAL_bootUpdating(JHAL_BootInfo bootInfo,bool isUpdateApp)
                 //FlashPageSize 最后一页是要存boot信息的
                 if(isUpdateApp?appHexSize> FlashEndAddr-JHAL_BOOT_BootStartAddr-FlashPageSize:appHexSize>JHAL_BOOT_BootMaxSize)
                 {
-                    __JHAL_bootAppUpdateResponse( bootInfo,BootResponse_SetSizeFailure4SizeOut,isUpdateApp?JHAL_flashGetEndAddr()-FlashPageSize-JHAL_BOOT_BootStartAddr:JHAL_BOOT_BootMaxSize);
+                    __JHAL_bootAppUpdateResponse( bootInfo,BootResponse_SetSizeFailure4SizeOut,isUpdateApp?FlashEndAddr-FlashPageSize-JHAL_BOOT_BootStartAddr:JHAL_BOOT_BootMaxSize);
                     break;
                 }
                 if(isUpdateApp?JHAL_flashErasePage(JHAL_BOOT_AppStartAddr,JHAL_BOOT_AppStartAddr+appHexSize):JHAL_flashErasePage(JHAL_BOOT_BootStartAddr,JHAL_BOOT_BootStartAddr+appHexSize))

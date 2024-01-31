@@ -79,7 +79,7 @@ u16 __JHAL_jpin2pin ( u8 pin )
 
 
 }
-u8  JHAL_pin2jpin ( u16 pin )
+u8  JHAL_gpioPin2jpin ( u16 pin )
 {
 
     int position = 0;

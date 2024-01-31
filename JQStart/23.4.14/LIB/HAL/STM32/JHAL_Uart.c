@@ -17,7 +17,7 @@
 
 #define __UART_Number  3
 
-
+#define __JHAL_Uart_Exist
 
 
 
