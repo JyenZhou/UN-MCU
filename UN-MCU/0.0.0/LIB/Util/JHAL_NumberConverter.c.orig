@@ -1,0 +1,233 @@
+/**
+  ****************************JHAL_NumberConverter.c******************************************
+  * @brief     各类数值转换
+  *
+    ******************************************************************************
+  * @file     JHAL_NumberConverter.c
+  * @author   Jyen
+  * @version  v1.0
+  * @date     2022-11-22 
+  * @attention 笔记：定义成数组形的可以strcat拼接 char* 的不能调用strcat拼接 
+  * This software is supplied under the terms of a license
+  * agreement or non-disclosure agreement.
+  * Passing on and copying of this document,and communication
+  * of its contents is not permitted without prior written
+  * authorization.
+  *
+  *         (C) Copyright 2022,Jyen,China. All Rights Reserved
+  ********************************************************************************
+  */
+  #include "JHAL_NumberConverter.h"
+#include <string.h>
+#include <ctype.h>
+/*去除字符串中所有空格*/
+void JHAL_stringRemoveBlank(char *ch)
+{
+    char *c;//指向字符串的字符处
+    while (*ch != ' ')
+    {
+        if (*ch == '\0')
+        {
+            //字符串中没有空格,直接返回
+            return;
+        }
+        ch++;
+    }//将blank指针指向第一个空格位置
+    //让c指针指向出现空格后的第一个字符串
+    c = ch + 1;
+    while (*c == ' ')
+    {
+        c++;
+    }
+    while (*c != '\0')
+    {
+        if (*c != ' ')
+        {
+            //将空格换为后面出现的字符，换过去的字符置为空格
+            *ch = *c;
+            *c = ' ';
+            ch++;
+        }
+        c++;
+    }
+    *ch = '\0';
+    return;
+}
+/** ----------------------------JHAL_hexString2Number----------------------------------- 
+  * @描述：int型字符串转int有atoi函数 但是16进制的却没有
+  *
+  * @参数：
+**	  	 str: [输入16进制字符串："A8FF"] 
+  *
+  * @返回值:无
+  * @注:空格已自动去除
+  *-----------------------------Jyen-2022-11-22-------------------------------------- */
+
+int JHAL_hexString2Number( char * str)
+{
+    //用于录入16进制的MAC地址
+    int value = 0;
+    int sign = 1;
+    int radix = 16;
+
+    if(*str == '-')
+    {
+        sign = -1;
+        str++;
+    }
+JHAL_stringRemoveBlank(str);
+    while(*str)
+    {
+        if(radix == 16)
+        {
+            if(*str >= '0' && *str <= '9')
+                value = value * radix + *str - '0';
+            //0到9的字符串
+            else if(*str >= 'A' && *str <= 'F')
+                value = value * radix + *str - 'A' + 10;
+            //大写十六进制的ABCDEF的字符串的情况
+            else if(*str >= 'a' && *str <= 'f')
+                value = value * radix + *str - 'a' + 10;
+            // 小写十六进制的abcdef的字符串的情况
+            else
+                return -1; //不是16进制不符合MAC地址的格式
+        }
+        else
+            value = value * radix + *str - '0';
+        str++;
+    }
+    return sign*value;
+}
+
+
+
+uint8_t string2hex(const uint8_t p_nNum)
+{
+    uint8_t dst;
+    if (p_nNum < 10)
+    {
+        dst = p_nNum + '0';//或者 +0x30
+    }
+    else
+    {
+        dst = p_nNum -10 +'A';//或者 +55 
+    }
+    return dst;
+}
+
+
+
+/*去除字符串首尾空格*/
+char * JHAL_stringRemoveBlank_SE(char *str)//去除首尾的空格
+{
+    char *end,*sp,*ep;
+    int len;
+    sp = str;
+    end = str + strlen(str) - 1;
+    ep = end;
+
+    while(sp<=end &&  *sp == ' ')// isspace(*ep)也可以
+        sp++;
+    while(ep>=sp && *sp == ' ')
+        ep--;
+    len = (ep < sp) ? 0:(ep-sp)+1;//(ep < sp)判断是否整行都是空格
+    sp[len] = '\0';
+    return sp;
+}
+
+
+//字节流转换为十六进制字符串
+
+void JHAL_hex2String( const char *sSrc,  char *sDest, int nSrcLen )
+{
+    int  i;
+    char szTmp[3];
+
+    for( i = 0; i < nSrcLen; i++ )
+    {
+        sprintf( szTmp, "%02X", (unsigned char) sSrc[i] );
+        memcpy( &sDest[i * 2], szTmp, 2 );
+    }
+    return ;
+}
+
+
+
+
+
+
+
+
+
+
+/*浮点数转成4个字节 src源数据，要存放出来的数组，从哪个位置开始存 */
+void JHAL_float2Byte(float src,uint8_t* outByteBuff,int startIndex)
+{
+    uint8_t byteBuff[4]= {0};
+    *(float*)byteBuff=src;
+    for(uint8 i=0; i<4; i++)
+    {
+        outByteBuff[startIndex+i]=byteBuff[i];
+    }
+
+}
+
+/*4个字节转化成浮点数   src存在源数据的数组，startIndex 开始地址*/
+float JHAL_byte2Float(uint8_t* src,int startIndex )
+{
+    uint8_t byteBuff[4]= {0};
+    for(uint8 i=0; i<4; i++)
+    {
+        byteBuff[i]=src[startIndex+i];
+    }
+
+
+    return *(float*)(uint8_t*)byteBuff;
+}
+
+
+//
+/** ----------------------------JHAL_number2PowerExponent----------------------------------- 
+  * @描述：将一个数转化成幂指数形式   设置系数范围最大值  设置固定底数 返回幂指数
+  *
+  * @参数：
+**	  	 value: [要转化的值]
+**	  	 itemMaxValue: [系数范围最大值]
+**			 base: [固定底数] 
+  *
+  * @返回值:幂指数
+  * @注:无
+  *-----------------------------Jyen-2022-11-22-------------------------------------- */
+                                   
+/** ----------------------------JHAL_u32ToPowerExponent----------------------------------- 
+  * @描述： 将一个U32数转化成幂指数形式   设置系数范围最大值  设置固定底数 返回幂指数
+  *
+  * @参数：
+**	  	 value: 要转化的值
+**			 itemMaxValue: 系数的最大值
+**			 base: 设置底数
+**			 *item: [输出]  系数
+**			 *powerExponent: [输出] 指数
+  *
+  * @返回值:无
+  * @注:无
+  *-----------------------------Jyen-2022-11-22-------------------------------------- */
+
+int JHAL_u32ToPowerExponent( u32 value, u32 itemMaxValue, u32 base,u32 *item ,u32 *powerExponent)
+{
+ *item=value;
+ *powerExponent=0;
+while( value>(itemMaxValue*pow(base,*powerExponent)) >0)
+{
+*powerExponent++;
+}
+if(*powerExponent!=0)
+{
+*powerExponent=value-(itemMaxValue*pow(base,*powerExponent));
+}
+   
+}
+
+
+
+

@@ -1,0 +1,137 @@
+/*************Jyen*************************Jyen********************Jyen***********************Jyen********************
+   *                                                                *
+ *                                                                   *
+*
+ 		ADC默认通用HAL驱动
+  使用ADC0 若增加不同型号单片机 需要在该平台对应.c中增加相关引脚映射
+*                                                                     *
+  *                                                                 *
+   *                                                              *
+*********Jyen******************Jyen************************Jyen*****************************************/
+#ifndef __JHAL_ADC__H__
+#define  __JHAL_ADC__H__
+
+#ifdef __CplusPlus
+extern "C" {
+#endif
+
+#include "JUTIL.h"
+
+
+
+    typedef struct
+    {
+        int32 maxAD;
+        int32 minAD;
+        int32 ad;
+    } JHAL_ADCValue;
+    typedef struct
+    {
+        //最大最小值是多次采集时用到
+        double voltage;
+        JHAL_ADCValue adcValue;
+
+        double maxVoltage;
+        double minVoltage;
+    } JHAL_ADCInfo;
+
+//映射的基准源
+    typedef enum {
+        JHAL_ADC_ReferVoltage_BandGap,
+        JHAL_ADC_ReferVoltage_VDD,
+        JHAL_ADC_ReferVoltage_Vref,
+        //不是用以上的基准源
+        JHAL_ADC_ReferVoltage_NONE
+    }
+    JHAL_ADC_ReferSoure;
+    /*ADC触发源*/
+    typedef enum {
+        JHAL_ADCTriggerSoure_Software,
+        JHAL_ADC_ReferVoltage_PWM,
+    } JHAL_ADCTriggerSoure;
+
+
+    typedef struct
+    {   //电压系数计算
+        float calculationCoefficient;
+        //dma连续读取时可能存在的转存值
+        void  *convertedValue ;
+
+        bool isOpen : 1;
+
+    } __JHAL_ADCOtherInfo;
+
+
+    typedef enum
+    {
+        //去极值平均滤波  也就是说最少需要3个以上的值才会被平均
+        JHAL_FilteredModel_DeExtremalAverage,
+        //中值滤波
+        JHAL_FilteredModel_Median
+    } JHAL_FilteredMode   ;
+
+    ;
+
+    typedef struct
+    {
+        u8 id :3;
+//是否是多通道模式
+        bool isMultichannelMode:1;
+        //通道数量  如果使用bangdgap、温度这个也要算上
+        u8 channelsNumber:4;
+
+        //这里是泛型传进来的与JHAL外设枚举一致 使用软件时无须配置该值
+        u8 triggerSoureValue:4;
+        //滤波用的采样次数  0代表不滤波
+        u8 samplingCount:4;
+
+//多通道模式下AD接收缓冲区
+        JHAL_ADCInfo* adcInfosBuff;
+
+//考虑到通道不仅有数值还有温度,及获取电压时业务分离，  这里传进来的直接是厂家定义的通道  内部不做转换
+        u8* channels;
+
+        JHAL_ADC_ReferSoure vref;
+//基准源满量程电压值
+        float vrefVoltageValue;
+        //ADC触发源
+        JHAL_ADCTriggerSoure triggerSoure ;
+        //滤波模式
+        JHAL_FilteredMode  filteredModel;
+
+
+        __JHAL_ADCOtherInfo __info;
+
+        void *dev;
+    } JHAL_ADC;
+
+
+
+    /*单通道单次采集模式初始化
+    isEN  true初始化  false反初始化
+    channel 对应通道的数组
+    length  要初始化通道的个数
+    JHAL_ADC_ReferVoltage 使用的参考电压
+    vrefValue 参考电压的值
+    */
+    bool  JHAL_adcOpen(  JHAL_ADC *adc);
+//单通道单次采集
+    JHAL_ADCInfo  JHAL_adcAqcSingle(JHAL_ADC *adc,u8 channelIndex);
+//判断多通道转化是否完成 完成则接收到缓冲区并开启下次转化  实际接收数据在初始化的 dataBuff
+    bool  JHAL_adcAqcMultiple (JHAL_ADC *adc);
+
+    bool  JHAL_adcClose(JHAL_ADC *adc  );
+
+#ifdef CplusPlus
+}
+#endif
+
+#endif
+
+
+
+
+
+
+
+

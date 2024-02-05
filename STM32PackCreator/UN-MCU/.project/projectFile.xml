@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<package schemaVersion="1.7.2" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="PACK.xsd">
+    <vendor>Jyen</vendor>
+    <name>UN-MCU::FROM_SCRATCH_GENERATED::NO_CUBE_RULES</name>
+    <description>UN-MCU</description>
+    <url/>
+    <license>H:/AYY/Keil/Packs/Jyen/UN-MCU/0.0.0/LICENSE.txt::LICENSE.txt</license>
+    <supportContact>https://gitee.com/JyenZhou/un-mcu/tree/unmcu</supportContact>
+    <releases>
+        <release date="2024-02-05" version="24.2.5">定期版本固定，防止影响旧项目</release>
+        <release date="2024-01-01" version="0.0.0">方便动态修改的版本</release>
+    </releases>
+    <taxonomy>
+        <description Cclass="JQstart">JQstart</description>
+    </taxonomy>
+    <components>
+        <component Cclass="JQstart" Cgroup="Qstart" Cversion="24.2.5" maxInstances="1">
+            <description>点击向上箭头改成1就能用了</description>
+            <files>
+                <file category="source" name="H:/AYY/Keil/Packs/Jyen/UN-MCU/0.0.0/JQStart.c::JQStart.c"/>
+                <file category="source" name="H:/AYY/Keil/Packs/Jyen/UN-MCU/0.0.0/JQStartEx.c::JQStartEx.c"/>
+                <file category="include" name="H:\AYY\Keil\Packs\Jyen\UN-MCU\0.0.0\LIB\::LIB\"/>
+            </files>
+        </component>
+    </components>
+</package>
