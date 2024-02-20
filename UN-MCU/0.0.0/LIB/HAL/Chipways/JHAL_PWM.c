@@ -1,12 +1,12 @@
 /**
   ****************************JHAL_PWM.c******************************************
-  * @brief     
+  * @brief
   *
     ******************************************************************************
   * @file     JHAL_PWM.c
   * @author   Jyen
   * @version  v1.0
-  * @date     2023-09-18 
+  * @date     2023-09-18
   * @attention
   * This software is supplied under the terms of a license
   * agreement or non-disclosure agreement.
@@ -17,7 +17,7 @@
   *         (C) Copyright 2023,Jyen,China. All Rights Reserved
   ********************************************************************************
   */
-  #include "../JHAL_PWM.h"
+#include "../JHAL_PWM.h"
 #include "xl_ftm.h"
 #include <xl_sim.h>
 
@@ -71,7 +71,7 @@ void __JHAL_pwmOpen(JHAL_PWM  *config )
 {
     FTM_Type * FTMx;
     u8 chX;
-    __JHAL_jpwm2ftm(config ->id ,&FTMx,&chX);
+    __JHAL_jpwm2ftm(config ->id,&FTMx,&chX);
     FTM_InitTypeDef FTM_InitStructure;
     if(config->frequency==JHAL_PWM_750HZ)
     {
@@ -127,7 +127,7 @@ void __JHAL_pwmOpen(JHAL_PWM  *config )
 
 }
 
- 
+
 
 /*
 JHAL_PWM0 ->  PTE3->FTM1_CH3
@@ -157,10 +157,10 @@ bool JHAL_pwmOpen(JHAL_PWM *config   )
 //设置初始值大于最大值
         while(config->channels->initialValue>config->channels->maxValue);
         __JHAL_pwmOpen( config);
-			  
-			return  config-> __info.isOpen=true; 
+
+        return  config-> __info.isOpen=true;
     }
-		return false;
+    return false;
 }
 
 bool  JHAL_pwmClose(JHAL_PWM * pwm) {
@@ -187,18 +187,18 @@ bool  JHAL_pwmClose(JHAL_PWM * pwm) {
             SIM_SCGC1_Cmd(SIM_SCGC1_FTM2F, DISABLE);
             SIM_SCGC_Cmd(SIM_SCGC_FTM2,DISABLE);
         }
-				
-				 pwm-> __info.isOpen=false;
-return true;
+
+        pwm-> __info.isOpen=false;
+        return true;
     }
-	return false;
+    return false;
 
 
 }
 
 
 
-    void JHAL_pwmSetValue(JHAL_PWM *pwm,u8 channelIndex,u16 value)
+void JHAL_pwmSetValue(JHAL_PWM *pwm,u8 channelIndex,u16 value)
 {
     FTM_Type *FTMx;
     u8 chX;

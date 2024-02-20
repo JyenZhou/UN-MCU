@@ -1,13 +1,22 @@
 #include "../JHAL_Uart.h"
 #if (  defined HAL_UART_MODULE_ENABLED ||defined HAL_USART_MODULE_ENABLED)
+
+
+
 /**
+
+
+
+
  //使用空闲中断 (JHAL_UART_ReceiveITMode_IT_DMA_IDLE)  还需要这样操作
 //1.cubemx中->DMA Seetings->add =rx     // 宽度等于byte mode=normal 如果用Circular模式还需要手动停止还会会导致粘包
 //2. nvic 全局中断开启
 
 
 
-
+波特率配置无效
+一般配置方法
+extern UART_HandleTypeDef huart1;
 
 
 */
@@ -15,15 +24,66 @@
 
 
 
-#define __UART_Number  3
+//将定义的加入记数
 
+#ifdef USART1
+#define __USART1_DEFINED 1
+#else
+#define __USART1_DEFINED 0
+#endif
+
+#ifdef USART2
+#define __USART2_DEFINED 1
+#else
+#define __USART2_DEFINED 0
+#endif
+
+#ifdef USART3
+#define __USART3_DEFINED 1
+#else
+#define __USART3_DEFINED 0
+#endif
+
+#ifdef USART4
+#define __USART4_DEFINED 1
+#else
+#define __USART4_DEFINED 0
+#endif
+
+#ifdef USART5
+#define __USART5_DEFINED 1
+#else
+#define __USART5_DEFINED 0
+#endif
+
+#ifdef USART6
+#define __USART6_DEFINED 1
+#else
+#define __USART6_DEFINED 0
+#endif
+
+#ifdef USART7
+#define __USART7_DEFINED 1
+#else
+#define __USART7_DEFINED 0
+#endif
+
+#ifdef USART8
+#define __USART8_DEFINED 1
+#else
+#define __USART8_DEFINED 0
+#endif
+
+
+#define __USART_COUNT COUNT_MACROS_CONST_VALUE(  __USART1_DEFINED, __USART2_DEFINED, __USART3_DEFINED, __USART4_DEFINED,  __USART5_DEFINED, __USART6_DEFINED, __USART7_DEFINED, __USART8_DEFINED)
+
+
+ 
 #define __JHAL_Uart_Exist
 
+static JHAL_UART*  __uartConfig[__USART_COUNT];
 
-
-static JHAL_UART*  __uartConfig[__UART_Number];
-
-static u8 __uartIsInit[__UART_Number];
+static u8 __uartIsInit[__USART_COUNT];
 
 
 
@@ -44,8 +104,8 @@ USART_TypeDef* __JHAL_dev2uartInstance(u8 dev)
 
     else {
 
-      JHAL_error("__JHAL_dev2uartInstance");
-			return USART1;
+        JHAL_error("__JHAL_dev2uartInstance");
+        return USART1;
 
     }
 }
@@ -71,8 +131,8 @@ u8 __JHAL_uartInstance2dev (USART_TypeDef*  instance )
 
     else {
 
-     JHAL_error("__JHAL_uartInstance2dev");
-			return 0;
+        JHAL_error("__JHAL_uartInstance2dev");
+        return 0;
 
     }
 }
@@ -197,17 +257,17 @@ void  __JHAL_uartEnableReceiveIT( u8 id )
 
     } else    if(__uartConfig[id]->rxConfig.receiveMode== JHAL_UART_ReceiveITMode_IT_DMA_IDLE)
     {
- 
-      HAL_StatusTypeDef  st=  HAL_UARTEx_ReceiveToIdle_DMA(uart, __uartConfig[id]->rxConfig.dataBuff,__uartConfig[id]->rxConfig.length); //开启串口空闲中断DMA接收数据
-		while(st!=HAL_OK)
-		{
-				    __JHAL_uartAbortReceiveIT(id);
-			 st=  HAL_UARTEx_ReceiveToIdle_DMA(uart, __uartConfig[id]->rxConfig.dataBuff,__uartConfig[id]->rxConfig.length); //开启串口空闲中断DMA接收数据
- 
-		}
+
+        HAL_StatusTypeDef  st=  HAL_UARTEx_ReceiveToIdle_DMA(uart, __uartConfig[id]->rxConfig.dataBuff,__uartConfig[id]->rxConfig.length); //开启串口空闲中断DMA接收数据
+        while(st!=HAL_OK)
+        {
+            __JHAL_uartAbortReceiveIT(id);
+            st=  HAL_UARTEx_ReceiveToIdle_DMA(uart, __uartConfig[id]->rxConfig.dataBuff,__uartConfig[id]->rxConfig.length); //开启串口空闲中断DMA接收数据
+
+        }
 
 
-	}
+    }
 }
 
 
@@ -379,7 +439,7 @@ bool JHAL_uartSendDatas(JHAL_UART *juart,u8* data,u16  length,JHAL_CRC_Mode mode
     UART_HandleTypeDef *uart= (UART_HandleTypeDef * ) (  __uartConfig[juart->id]->dev);
 
     uint16_t i=0;
-	 
+
     while(HAL_UART_Transmit(uart,data,length,0xffff)!=HAL_OK )
     {
         i++;
@@ -409,18 +469,17 @@ u16 JHAL_uartRxFinsh(JHAL_UART *juart) {
 
 
 
-#ifdef JHAL_Uart_Printf
+
+ 
 
 
 
 
-
-
+extern JHAL_UART *   __JHAL_uartGetPrintfJUart(void);
 /******重定向pr**BEGIN************/
 int fputc (int ch,FILE * f)
 {
-
-    JHAL_uartSendDatas(JHAL_Uart_Printf,(uint8_t *)&ch,1,JHAL_CRC_Mode_NONE);
+    JHAL_uartSendDatas(__JHAL_uartGetPrintfJUart(),(uint8_t *)&ch,1,JHAL_CRC_Mode_NONE);
     return ch;
 }
 
@@ -428,7 +487,7 @@ int fputc (int ch,FILE * f)
 int fgetc (FILE * f)
 {
     uint8_t ch=0;
-    HAL_UART_Receive(__JHAL_juart2uart(JHAL_Uart_Printf),&ch,1,0xffff);
+    HAL_UART_Receive(__JHAL_uartGetPrintfJUart()->dev,&ch,1,0xffff);
     return ch;
 }
 
@@ -438,5 +497,4 @@ int fgetc (FILE * f)
 
 
 
-#endif
 

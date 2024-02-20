@@ -38,16 +38,16 @@ void  JHAL_gpioWitePin(JHAL_IO_Port port,u8 pin,bool level)
 //gpio模式设置  0输入 1输出 2开漏
 void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,u32 mode)
 {
-	JHAL_IOMODE_IO  io=  (JHAL_IOMODE_IO) (__JHAL_IOMODE_IO_Mask&mode);
+    JHAL_IOMODE_IO  io=  (JHAL_IOMODE_IO) (__JHAL_IOMODE_IO_Mask&mode);
     if(JHAL_IOMODE_IO_Input==io )
     {
 
         GPIO_SetPinDir(__JHAL_jio2io(port,pin),GPIO_Direction_Input);
 
-				JHAL_IOMODE_EXTI_Trigger  trigger= (JHAL_IOMODE_EXTI_Trigger)(__JHAL_IOMODE_EXTI_Trigger_Mask &mode);
-      	if(trigger==JHAL_IOMODE_EXTI_Trigger_High_Rising||JHAL_IOMODE_EXTI_Trigger_Low_Falling==trigger)
+        JHAL_IOMODE_EXTI_Trigger  trigger= (JHAL_IOMODE_EXTI_Trigger)(__JHAL_IOMODE_EXTI_Trigger_Mask &mode);
+        if(trigger==JHAL_IOMODE_EXTI_Trigger_High_Rising||JHAL_IOMODE_EXTI_Trigger_Low_Falling==trigger)
         {
-					u8 _port=port-1;
+            u8 _port=port-1;
             SIM_SCGC_Cmd(SIM_SCGC_IRQ,ENABLE);   //IRQ时钟使能
             //手册247页
             SIM_PINSEL_IRQ((u8)(_port/2));	//映射第4组引脚 PTGx + PTHx  IRQ_PS_GROUP4
@@ -88,7 +88,7 @@ void  JHAL_gpioTogglePin(JHAL_IO_Port port,u8 pin)
     GPIO_TogglePin(__JHAL_jio2io(port,pin));
 }
 
- 
+
 
 /**
  * @brief  中断函数

@@ -19,30 +19,24 @@
 #if defined(XL6600A402L6)
 
 //扇区大小1K
-#define FlashPageSize FLASH_SECTOR_SIZE
+#define JHAL_FlashPageSize FLASH_SECTOR_SIZE
 //128K
-#define FlashMaxSize  128*FlashPageSize
+#define JHAL_FlashMaxSize  128*JHAL_FlashPageSize
 
-#define FlashStartAddr FLASH_START_ADDRESS
+#define JHAL_FlashStartAddr FLASH_START_ADDRESS
 
 #elif defined (KF32A140INP)
 //128K
-#define FlashMaxSize 128*1024
+#define JHAL_FlashMaxSize 128*1024
 #else
 需要为该型号单片机指定falsh大小
 #endif
 
-#define FlashEndAddr (FlashStartAddr+FlashMaxSize)
+#define JHAL_FlashEndAddr (JHAL_FlashStartAddr+JHAL_FlashMaxSize)
 
 
 
-//flash按也存的 我的数据就也按照页来 从最后一页起存
-u32 __JHAL_flashPage2Addr(u16 page)
-{   //flash大小超出
-    while(page>(FlashMaxSize/FlashPageSize)||page==0);
 
-    return	FlashEndAddr-page*FlashPageSize;
-}
 
 bool __JHAL_flashGetCmdFinshFlag(void)
 {
@@ -61,12 +55,13 @@ bool __JHAL_flashErasePage(const uint32_t targetaddress )
 {
     uint32_t timeout=0xfffff;
     bool isOK=true;
+    JHAL_disableInterrupts();
     if( FLASH_ERR_SUCCESS!=FLASH_EraseSector(targetaddress))  //扇区擦除
     {
 
         return false;
     }
-    JHAL_disableInterrupts();
+
 
     //FLASH_LaunchCMD();	//命令执行
     //FMC->FSTAT |= 0x80000000u;
@@ -119,13 +114,8 @@ bool __JHAL_flashWrite64Bit(const uint32_t TargetAddress, const uint32_t DwData0
 
 
 
- 
 
 
-u32 JHAL_flashGetEndAddr()
-{
-    return FlashEndAddr;
-}
 
 
 /*------------------Jyen--------------------------Jyen-----------------------*/
@@ -145,14 +135,14 @@ u32 JHAL_flashGetEndAddr()
 bool JHAL_flashErasePage(uint32_t startPageAddr, uint32_t endAddr)
 {
     //判断开始地址是否按照扇区对齐 否则会出错
-    while((startPageAddr%FlashPageSize)!=0);
+    while((startPageAddr%JHAL_FlashPageSize)!=0);
     //地址超出
-    while(endAddr>FlashEndAddr);
+    while(endAddr>JHAL_FlashEndAddr);
     //TODO 跨页将产生一个全局警告方便debug
     u8 missionsRetriedCount=10;
     do {
 
-        for (u32 i = startPageAddr; i <= endAddr; i += FlashPageSize)
+        for (u32 i = startPageAddr; i <= endAddr; i += JHAL_FlashPageSize)
         {
             if(! __JHAL_flashErasePage(i))//程序区页擦
             {
@@ -212,77 +202,20 @@ bool JHAL_flashWriteNByte(uint32_t address,uint8_t *p_FlashBuffer,uint16 leng)//
     }
     return true;
 }
-/*写falsh
-startAddr 起始地址
-data 可以是结构体
-size  数据大小多少个字节(u8)
-isbefoErase 是否在写入前擦除 需要注意擦除是整页擦除 有些MCU需要是扇区首地址才能擦除
-length 数据长度  注意后面若接着写需要注意被覆盖假设前面用的长度是1-3  后面都要是从4（32位对齐）+4从（crc）即从8开始
-重试次数10  错误后返回false
- */
 
-bool JHAL_flashWirte(u32 page,void *data,u16 length)
+u32 JHAL_uidGetHigh()
 {
-    u8 missionsRetriedCount=10;
-    do
-    {
-        //CRC占用1个   //暂时只支持一页操作
-        while((length+8>FlashPageSize));
-        u32 startAddr=__JHAL_flashPage2Addr(page);
-        if(!JHAL_flashErasePage(startAddr,startAddr+length+8))
-        {
-            continue;
-        }
-        u32  flashCrc=JHAL_crc(JHAL_CRC_Mode_16_Modbus,data, length);
-        if(!__JHAL_flashWrite8Byte(startAddr,&flashCrc))
-        {
-            continue;
-        }
-        if(!JHAL_flashWriteNByte(startAddr+8,data,length))
-        {
-            continue;
-        }
-
-        if(flashCrc!=JHAL_crc(JHAL_CRC_Mode_16_Modbus,(u8 *)startAddr+8, length))
-        {
-            continue;
-        }
-        break;
-    } while(--missionsRetriedCount!=0);
-
-    if(missionsRetriedCount>0)
-    {
-        return true;
-    } else {
-        return false;
-    }
-
+    return SIM_GetUUIDMH();
+}
+u32 JHAL_uidGetMiddle()
+{
+    return  SIM_GetUUIDML();
+}
+u32 JHAL_uidGetLow()
+{
+    return SIM_GetUUIDL();
 }
 
 
 
-//默认通过指针直接读 方便兼容不同单片机
-
-bool JHAL_flashRead(u32 page,void *data,u16 length)
-{
-    //CRC占用1个
-    while((length+8>FlashPageSize));
-    u32 startAddr=__JHAL_flashPage2Addr(page);
-    u32  flashCrc=*((u32 *)startAddr);
-    startAddr+=8;
-
-    uint16 crc= JHAL_crc(JHAL_CRC_Mode_16_Modbus,(u8 *)startAddr,length);
-    if(flashCrc ==crc)
-    {
-        for(u16 i=0; i<length; i++)
-        {
-            ((u8*)data)[i]= *((u8 *)startAddr++);
-        }
-
-        return true;
-    } else {
-        return false;
-
-    }
-}
 

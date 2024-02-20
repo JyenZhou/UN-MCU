@@ -1,5 +1,6 @@
 #include "../JHAL_CAN.h"
 #include "xl_mcan.h"
+#include "xl_nvic.h"
 #define __JHAL_CAN_Exist
 
 
@@ -14,9 +15,9 @@
 
 JHAL_CAN *__can;
 
- 
 
- 
+
+
 
 
 
@@ -79,7 +80,7 @@ void __JHAL_canConfig(JHAL_CANBaudRate baudRate,u32  *filterRxIDList,u8 filterRx
 //   u8 isRemoteFrame=0;
     if(filterRxIDNumber!=0)
     {
-			 MCAN_FilterStruct.MCAN_IDMR = 0x0;
+        MCAN_FilterStruct.MCAN_IDMR = 0x0;
         // MCAN_FilterStruct.MCAN_IDAR = (((u32) filterRxIDList[0]<<21)&0xFFFF0000)|((((u32)filterRxIDList[0]<<21)|isExtendFrame|isRemoteFrame)&0xFFFF);                    //验收滤波
 //设置屏蔽寄存器，这里当标识符寄存器用
         //MCAN_FilterStruct.MCAN_IDAR=(filterRxIDList[0]<<5<<16);
@@ -98,7 +99,7 @@ void __JHAL_canConfig(JHAL_CANBaudRate baudRate,u32  *filterRxIDList,u8 filterRx
 
 }
 
- 
+
 
 
 /*
@@ -110,8 +111,8 @@ filterRxIDNumber： 过滤帧的长度  0不过滤 这里最大16
 
 bool JHAL_canOpen( JHAL_CAN  *config)
 {
-	if(!config->__info.isOpen){
-     __can=config;
+    if(!config->__info.isOpen) {
+        __can=config;
         SIM_SCGC_Cmd(SIM_SCGC_MCAN,ENABLE);
         //CAN模块初始化，波特率,正常模式
         __JHAL_canConfig(config->baudRate,config->filterRxIDList,config->filterRxIDNumber);
@@ -123,22 +124,22 @@ bool JHAL_canOpen( JHAL_CAN  *config)
         MCAN_InterruptEn(MCAN,MCAN_DataOverrunInterruptEn,ENABLE);
         //发送中用到延时做超时判断等
         JHAL_delayOpen(*(JHAL_Delay *)NULL);
-    	return  config->__info.isOpen=true;
-	}
-	return false;
+        return  config->__info.isOpen=true;
+    }
+    return false;
 }
 bool  JHAL_canClose(JHAL_CAN *can) {
-     	if( can->__info.isOpen){
+    if( can->__info.isOpen) {
         SIM_SCGC_Cmd(SIM_SCGC_MCAN,DISABLE);
         MCAN_Enable(MCAN, DISABLE);
         MCAN_InterruptEn(MCAN,MCAN_ReceiveInterruptEn,DISABLE);
         MCAN_InterruptEn(MCAN,MCAN_DataOverrunInterruptEn,DISABLE);
         MCAN_InterruptEn(MCAN,MCAN_ErrorWarningInterruptEn,DISABLE);
-				 can->__info.isOpen=false;
-				
-				return  true;
-			}
-   return false;
+        can->__info.isOpen=false;
+
+        return  true;
+    }
+    return false;
 }
 
 
@@ -218,7 +219,7 @@ bool __JHAL_canSendData(JHAL_CANBox canBox)
 //多帧数据赋值函数并发送数据
 bool JHAL_canSendDatas(JHAL_CAN *can,JHAL_CANBox canBox,FuncPtr  sendOneFrameCallback )
 {
- 
+
     u16 num=0,length= canBox.length;
     u8 remainder=canBox.length%8;
 //添加个临时变量 退出前赋值回来 防止这里修改了指针指向外面无法使用canBox.data操作
@@ -263,19 +264,19 @@ bool JHAL_canSendDatas(JHAL_CAN *can,JHAL_CANBox canBox,FuncPtr  sendOneFrameCal
 
 
 
-  u8 __canRxDataBuff[8] ;
-  JHAL_CANBox  __jcanRxBoxBuff= {.data=__canRxDataBuff}  ;
- 
+u8 __canRxDataBuff[8] ;
+JHAL_CANBox  __jcanRxBoxBuff= {.data=__canRxDataBuff}  ;
+
 /*在中断中接收一帧后缓存起来直到用户调用后才清除 主要是用于用户定期轮询
  * 返回值true值有效  false值无效
 注意：1.用户若长时间没使用始终不会更新新来的值 2.不适用连续帧 及响应高的场景 需要自行从接收中断处理*/
 
- 
+
 
 
 u16 JHAL_canRxFinsh( JHAL_CAN * jacn)
 {
-    
+
     if(!__can-> __info.isRxFinsh)
     {
         return 0;
@@ -284,7 +285,7 @@ u16 JHAL_canRxFinsh( JHAL_CAN * jacn)
     jacn->rxDataBuff.id=__jcanRxBoxBuff.id;
     jacn->rxDataBuff.isExtendFrame=__jcanRxBoxBuff.isExtendFrame;
     jacn->rxDataBuff.isRemoteFrame=__jcanRxBoxBuff.isRemoteFrame;
-    
+
     __can-> __info.isRxFinsh=false;
     return jacn->rxDataBuff.length;
 

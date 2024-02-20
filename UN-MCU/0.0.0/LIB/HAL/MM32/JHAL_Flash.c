@@ -11,19 +11,17 @@
   *                                                                 *
    *                                                              *
 *********Jyen******************Jyen************************Jyen*****************************************/
-#define FLASH_WAITETIME 50000       //FLASH等待超时时间 
 
 
-#define FlashStartAddr  ((uint32_t)0x08000000)
+
+#define JHAL_FlashStartAddr  ((uint32_t)0x08000000)
 #if defined MM32G0001
 
 //扇区大小1K
-#define FlashPageSize 1024
+#define JHAL_FlashPageSize 1024
 
-#define FlashPageNumber 16
-#define FlashMaxSize  FlashPageSize*FlashPageNumber
-
-
+#define JHAL_FlashPageNumber 16
+#define JHAL_FlashMaxSize  JHAL_FlashPageSize*JHAL_FlashPageNumber
 
 
 #else
@@ -32,10 +30,10 @@
 
 
 
-#define FlashEndAddr (FlashStartAddr+FlashMaxSize)
+#define JHAL_FlashEndAddr (JHAL_FlashStartAddr+JHAL_FlashMaxSize)
 
- 
- 
+
+
 /*******************************************************************************
 *@ 函数功能或简介: 擦出指定扇区区间的Flash数据
   * @输入参数:StartPage 起始地址 (必须扇区对齐)
@@ -49,31 +47,27 @@
   *
   *------------------Jyen-------------------------Jyen-------------------------*/
 
-bool JHAL_flashErasePage(uint32_t startPageAddr, uint32_t endAddr)
+
+bool __JHAL_flashErasePage(const uint32_t targetaddress )
 {
-    JHAL_disableInterrupts();
+
+    JHAL_enableInterrupts();
     FLASH_Unlock();
     FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPRTERR);
 
-    //判断开始地址是否按照扇区对齐 否则会出错
-    while((startPageAddr%FlashPageSize)!=0);
-    //地址超出
-    while(endAddr>FlashEndAddr);
-    for (u32 i = startPageAddr; i <= endAddr; i += FlashPageSize)
-    {
-        FLASH_ErasePage(i);
-        if(FLASH_COMPLETE!= FLASH_WaitForLastOperation(FLASH_WAITETIME))
-        {
-            return false;
-        }
 
-        FLASH_ClearFlag(FLASH_FLAG_EOP);
+    FLASH_ErasePage(targetaddress);
+    if(FLASH_COMPLETE!= FLASH_WaitForLastOperation(FLASH_WAITETIME))
+    {
+        FLASH_Lock();
+        JHAL_enableInterrupts();
+        return false;
     }
+
+    FLASH_ClearFlag(FLASH_FLAG_EOP);
 
     FLASH_Lock();
     JHAL_enableInterrupts();
-
-
     return true;
 
 }
@@ -98,7 +92,7 @@ bool JHAL_flashWriteNByte(uint32_t address,uint8_t *p_FlashBuffer,uint16 leng)//
     for(u16 i=0; i<leng; i++) //一页1024byte，缓冲一次写64bit=8byte，128个缓冲块
     {
         FLASH_ProgramWord(address, *p_FlashBuffer);
-        if(FLASH_COMPLETE!= FLASH_WaitForLastOperation(FLASH_WAITETIME))
+        if(FLASH_COMPLETE!= FLASH_WaitForLastOperation(JHAL_FLASH_WAITETIME))
         {
             return false;
         }
@@ -109,6 +103,6 @@ bool JHAL_flashWriteNByte(uint32_t address,uint8_t *p_FlashBuffer,uint16 leng)//
     }
     JHAL_enableInterrupts();
     return true;
-} 
+}
 
 

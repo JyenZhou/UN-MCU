@@ -1,7 +1,7 @@
 #ifndef __XL_5050RGBC_WS2812B__H__
 #define __XL_5050RGBC_WS2812B__H__
 #include "JFML.h"
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
 

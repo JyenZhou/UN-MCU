@@ -49,14 +49,13 @@ void bootInfoSync()
 #ifndef __JHAL_BOOTOLADER__H__
 #define __JHAL_BOOTOLADER__H__
 #include "JHAL.h"
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
 #include "HAL\JHAL_CAN.h"
 #include "HAL\JHAL_Uart.h"
 
-//flash起始地址 如果未定义需要在flash中定义
-#define JHAL_BOOT_BootStartAddr   FlashStartAddr
+ 
 
 #if defined  XL6600A402L6
 // 16K
@@ -76,7 +75,7 @@ extern "C" {
 
 
 //App起始地址
-#define JHAL_BOOT_AppStartAddr   (JHAL_BOOT_BootStartAddr+JHAL_BOOT_BootMaxSize)
+#define JHAL_BOOT_AppStartAddr   (JHAL_FlashStartAddr+JHAL_BOOT_BootMaxSize)
 //boot信息占用的flash页地址
 #define JHAL_BOOT_FlashInfoPage   1
 

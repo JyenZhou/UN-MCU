@@ -11,7 +11,7 @@
 #ifndef __JHAL_WDG__H__
 #define  __JHAL_WDG__H__
 
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
 

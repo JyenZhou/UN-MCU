@@ -5,12 +5,15 @@
  *                                                                   *
 *                                                                     *
 
+
+
 CUBEMX 配置  注意stm32中默认启用了verf  需要把最后一个通道配置成这个引脚或使用JHAL_ADC_ReferVoltage_NONE
 ADC
 1.number of Conversion 选择要连续转换的通道数与这儿.h一致(为了兼容这里的连续程序 只有一个的话 可以加个温度或基准通道 剩下的不用管)
 2.continuos Conversion mode ->ENABLE 使能连续转换模式
 3.扫描转换   需要使能
 3.配置转换通道数Rank
+当使用了内置基准源 JHAL_ADC_ReferVoltage_BandGap 时需要将最后一个Rank绑定为verf    open传进来的通道参数长度请不要包含这个通道
 
 DMA
 1.DMA-->Mode-->Circular
@@ -28,7 +31,7 @@ DMA
    *                                                              *
 *********@作者*Jyen******************@作者*Jyen***********************@作者*Jyen********************/
 #ifdef HAL_ADC_MODULE_ENABLED
- 
+
 //对于12位的ADC，3.3V的ADC值为0xfff,温度为25度时对应的电压值为1.43V即0x6EE
 
 #define VREFINT 1.2f
@@ -38,7 +41,7 @@ DMA
 
 
 
- 
+
 
 
 
@@ -59,7 +62,7 @@ void  __JHAL_adcUpdateVoltageCalculationCoefficient( JHAL_ADC *adc)
     switch(adc->vref)
     {
     case  JHAL_ADC_ReferVoltage_BandGap:
-        adc->__info. calculationCoefficient=VREFINT/ (((u32 *)(adc-> __info.convertedValue))[(adc->channelsNumber)-1]&0xFFF);
+        adc->__info. calculationCoefficient=VREFINT/ (((u32 *)(adc-> __info.convertedValue))[adc->channelsNumber]&0xFFF);
         break;
     case  JHAL_ADC_ReferVoltage_VDD:
     case  JHAL_ADC_ReferVoltage_Vref:

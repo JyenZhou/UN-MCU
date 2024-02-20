@@ -13,7 +13,7 @@
 #ifndef __JHAL_Timer__H__
 #define __JHAL_Timer__H__
 #include "JUTIL.h"
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
 

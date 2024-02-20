@@ -60,7 +60,7 @@ TASK systemTask0()
 JHAL_delayInit( *(JHAL_DealyConfig *)NULL  );
 
 
-使用软件IIC 需要定义  JHAL_IIC_Number 数量
+
 
   *
     ******************************************************************************
@@ -245,108 +245,54 @@ ADC
 
 
 
-#ifdef  TC04
-
-#include "HAL/TC/Manufacturer/TC04/system_tc04xx.c"
-#include "HAL/TC/Manufacturer/TC04/tc04xx_uart.c"
-#include "HAL/TC/Manufacturer/TC04/tc04xx_debug.c"
-#include "HAL/TC/Manufacturer/TC04/tc04xx_delay.c"
-#include "HAL/TC/Manufacturer/TC04/tc04xx_gpio.c"
-
-
-#include "HAL/TC/JHAL_GPIO.c"
-#include "HAL/TC/JHAL_Delay.c"
-#endif
 
 
 
 
-#include "Util/JHAL_CRC.c"
-#include "Util/JHAL_Math.c"
-#include "Util/JHAL_NumberConverter.c"
-#include "Util/FontLib/jfontLib.c"
-#include "Util/zdmalloc.c"
+#include "Util\JHAL_CRC.c"
+#include "Util\JHAL_Math.c"
+#include "Util\JHAL_NumberConverter.c"
+#include "Util\FontLib\jfontLib.c"
+#include "Util\zdmalloc.c"
 #include "SystemSelfTest.c"
 
-#include "HAL/JHAL_SoftwareIIC.c"
+#include "HAL\JHAL_SoftwareIIC.c"
 
 
+
+
+
+
+//字符串化
+#define STRINGIFY(x) #x
+//递归展开
+#define EXPAND_AND_STRINGIFY(x) STRINGIFY(x)
+//你用占位符拼接const 路径
+#define CONNECT_FILE_PATH_HEIP(_1, _2, _3,  ...)   _1\_2\_3
+#define CONNECT_FILE_PATH(...) CONNECT_FILE_PATH_HEIP(__VA_ARGS__,,, )
+
+
+
+
+
+#if defined USE_HAL_DRIVER
+#define MCU_NAME STM32
+
+//上海琪埔维
+#elif  defined XL6600A402L6
 // XL6600A402L6 Flash 128K  RAM16K
+#define MCU_NAME Chipways
 
-#ifdef XL6600A402L6
-#include "HAL/Chipways/JHAL_GPIO.c"
-#include "HAL/Chipways/JHAL_Delay.c"
-#include "HAL/Chipways/JHAL_PWM.c"
-#include "HAL/Chipways/JHAL_ADC.c"
-#include "HAL/Chipways/JHAL_CAN.c"
-#include "HAL/Chipways/JHAL_RTC.c"
-#include "HAL/Chipways/JHAL_LowPower.c"
-#include "HAL/Chipways/JHAL_ACMP.c"
-#pragma arm section code = "JRAMCODE"
-#include "HAL/Chipways/JHAL_Flash.c"
-#pragma arm section
-#include "HAL/Chipways/JHAL_Uart.c"
-#include "HAL/Chipways/JHAL_LIN.c"
-#include "HAL/Chipways/JHAL_Timer.c"
-#include "HAL/Chipways/JHAL_WDG.c"
+//赛腾微
+#elif  defined ASM31X003
+#define MCU_NAME Setenvi
 
-
- 
-u32 JHAL_uidGetHigh()
-{
-    return 0;
-}
-u32 JHAL_uidGetMiddle()
-{
-    return 0;
-}
-u32 JHAL_uidGetLow()
-{
-    return SIM_GetUUIDL();
-}
-#endif
-
-#ifdef ASM31X003
-#include  "HAL/Setenvi/JHAL_GPIO.c"
-#include  "HAL/Setenvi/JHAL_RTC.c"
-#include  "HAL/Setenvi/JHAL_Delay.c"
-#include  "HAL/Setenvi/JHAL_Flash.c"
-#include  "HAL/Setenvi/JHAL_Uart.c"
-#include  "HAL/Setenvi/JHAL_LIN.c"
-#include  "HAL/Setenvi/JHAL_Timer.c"
-#include  "HAL/Setenvi/JHAL_ADC.c"
-
-
-#endif
-
-
-
-#ifdef USE_HAL_DRIVER
-
-
-
-
-#include  "HAL/STM32/JHAL_ADC.c"
-#include  "HAL/STM32/JHAL_DAC.c"
-#include  "HAL/STM32/JHAL_CAN.c"
-#include  "HAL/STM32/JHAL_GPIO.c"
-#include  "HAL/STM32/JHAL_Delay.c"
-#include  "HAL/STM32/JHAL_Uart.c"
-#include  "HAL/STM32/JHAL_Flash.c"
-#include  "HAL/STM32/JHAL_Wdg.c"
-#include  "HAL/STM32/JHAL_Timer.c"
-#include  "HAL/STM32/JHAL_PWM.c"
-#endif
-
-
-#ifdef USE_STDPERIPH_DRIVER
-#ifdef MM32G0001
+//灵动微
+#elif  defined MM32G0001
+#define MCU_NAME MM32
+#ifdef 
 #include  "HAL/MM32/Manufacturer/system_mm32g0001.c"
-#else
-
-#error 未知的芯片型号
-
-#endif
+ 
 #include  "HAL/MM32/Manufacturer/hal_rcc.c"
 #include  "HAL/MM32/Manufacturer/hal_dbg.c"
 #include  "HAL/MM32/Manufacturer/hal_flash.c"
@@ -362,13 +308,16 @@ u32 JHAL_uidGetLow()
 #include  "HAL/MM32/Manufacturer/hal_usart.c"
 #include  "HAL/MM32/Manufacturer/hal_tim.c"
 #include  "HAL/MM32/Manufacturer/hal_i2c.c"
+#endif
 
-#include  "HAL/MM32/JHAL_Delay.c"
-#include  "HAL/MM32/JHAL_GPIO.c"
-#include  "HAL/MM32/JHAL_ADC.c"
-#include "HAL/MM32/JHAL_Timer.c"
-#include  "HAL/MM32/JHAL_Flash.c"
-
+//泰矽微
+#elif  defined   TC04
+#define MCU_NAME TC
+#include "HAL/TC/Manufacturer/TC04/system_tc04xx.c"
+#include "HAL/TC/Manufacturer/TC04/tc04xx_uart.c"
+#include "HAL/TC/Manufacturer/TC04/tc04xx_debug.c"
+#include "HAL/TC/Manufacturer/TC04/tc04xx_delay.c"
+#include "HAL/TC/Manufacturer/TC04/tc04xx_gpio.c"
 
 
 #endif
@@ -378,13 +327,55 @@ u32 JHAL_uidGetLow()
 
 
 
-
-
-
-
+#if defined MCU_NAME
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_Timer.c))//pwm上
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_PWM.c))//adc上
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_ADC.c))
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_DAC.c))
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_CAN.c))
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_GPIO.c))
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_Delay.c))
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_Uart.c))
+#ifdef XL6600A402L6
+#pragma arm section code = "JRAMCODE"
+#endif
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_Flash.c))
+#ifdef XL6600A402L6
+#pragma arm section
+#endif
+#include  "HAL/JHAL_Flash.c"
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_WDG.c))
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_RTC.c))
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_ACMP.c))
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_LowPower.c))
+#include EXPAND_AND_STRINGIFY( CONNECT_FILE_PATH(HAL,MCU_NAME,JHAL_LIN.c))
 #include "HAL/JHAL_BootLoader.c"
 
-//通用的独立按键状态检查逻辑 纯软件 
+
+
+
+void JHAL_systemReset()
+{
+//该函数依赖于厂家pack包的头文件  
+#if defined(__ARMCC_VERSION)
+    NVIC_SystemReset();
+#endif
+
+
+}
+
+#else
+#warning  不受支持的MCU型号 驱动层将无法使用
+#endif
+
+
+
+
+
+
+
+
+//通用的独立按键状态检查逻辑 纯软件
 #include "FML/Key/JHAL_IRKeyListeningTask.c"
 
 
@@ -405,7 +396,7 @@ u32 JHAL_uidGetLow()
 //OLED-0.96/0.91寸驱动
 #include "FML/Display/SSD1306/SSD1306.c"
 
- 
+
 
 #ifdef GasUtil4ICRA_GasSensorNumber
 #include "FML/GAS/GasUtil4ICRA.c"
@@ -413,16 +404,6 @@ u32 JHAL_uidGetLow()
 #ifdef GasUtil4ICRA2_GasSensorNumber
 #include "FML/GAS/GasUtil4ICRA2.c"
 #endif
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -437,354 +418,12 @@ u8  taskWhileTrue=1;
 volatile u64 jsystemMs=0;
 
 
-
  
 
- 
-/** ----------------------------JHAL_autoInit-----------------------------------
-  * 描述：累计的一些通用的可能必要的自初始化 不受外设和MCU影响
-  *
-  * 参数：
-**	  	 : [输入/出]
-  *
-  * 返回值:无
-  * 注:无
-  *-----------------------------Jyen-2022-11-22-------------------------------------- */
-OS_BEFORE_MAIN_EXE void __JHAL_selfInit()
-{
-    __JHAL_systemSelfTest();
-	 
-}
 
- 
- 
 
- 
-/*------------------Jyen--------------------------Jyen-----------------------
-******************************************************************************
-*@ 函数功能或简介: 封装的调度器启动， 同时通用的初始化自动初始化
-  * @输入参数:   无
-  * @返 回 值: 无
-  * @备注: 考虑到灵活使用，这里不封装批量反初始化
-  *
-  *
-  ******************************************************************************
-  *
-  *------------------Jyen-------------------------Jyen-------------------------*/
+OS_WEAK UpdateDateTime
 
-void JQStart()
-{
-
-
-
-#ifdef USE_HAL_DRIVER
-
-
-
-
-
-#ifdef HAL_WWDG_MODULE_ENABLED
-//当debug时候不要初始化看门狗  默认提前喂狗  最好在主程序主动喂
-    if (!(CoreDebug->DHCSR & 1))    //check C_DEBUGEN == 1 -> Debugger Connected
-    {
-        JHAL_wdgOpen(  NULL );
-    }
-#endif
-
-
-    /*使用定时器 */
-#if  UTTIL_TIMER
-    utilTimer_Init();
-#endif
-
-
-
-#if defined HAL_CAN_MODULE_ENABLED
-    bisp_CANUtil_Init();
-#endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*************************************************************************************************
-    * @
-    * @上面是初始化Bip层
-    * @
-    * @下面是初始化bsp层 （bsp里面包含了初始化bip层 所以可以不分先后初始化了 这里是为了对齐）
-    * @
-    * @
-    * **************Jyen *****************************Jyen ******************Jyen *********
-    */
-    /*步进电机1的定时器初始化*/
-#ifdef StepperMotor1
-    Motor1_MX_TIM1_Init();
-#endif
-
-    /*步进电机2的定时器初始化*/
-#ifdef StepperMotor2
-    Motor2_MX_TIM2_Init();
-#endif
-
-    /*步进电机3的定时器初始化*/
-#ifdef StepperMotor3
-    Motor3_MX_TIM3_Init();
-#endif
-
-
-    /*LCD12864初始化*/
-#ifdef LCD12864_M
-    mInitLCD();
-#endif
-
-#ifdef S4_74HC595
-    S4_74HC595_init();
-#endif
-
-
-    /*TPS7A7100_RGW 0.9-3.5V 可选电压模块*/
-#ifdef TPS7A7100_RGW
-    TPS7A7100_RWG_init();
-#endif
-#ifdef TPS7A7100_RGW_2
-    TPS7A7100_2_RWG_init();
-#endif
-
-#ifdef TPS7A4700_RWG
-    TPS7A4700_RWG_init();
-#endif
-#ifdef TPS7A4700_RWG_2
-    TPS7A4700_2_RWG_init();
-#endif
-
-
-    /*通过电阻改变输出电压的模块*/
-#ifdef TPS7A7001
-    .....................空的  占位置   懒得找他初始化的时候补上
-#endif
-
-    /*通过真值表 切换开关*/
-#ifdef ADG704
-    ADG704_init();
-#endif
-    /*通过真值表 切换开关  这是电路上出现两个时使用*/
-#ifdef ADG704_2
-    ADG704_2_init();
-#endif
-
-#ifdef ADG706
-    //  ADG706_init();
-#endif
-
-#ifdef ADG706_2
-    ADG706_2_init();
-#endif
-
-#ifdef CD4051B
-    CD4051B_init();
-#endif
-
-#ifdef CD4051B_2
-    CD4051B_2_init();
-#endif
-
-#ifdef CD4051B_3
-    CD4051B_3_init();
-#endif
-
-//彩屏
-#ifdef RGB_LCD128X160
-    .h文件没添加 用的时候搞下并把Lcd_Init重命名成RGB_LCD128X160_Init
-    用的模拟SPI通信也在.C文件中说明下
-    Lcd_Init();
-//清屏置全白
-    LCD_Clear(WHITE);
-#endif
-//ADC
-
-#ifdef ADS1256
-
-    //  Init_ADS1256_Init();
-
-#endif
-
-
-
-#ifdef BL1551
-    bl1551_init();
-#endif
-
-
-#ifdef BL1551_2
-    bl1551_2_init();
-#endif
-
-#ifdef ADG1204_EN
-    ADG1204_init();
-#endif
-
-#ifdef ADG1204_2_EN
-    ADG1204_2_init();
-#endif
-
-#ifdef ADG1204_3_EN
-    ADG1204_init();
-#endif
-
-#ifdef ADG1204_4_EN
-    ADG1204_init();
-#endif
-
-#ifdef ADG1204_5_EN
-    ADG1204_init();
-#endif
-
-#ifdef ADG1204_6_EN
-    ADG1204_init();
-#endif
-
-
-
-#ifdef AD7608_EN
-    /* 0是5v基准   1是10v基准*/
-    spi_InitAD7606(1);
-#endif
-
-
-    /*温湿度*/
-#ifdef SHT20_EN
-    SHT20_Init();
-#endif
-
-#ifdef PT100_MAX31865_EN
-    PT100_max3185_init();
-#endif
-
-
-#endif
-
-
-#ifdef Lora_E22_EN
-    Lora_E22_400T30S_Init();
-#endif
-
-
-
-
-
-
-
-
-
-}
-
-
-#ifdef FlashStartAddr
-
-//flash按也存的 我的数据就也按照页来 从最后一页起存
-u32 __JHAL_flashPage2Addr(u16 page)
-{
-
-    //flash大小超出
-    while(page>(FlashMaxSize/FlashPageSize)||page==0);
-
-    return	FlashEndAddr-page*FlashPageSize;
-}
-
-
-
-/*写falsh
-startAddr 起始地址
-data 可以是结构体
-size  数据大小多少个字节(u8)
-isbefoErase 是否在写入前擦除 需要注意擦除是整页擦除 有些MCU需要是扇区首地址才能擦除
-length 数据长度  注意后面若接着写需要注意被覆盖假设前面用的长度是1-3  后面都要是从4（32位对齐）+4从（crc）即从8开始
-重试次数10  错误后返回false
- */
-
-bool JHAL_flashWirte(u32 page,void *data,u16 length)
-{
-    u8 missionsRetriedCount=10;
-    JHAL_disableInterrupts();
-    do
-    {
-        //CRC占用1个   //暂时只支持一页操作
-        while((length+8>FlashPageSize));
-        u32 startAddr=__JHAL_flashPage2Addr(page);
-        if(!JHAL_flashErasePage(startAddr,startAddr+length+8))
-        {
-            continue;
-        }
-        u32  flashCrc=JHAL_crc(JHAL_CRC_Mode_16_Modbus,data, length);
-        if(!JHAL_flashWriteNByte(startAddr,(u8*)&flashCrc,8))
-        {
-            continue;
-        }
-        if(!JHAL_flashWriteNByte(startAddr+8,data,length))
-        {
-            continue;
-        }
-
-        if(flashCrc!=JHAL_crc(JHAL_CRC_Mode_16_Modbus,(u8 *)startAddr+8, length))
-        {
-            continue;
-        }
-        break;
-    } while(--missionsRetriedCount!=0);
-    JHAL_enableInterrupts();
-    if(missionsRetriedCount>0)
-    {
-        return true;
-    } else {
-        return false;
-    }
-
-}
-
-
-
-//默认通过指针直接读 方便兼容不同单片机
-
-bool JHAL_flashRead(u32 page,void *data,u16 length)
-{
-    //CRC占用1个
-    while((length+8>FlashPageSize));
-    u32 startAddr=__JHAL_flashPage2Addr(page);
-    u32  flashCrc=*((u32 *)startAddr);
-    startAddr+=8;
-
-    uint16 crc= JHAL_crc(JHAL_CRC_Mode_16_Modbus,(u8 *)startAddr,length);
-    if(flashCrc ==crc)
-    {
-        for(u16 i=0; i<length; i++)
-        {
-            ((u8*)data)[i]= *((u8 *)startAddr++);
-        }
-
-        return true;
-    } else {
-        return false;
-
-    }
-}
-
-
-
-#endif
-
- 
-
- OS_WEAK UpdateDateTime
 void  JHAL_disableInterrupts()
 {
     __disable_irq();
@@ -803,58 +442,37 @@ void  JHAL_enableInterrupts()
 
 void JHAL_error(char  * msg)
 {
-   char   debugMsg [50];
- 
-	memcpy(debugMsg,msg,sizeof(debugMsg));
-	 
- 
-	    //__ARM_ARCH_7M__ Cortex-M3内核，__ARM_ARCH_7EM__表示ARM Cortex-M4和Cortex-M7处理器架构
+    char   debugMsg [50];
+
+    memcpy(debugMsg,msg,sizeof(debugMsg));
+
+
+    //__ARM_ARCH_7M__ Cortex-M3内核，__ARM_ARCH_7EM__表示ARM Cortex-M4和Cortex-M7处理器架构
 #if (defined __ARM_ARCH_7M__) ||(defined __ARM_ARCH_7EM__)
     if (CoreDebug->DHCSR & 1)    //check C_DEBUGEN == 1 -> Debugger Connected
     {
         __breakpoint(0);  // halt program execution here
-			return;
+        return;
     }
 #else
-	u32 timeout=0x7FFFFF;
-while(--timeout!=0)
-{
-if(timeout==0x7FFFFF)
-{
-	return;
-}
-}	
-	  JHAL_systemReset();
-#endif
- 
-  
-}
-
-
-
-
-
-
-
-//96位UID相当于3个32bit位变量  每8bit位变量相当于一个字符  所以最大需要4*3+1 =13个字符空间 为了兼容 低位uid先存 
-void uid2string(char* string,int buffSize )
-{
-
-    snprintf(string, buffSize, "%X%X%X",  JHAL_uidGetLow(), JHAL_uidGetMiddle(),JHAL_uidGetHigh());
- 
- 
-}
-
-
-
-void JHAL_systemReset()
-{
-	#if defined(__ARMCC_VERSION)  
-    NVIC_SystemReset();
+    u32 timeout=0x7FFFFF;
+    while(--timeout!=0)
+    {
+        if(timeout==0x7FFFFF)
+        {
+            return;
+        }
+    }
+    JHAL_systemReset();
 #endif
 
- 
+
 }
+
+
+
+
+
 
 
 

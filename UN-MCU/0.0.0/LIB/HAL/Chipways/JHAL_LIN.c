@@ -1,5 +1,5 @@
 #include "../JHAL_LIN.h"
- 
+
 static  JHAL_LIN  *__linConfig[__UART_Number];
 void __JHAL_linAbortTransmitIT (u8 id)
 {
@@ -9,7 +9,7 @@ void __JHAL_linAbortTransmitIT (u8 id)
 
 }
 
- 
+
 
 void __JHAL_linEnableReceiveIT (u8 id)
 {
@@ -20,10 +20,10 @@ void __JHAL_linEnableReceiveIT (u8 id)
 }
 void JHAL_linEnableReceiveIT (JHAL_LIN *lin)
 {
- 
+
     if(  ! lin  ->__linRxInfo.enable)
     {
-       lin->__linRxInfo.enable=true;
+        lin->__linRxInfo.enable=true;
         __JHAL_linEnableReceiveIT(lin->id);
         lin->__linRxInfo.step = __JHAL_LIN_Start ;
     }
@@ -38,7 +38,7 @@ void __JHAL_linAbortReceiveIT (u8 id)
 }
 void JHAL_linAbortReceiveIT (JHAL_LIN *lin )
 {
-   
+
     if(   __linConfig[ __JHAL_juart2Id(lin->id)]-> __linRxInfo.enable)
     {
         __JHAL_linAbortReceiveIT(lin->id);
@@ -46,53 +46,53 @@ void JHAL_linAbortReceiveIT (JHAL_LIN *lin )
 }
 bool  JHAL_linClose (JHAL_LIN *lin)
 {
-	   if (lin->__info.uart.__info.isOpen){
-    JHAL_linAbortReceiveIT(lin );
+    if (lin->__info.uart.__info.isOpen) {
+        JHAL_linAbortReceiveIT(lin );
 
-    
-    u8 id=__JHAL_juart2Id(lin->id);
-    __JHAL_linAbortTransmitIT(id);
-    JHAL_uartClose( &	 lin-> __info .uart);
-		
-    isAnalogLinMode[id]=false;
-	
-	   
-    return true;
-		 }
-		 
- return false;
-		 
+
+        u8 id=__JHAL_juart2Id(lin->id);
+        __JHAL_linAbortTransmitIT(id);
+        JHAL_uartClose( &	 lin-> __info .uart);
+
+        isAnalogLinMode[id]=false;
+
+
+        return true;
+    }
+
+    return false;
+
 }
 
 
 bool JHAL_linOpen(JHAL_LIN    *config)
 {
-   if(!config->__info.uart.__info.isOpen){
-    UART_Type *  uart=__JHAL_juart2uart( config->id);
-    u8 id=__JHAL_juart2Id( config->id);
-	
-    isAnalogLinMode[id]=true;
-   config-> __info .uart.baudRate=config->baudRate;
-		 
-		  config-> __info .uart.id=config->id;
- 
-    UART_FIFOInitTypeDef UART_FIFOInitStruct;
-    UART_FIFOInitStruct.UART_RT = UART_RxFIFO_1Char;
-    UART_FIFOInitStruct.UART_TET = UART_TxFIFO_0Char;
-    UART_FIFOInitStruct.UART_FIFO_Enable = DISABLE;
-    UART_FIFOInit(uart, &UART_FIFOInitStruct);
-    JHAL_uartOpen(  &config-> __info .uart);
-    UART_LINBreakLengthConfig(uart, UART_LINBreakLength_13b);  //同步间隔至少13bit
-    __JHAL_linAbortTransmitIT(id);
-    __JHAL_linAbortReceiveIT(id);
+    if(!config->__info.uart.__info.isOpen) {
+        UART_Type *  uart=__JHAL_juart2uart( config->id);
+        u8 id=__JHAL_juart2Id( config->id);
+
+        isAnalogLinMode[id]=true;
+        config-> __info .uart.baudRate=config->baudRate;
+
+        config-> __info .uart.id=config->id;
+
+        UART_FIFOInitTypeDef UART_FIFOInitStruct;
+        UART_FIFOInitStruct.UART_RT = UART_RxFIFO_1Char;
+        UART_FIFOInitStruct.UART_TET = UART_TxFIFO_0Char;
+        UART_FIFOInitStruct.UART_FIFO_Enable = DISABLE;
+        UART_FIFOInit(uart, &UART_FIFOInitStruct);
+        JHAL_uartOpen(  &config-> __info .uart);
+        UART_LINBreakLengthConfig(uart, UART_LINBreakLength_13b);  //同步间隔至少13bit
+        __JHAL_linAbortTransmitIT(id);
+        __JHAL_linAbortReceiveIT(id);
 //接收规则必须配置至少一项
-    while(!config->rxConfig.filter.number);
-    config->__linTxInfo.box=&config->__txBox;
-    __linConfig[id]=config;
-		
-	 return true;	
-	}
-		
+        while(!config->rxConfig.filter.number);
+        config->__linTxInfo.box=&config->__txBox;
+        __linConfig[id]=config;
+
+        return true;
+    }
+
     return false;
 
 }

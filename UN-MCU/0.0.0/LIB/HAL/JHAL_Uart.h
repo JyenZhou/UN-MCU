@@ -13,7 +13,7 @@
 #ifndef __JHAL_UART_H__
 #define __JHAL_UART_H__
 #include "JUTIL.h"
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
 
@@ -120,7 +120,8 @@ extern "C" {
     //中断回调  注意这里对应的是uart实例 id 不是传进去的dev  因为两个dev可能实际上是一个uart 只是引脚不一样
     bool JHAL_uartRxITCallback(u8 realityId);
 
-
+//注册printf对应的串口  放在.c中而不是函数中 一般放在配置文件中
+#define  JHAL_UartRegistPrintf(JUART)   JHAL_UART *   __JHAL_uartGetPrintfJUart(){ JHAL_UART *printf=JUART; return  printf;  }
 
 #ifdef CplusPlus
 }

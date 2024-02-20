@@ -13,12 +13,13 @@
 #ifndef __JHAL_FLASH__H__
 #define __JHAL_FLASH__H__
 #include "JUTIL.h"
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
 
 
 
+#define JHAL_FLASH_WAITETIME 50000       //FLASH等待超时时间 
 
     /*
     写falsh  自动擦除和加CRC与JHAL_flashRead一起用
@@ -38,13 +39,18 @@ extern "C" {
     bool JHAL_flashRead(u32 page,void *data,u16 length);
 
     //擦除地址段数据数据 注意起始要扇区对齐，结束地址内部自动对齐
-    bool JHAL_flashErasePage(uint32_t startPageAddr, uint32_t endAddr);
+    bool JHAL_flashErasePages(uint32_t startPageAddr, uint32_t endAddr);
     //在指定地址写入一定数据
     // 注意要记得先擦除，部分单片机内部采用的是8个字节对齐这里建议每次8字节对齐写 如果非要紧挨着写上一次写， 上次的尾部用1填充对齐8字节就不影响本次头部覆盖上次尾部
     bool JHAL_flashWriteNByte(uint32_t address,uint8_t *p_FlashBuffer,uint16 leng);
 
 
 
+    u32 JHAL_uidGetHigh(void);
+    u32 JHAL_uidGetMiddle(void);
+    u32 JHAL_uidGetLow(void);
+// 96位UID相当于3个32位变量  每8位变量相当于一个字符  所以最大需要4*3+1 =13个字符空间 为了兼容 低位uid先存
+    void uid2string(char* string,int buffSize );
 
 
 #ifdef CplusPlus

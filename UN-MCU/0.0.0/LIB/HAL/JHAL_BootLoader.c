@@ -1,6 +1,7 @@
 /**
   ****************************JHAL_BootLoader.c******************************************
-  * @brief     使用时需要保证每次编译宏定义函数 UpdateDateTime 才会正确更新时间版本信息
+  * @brief     使用时需要保证每次编译宏定义函数 UpdateDateTime 才会正确更新时间版本信息  
+	一般将 UpdateDateTime 放到main.c 中 然后每次编译main.c
   *
     ******************************************************************************
   * @file     JHAL_BootLoader.c
@@ -24,8 +25,6 @@
 
 #ifndef __JHAL_Uart_Exist
 
-
-
 #define JBoot_DisUart
 
 #endif
@@ -48,7 +47,7 @@ JHAL_CAN  __boot_canConfig= {JHAL_DEV_INIT};
 JHAL_UART   __boot_uartConfig= {JHAL_DEV_INIT};
 #endif
 
-#if   ( defined FlashStartAddr  && (!defined JBoot_DisCAN ||!defined JBoot_DisUart))
+#if   ( defined JHAL_FlashStartAddr  && (!defined JBoot_DisCAN ||!defined JBoot_DisUart))
 
 
 
@@ -312,12 +311,12 @@ void   __JHAL_bootUpdating(JHAL_BootInfo bootInfo,bool isUpdateApp)
                 appHexCrc=(dataBuff[0]<<8)|dataBuff[1];
                 appHexSize=  (dataBuff[2]<<24) | (dataBuff[3]<<16) | (dataBuff[4]<<8) | (dataBuff[5]);
                 //FlashPageSize 最后一页是要存boot信息的
-                if(isUpdateApp?appHexSize> FlashEndAddr-JHAL_BOOT_BootStartAddr-FlashPageSize:appHexSize>JHAL_BOOT_BootMaxSize)
+                if(isUpdateApp?appHexSize> JHAL_FlashEndAddr-JHAL_FlashStartAddr-JHAL_FlashPageSize:appHexSize>JHAL_BOOT_BootMaxSize)
                 {
-                    __JHAL_bootAppUpdateResponse( bootInfo,BootResponse_SetSizeFailure4SizeOut,isUpdateApp?FlashEndAddr-FlashPageSize-JHAL_BOOT_BootStartAddr:JHAL_BOOT_BootMaxSize);
+                    __JHAL_bootAppUpdateResponse( bootInfo,BootResponse_SetSizeFailure4SizeOut,isUpdateApp?JHAL_FlashEndAddr-JHAL_FlashPageSize-JHAL_FlashStartAddr:JHAL_BOOT_BootMaxSize);
                     break;
                 }
-                if(isUpdateApp?JHAL_flashErasePage(JHAL_BOOT_AppStartAddr,JHAL_BOOT_AppStartAddr+appHexSize):JHAL_flashErasePage(JHAL_BOOT_BootStartAddr,JHAL_BOOT_BootStartAddr+appHexSize))
+                if(isUpdateApp?JHAL_flashErasePages(JHAL_BOOT_AppStartAddr,JHAL_BOOT_AppStartAddr+appHexSize):JHAL_flashErasePages(JHAL_FlashStartAddr,JHAL_FlashStartAddr+appHexSize))
                 {
                     __JHAL_bootAppUpdateResponse( bootInfo,BootResponse_SetSizeAndErasurecSucceed,0);
                     bootStep++;
@@ -331,7 +330,7 @@ void   __JHAL_bootUpdating(JHAL_BootInfo bootInfo,bool isUpdateApp)
             break;
         case 1:
 
-            JHAL_flashWriteNByte(isUpdateApp?JHAL_BOOT_AppStartAddr+appHexReceivedSize:JHAL_BOOT_BootStartAddr+appHexReceivedSize,dataBuff,rxDataLenth);
+            JHAL_flashWriteNByte(isUpdateApp?JHAL_BOOT_AppStartAddr+appHexReceivedSize:JHAL_FlashStartAddr+appHexReceivedSize,dataBuff,rxDataLenth);
 
 
             appHexReceivedSize+=rxDataLenth ;
@@ -343,7 +342,7 @@ void   __JHAL_bootUpdating(JHAL_BootInfo bootInfo,bool isUpdateApp)
             } else if(appHexReceivedSize==appHexSize)
             {
                 bootStep=0;
-                if(JHAL_crc(JHAL_CRC_Mode_16_Modbus,isUpdateApp?(u8 *)JHAL_BOOT_AppStartAddr:(u8 *)JHAL_BOOT_BootStartAddr, appHexSize)==appHexCrc)
+                if(JHAL_crc(JHAL_CRC_Mode_16_Modbus,isUpdateApp?(u8 *)JHAL_BOOT_AppStartAddr:(u8 *)JHAL_FlashStartAddr, appHexSize)==appHexCrc)
                 {
                     __JHAL_bootAppUpdateResponse( bootInfo,BootResponse_AppUpdateFinshAndRun,0);
                     __JHAL_bootStatusSet(BootStatus_Run);

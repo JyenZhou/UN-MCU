@@ -1,9 +1,9 @@
 #ifndef __JSYS_INCLUDES__H__
 #define  __JSYS_INCLUDES__H__
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
-//将厂家的放在最前面是为了产生重复定义好处理
+//将厂家的放在最前面是为了产生重复定义好处理  
 #include <manufacturer.h>
 #include <stdint.h>
 #include <string.h>
@@ -229,6 +229,15 @@ extern "C" {
 #define max( a, b )  ((a) > (b) ? (a) : (b))
 #define	 max3(a,b,c)		(((c)>(b)&&(c)>(a))?(c):((a)>(b))?(a):(b))
 #define  min3(a,b,c)    (((c)<(a)&&(c)<(b))?(c):((a)<(b))?(a):(b))
+
+
+  
+// 用于计算N个宏定义的常量值之和方便赋值给全局变量中  超出16参数之后不参与计算(大部分够用了，不够再加，据说__VA_ARGS__太多了会导致有些编译器报错)  
+//使用方式 #define NONZERO_MACROS_COUNT COUNT_NONZERO_MACROS( 1,2, 1, 1, 1, 1,1,1,1,1,1,1,1,1,0,1,1,1)  返回值为括号中的值
+#define COUNT_MACROS_CONST_VALUES_HELPER(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, ...)  (_1 + _2 + _3 + _4 + _5 + _6 + _7 + _8 + _9 + _10 + _11 + _12 + _13 + _14 + _15 + _16)
+#define COUNT_MACROS_CONST_VALUE(...) COUNT_MACROS_CONST_VALUES_HELPER(__VA_ARGS__, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+
 
 
     typedef enum {

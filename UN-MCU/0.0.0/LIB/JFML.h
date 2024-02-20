@@ -198,8 +198,7 @@ extern "C" {
 
 
 void  JQStart(void);
-void disableInterrupt(void);
-void enableInterrupt(void);
+void JHAL_systemSelfTest(void);
 
 #ifdef __cplusplus
 }

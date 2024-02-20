@@ -11,13 +11,18 @@
 #ifndef __JHAL_ADC__H__
 #define  __JHAL_ADC__H__
 
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
 
 #include "JUTIL.h"
 
 
+
+ 
+#define JHAL_ADC_ChannelAll 255
+#define JHAL_ADC_ChannelTemperature 254
+ 
 
     typedef struct
     {

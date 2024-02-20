@@ -3,7 +3,7 @@
 #include "JUTIL.h"
 
 
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
  

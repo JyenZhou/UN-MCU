@@ -1,6 +1,7 @@
 #include "../JHAL_Timer.h"
 #include "xl_pit.h"
-
+#include "xl_sim.h"
+#include "xl_nvic.h"
 
 
 
@@ -49,28 +50,28 @@ void __JHAL_timerInit(u8 id, JHAL_TimeUnits unti,u16 itTimeValue)
 
 
 
- 
+
 
 bool JHAL_timerOpen(JHAL_Timer   *config)
 {
-	  if(!config->__info. isOpen) {
-    
+    if(!config->__info. isOpen) {
+
         __JHAL_timerInit(config->id,config->itTimeUnit,config->itTimeValue); //设置初始时间
-    
-		 return  config->__info.isOpen=  true;
-	}
-		 return  false;
+
+        return  config->__info.isOpen=  true;
+    }
+    return  false;
 }
 
 bool  JHAL_timerClose(JHAL_Timer *timer)
 {
     if( timer->__info. isOpen) {
-			
+
         PIT_DeInit(); //timer = 0 禁用定时器
-			 timer->__info.isOpen=false;
-		 return true;
+        timer->__info.isOpen=false;
+        return true;
     }
-		 return  false;
+    return  false;
 }
 
 
@@ -84,7 +85,7 @@ bool  JHAL_timerClose(JHAL_Timer *timer)
 void PIT_CH0_IRQHandler(void)
 {
 
-    JHAL_timerInterruptCallBack(0);
+    JHAL_timerInterruptCallback(0);
     PIT_ClrInterrupt((uint8_t)PIT_Channel0); //清楚PIT中断
 }
 
@@ -94,9 +95,9 @@ void PIT_CH0_IRQHandler(void)
 void PIT_CH1_IRQHandler(void)
 {
 
-    JHAL_timerInterruptCallBack(1);
+    JHAL_timerInterruptCallback(1);
     PIT_ClrInterrupt((uint8_t)PIT_Channel1); //清楚PIT中断
 }
 
 
- 
+

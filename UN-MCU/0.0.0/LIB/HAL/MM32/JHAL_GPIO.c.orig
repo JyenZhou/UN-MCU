@@ -79,7 +79,7 @@ u16 __JHAL_jpin2pin ( u8 pin )
 
 
 }
-u8  JHAL_pin2jpin ( u16 pin )
+u8  JHAL_gpioPin2jpin ( u16 pin )
 {
 
     int position = 0;
@@ -123,97 +123,123 @@ void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,u32 mode)
     } else {
         JHAL_Fault_Handler("JHAL_gpioModeSet_Port");
     }
-JHAL_IOMODE_IO  io=  (JHAL_IOMODE_IO) (__JHAL_IOMODE_IO_Mask&mode);
 		
+		
+		
+		
+    JHAL_IOMODE_IO  io=  (JHAL_IOMODE_IO) (__JHAL_IOMODE_IO_Mask&mode);
+
     if(JHAL_IOMODE_IO_Input==io ) {
 
-			
-		JHAL_IOMODE_PullResistor  pullResistor=(JHAL_IOMODE_PullResistor)(	__JHAL_IOMODE_PullResistor_Mask&mode);
-			if(pullResistor==JHAL_IOMODE_PullResistor_None)
-			{
-			    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_FLOATING;
-			}else if(pullResistor==JHAL_IOMODE_PullResistor_Up)
-			{
-			    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IPU;
-			}else 
-			{
-			    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IPD;
-			}
-			   GPIO_Init(__JHAL_jport2port(port ), &GPIO_InitStruct);
-			
-			
-				JHAL_IOMODE_EXTI_Trigger  trigger= (JHAL_IOMODE_EXTI_Trigger)(__JHAL_IOMODE_EXTI_Trigger_Mask &mode);
-			if(trigger==JHAL_IOMODE_EXTI_Trigger_High_Rising||JHAL_IOMODE_EXTI_Trigger_Low_Falling==trigger)
-			 {
-				JHAL_IOMODE_EXTI_TriggerMode  triggerMode =(JHAL_IOMODE_EXTI_TriggerMode)(__JHAL_IOMODE_EXTI_TriggerMode_Mask &mode);
-				if(triggerMode!=JHAL_IOMODE_EXTI_TriggerMode_Edge)
-				{
-					//未实现
-					 JHAL_Fault_Handler("JHAL_gpioModeSet_TriggerMode");
-				}
-        RCC_APB1PeriphClockCmd(RCC_APB1ENR_EXTI, ENABLE);
-        RCC_APB1PeriphClockCmd(RCC_APB1ENR_SYSCFG, ENABLE);
 
-        EXTI_StructInit(&EXTI_InitStruct);
-        EXTI_InitStruct.EXTI_Line    =  __JHAL_jpin2pin(pin);;
-        EXTI_InitStruct.EXTI_Mode    = EXTI_Mode_Interrupt;
-        EXTI_InitStruct.EXTI_Trigger =JHAL_IOMODE_EXTI_Trigger_High_Rising==trigger? EXTI_Trigger_Rising:EXTI_Trigger_Falling;
-        EXTI_InitStruct.EXTI_LineCmd = ENABLE;
-        EXTI_Init(&EXTI_InitStruct);
-        SYSCFG_EXTILineConfig(port, pin);	 
-        NVIC_InitStruct.NVIC_IRQChannel = pin<2?EXTI0_1_IRQn : pin<4? EXTI2_3_IRQn:EXTI4_15_IRQn;
-        NVIC_InitStruct.NVIC_IRQChannelPriority = 0x01;
-        NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
-        NVIC_Init(&NVIC_InitStruct);
-			}
-    
+        JHAL_IOMODE_PullResistor  pullResistor=(JHAL_IOMODE_PullResistor)(	__JHAL_IOMODE_PullResistor_Mask&mode);
+        if(pullResistor==JHAL_IOMODE_PullResistor_None)
+        {
+            GPIO_InitStruct.GPIO_Mode = GPIO_Mode_FLOATING;
+        } else if(pullResistor==JHAL_IOMODE_PullResistor_Up)
+        {
+            GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IPU;
+        } else
+        {
+            GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IPD;
+        }
+        GPIO_Init(__JHAL_jport2port(port ), &GPIO_InitStruct);
 
+				
+				
+				
+				
+
+        JHAL_IOMODE_EXTI_Trigger  trigger= (JHAL_IOMODE_EXTI_Trigger)(__JHAL_IOMODE_EXTI_Trigger_Mask &mode);
+        if(trigger==JHAL_IOMODE_EXTI_Trigger_High_Rising||JHAL_IOMODE_EXTI_Trigger_Low_Falling==trigger)
+        {
+            JHAL_IOMODE_EXTI_TriggerMode  triggerMode =(JHAL_IOMODE_EXTI_TriggerMode)(__JHAL_IOMODE_EXTI_TriggerMode_Mask &mode);
+            if(triggerMode!=JHAL_IOMODE_EXTI_TriggerMode_Edge)
+            {
+                //未实现
+                JHAL_Fault_Handler("JHAL_gpioModeSet_TriggerMode");
+            }
+            RCC_APB1PeriphClockCmd(RCC_APB1ENR_EXTI, ENABLE);
+            RCC_APB1PeriphClockCmd(RCC_APB1ENR_SYSCFG, ENABLE);
+
+            EXTI_StructInit(&EXTI_InitStruct);
+            EXTI_InitStruct.EXTI_Line    =  1<< pin;
+            EXTI_InitStruct.EXTI_Mode    = EXTI_Mode_Interrupt;
+            EXTI_InitStruct.EXTI_Trigger =JHAL_IOMODE_EXTI_Trigger_High_Rising==trigger? EXTI_Trigger_Rising:EXTI_Trigger_Falling;
+            EXTI_InitStruct.EXTI_LineCmd = ENABLE;
+            EXTI_Init(&EXTI_InitStruct);
+            SYSCFG_EXTILineConfig(port-1, pin);
+            NVIC_InitStruct.NVIC_IRQChannel = pin<2?EXTI0_1_IRQn : pin<4? EXTI2_3_IRQn:EXTI4_15_IRQn;
+            NVIC_InitStruct.NVIC_IRQChannelPriority = 0x05;
+            NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
+            NVIC_Init(&NVIC_InitStruct);
+        }
+
+  
+				
+				
+				
     } else if(io==JHAL_IOMODE_IO_OutputPushPull) {
-			
+
         GPIO_InitStruct.GPIO_Mode = GPIO_Mode_Out_PP;
-			  GPIO_Init(__JHAL_jport2port(port ), &GPIO_InitStruct);
+        GPIO_Init(__JHAL_jport2port(port ), &GPIO_InitStruct);
 
     } else  {
 
         GPIO_InitStruct.GPIO_Mode = GPIO_Mode_Out_OD;
-			  GPIO_Init(__JHAL_jport2port(port ), &GPIO_InitStruct);
-    }  
- 
-		 
-  
+        GPIO_Init(__JHAL_jport2port(port ), &GPIO_InitStruct);
+    }
+
+
+
 
 }
 
+void EXTI0_1_IRQHandler(void)
+{
+
+    for(int i=0; i<24; i++)
+    {
+        if (EXTI_GetITStatus(1<<i))
+        {
+            JHAL_gpio4IRKeyInterruptCallback();
+
+            EXTI_ClearITPendingBit(1<<i);
+        }
+
+    }
+
+}
 
 void EXTI2_3_IRQHandler(void)
 {
-	
-	for(int i=0;i<24;i++)
-	{
-		   if (EXTI_GetITStatus(1<<i))
-    {
-      JHAL_gpio4IRKeyInterruptCallback();
 
-        EXTI_ClearITPendingBit(1<<i);
+    for(int i=0; i<24; i++)
+    {
+        if (EXTI_GetITStatus(1<<i))
+        {
+            JHAL_gpio4IRKeyInterruptCallback();
+
+            EXTI_ClearITPendingBit(1<<i);
+        }
+
     }
-		
-	}
-  
+
 }
 
 void EXTI4_15_IRQHandler(void)
 {
 
-  	for(int i=0;i<24;i++)
-	{
-		   if (EXTI_GetITStatus(1<<i))
+    for(int i=0; i<24; i++)
     {
-      JHAL_gpio4IRKeyInterruptCallback();
+        if (EXTI_GetITStatus(1<<i))
+        {
+            JHAL_gpio4IRKeyInterruptCallback();
 
-        EXTI_ClearITPendingBit(1<<i);
+            EXTI_ClearITPendingBit(1<<i);
+        }
+
     }
-		
-	}
-  
+
 }
 

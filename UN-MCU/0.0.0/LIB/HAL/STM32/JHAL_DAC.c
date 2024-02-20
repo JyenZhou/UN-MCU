@@ -31,7 +31,7 @@ DMA
 
 
 #ifdef HAL_DAC_MODULE_ENABLED
- 
+
 
 
 
@@ -40,35 +40,35 @@ DMA
 
 
 
- 
+
 
 
 
 bool  JHAL_dacOpen( JHAL_DAC *dac)
 
 {
-		for(u8 channelIndex=0;channelIndex<dac->channelsNumber;channelIndex++)
-			{
-				//TIM_CHANNEL_ALL  实测cubemx 1.8.5在pwm中无任何输出 不知道是不是bug
-				if(dac->channels[channelIndex]==DAC_CHANNEL_1 || dac->channels[channelIndex]==DAC_CHANNEL_2    )
-				{
-					
-					 	    HAL_DAC_Start((DAC_HandleTypeDef*)(dac->dev),   dac->channels[channelIndex]);
-				}else{
-					   JHAL_error("JHAL_dacOpen");
-					return false;
-				}
-					
-			}
-			
-			
- 
+    for(u8 channelIndex=0; channelIndex<dac->channelsNumber; channelIndex++)
+    {
+        //TIM_CHANNEL_ALL  实测cubemx 1.8.5在pwm中无任何输出 不知道是不是bug
+        if(dac->channels[channelIndex]==DAC_CHANNEL_1 || dac->channels[channelIndex]==DAC_CHANNEL_2    )
+        {
+
+            HAL_DAC_Start((DAC_HandleTypeDef*)(dac->dev),   dac->channels[channelIndex]);
+        } else {
+            JHAL_error("JHAL_dacOpen");
+            return false;
+        }
+
+    }
+
+
+
     return true;
 }
 
 
 
-  void JHAL_dacSetVoltage (JHAL_DAC *dac,u8 channelIndex,float voltage)
+void JHAL_dacSetVoltage (JHAL_DAC *dac,u8 channelIndex,float voltage)
 {
     u32 dacValue=voltage*4096.0f/DAC_VREF;
     if(dacValue>4095)
@@ -83,7 +83,7 @@ bool  JHAL_dacOpen( JHAL_DAC *dac)
 
 void JHAL_dacSetDA (JHAL_DAC *dac,u8 channelIndex,u16 da)
 {
-   
+
     if(da>4095)
     {
         da=4095;

@@ -36,41 +36,44 @@ void  JHAL_gpioWitePin(JHAL_IO_Port port,u8 pin,bool level)
     }
 }
 //gpio模式设置  0输入 1输出 2开漏
-void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,JHAL_IO_MODE mode)
+void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,u32 mode)
 {
-    if((u8)mode<(u8)JHAL_IO_PP)
+	JHAL_IOMODE_IO  io=  (JHAL_IOMODE_IO) (__JHAL_IOMODE_IO_Mask&mode);
+    if(JHAL_IOMODE_IO_Input==io )
     {
-			
+
         GPIO_SetPinDir(__JHAL_jio2io(port,pin),GPIO_Direction_Input);
 
-        if(mode!= JHAL_IO_IN )
+				JHAL_IOMODE_EXTI_Trigger  trigger= (JHAL_IOMODE_EXTI_Trigger)(__JHAL_IOMODE_EXTI_Trigger_Mask &mode);
+      	if(trigger==JHAL_IOMODE_EXTI_Trigger_High_Rising||JHAL_IOMODE_EXTI_Trigger_Low_Falling==trigger)
         {
+					u8 _port=port-1;
             SIM_SCGC_Cmd(SIM_SCGC_IRQ,ENABLE);   //IRQ时钟使能
             //手册247页
-            SIM_PINSEL_IRQ((u8)(port/2));	//映射第4组引脚 PTGx + PTHx  IRQ_PS_GROUP4
+            SIM_PINSEL_IRQ((u8)(_port/2));	//映射第4组引脚 PTGx + PTHx  IRQ_PS_GROUP4
 
 
             NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
             NVIC_InitTypeDef NVIC_InitStruct;
-            NVIC_InitStruct.NVIC_IRQChannel = EXTI0_IRQn+((port%2)*8)+pin;
+            NVIC_InitStruct.NVIC_IRQChannel = EXTI0_IRQn+((_port%2)*8)+pin;
             NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
             NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 2;
             NVIC_InitStruct.NVIC_IRQChannelSubPriority = 2;
             NVIC_Init(&NVIC_InitStruct); //中断-》处理函数
 
-			
+
             IRQ_InitTypeDef IRQ_InitStruct;
-            IRQ_InitStruct.IRQ_EdgeSelect = JHAL_IO_IN_EXTI_RET==mode? IRQ_Riseedge_Highlevel:IRQ_Falledge_Lowlevel;
+            IRQ_InitStruct.IRQ_EdgeSelect =trigger==JHAL_IOMODE_EXTI_Trigger_High_Rising? IRQ_Riseedge_Highlevel:IRQ_Falledge_Lowlevel;
             IRQ_InitStruct.IRQ_ModeSelect = IRQ_Detect_Edge;
             //define  EXTI0                 0                     < 外部中断通道0.
-            IRQ_Init(IRQ,((port%2)*8)+ pin, &IRQ_InitStruct); //中断触发设置  下降沿
-            IRQ_PinEnableCmd(IRQ, ((port%2)*8)+pin, ENABLE); //引脚使能
-            IRQ_InterruptEn(IRQ, ((port%2)*8)+pin, ENABLE);//中断使能
-            IRQ_PullDevDisableCmd(IRQ,((port%2)*8)+pin,ENABLE);
+            IRQ_Init(IRQ,((_port%2)*8)+ pin, &IRQ_InitStruct); //中断触发设置  下降沿
+            IRQ_PinEnableCmd(IRQ, ((_port%2)*8)+pin, ENABLE); //引脚使能
+            IRQ_InterruptEn(IRQ, ((_port%2)*8)+pin, ENABLE);//中断使能
+            IRQ_PullDevDisableCmd(IRQ,((_port%2)*8)+pin,ENABLE);
         }
-		
 
-    } else if((u8)mode<(u8)JHAL_IO_OD)
+
+    } else if(mode==JHAL_IOMODE_IO_OutputPushPull)
     {
         GPIO_SetPinDir(__JHAL_jio2io(port,pin),GPIO_Direction_Output);
     } else
@@ -85,12 +88,8 @@ void  JHAL_gpioTogglePin(JHAL_IO_Port port,u8 pin)
     GPIO_TogglePin(__JHAL_jio2io(port,pin));
 }
 
-OS_WEAK void JHAL_gpioInterruptCallback()
-{
-
-}
-
  
+
 /**
  * @brief  中断函数
  */

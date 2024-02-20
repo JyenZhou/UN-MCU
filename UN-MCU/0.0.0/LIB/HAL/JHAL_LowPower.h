@@ -1,7 +1,7 @@
 #ifndef __JHAL_LowPower__H__
 #define __JHAL_LowPower__H__
 #include "JUTIL.h"
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
 

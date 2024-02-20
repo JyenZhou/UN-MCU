@@ -17,16 +17,7 @@
 
 
 
-u32 JHAL_flashGetPageSize()
-{
-    return 0;
-}
-
-
-u32 JHAL_flashGetEndAddr()
-{
-    return 0;
-}
+ 
 
 
 /*------------------Jyen--------------------------Jyen-----------------------*/

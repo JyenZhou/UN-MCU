@@ -21,7 +21,7 @@
 #ifndef __JHAL_IRKEYLISTINGTASK__H__
 #define  __JHAL_IRKEYLISTINGTASK__H__
 #include "JHAL.h"
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
 

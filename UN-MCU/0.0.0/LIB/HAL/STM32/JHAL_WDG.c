@@ -20,7 +20,14 @@ uint8_t wwdg_tr, wwdg_wr;
   * 说    明：无
   */
 bool JHAL_wdgOpen(JHAL_WDG  *wdg  )
-{   // 最大值  窗口值  分频
+{
+    //debug 中不开启狗子
+    if ((CoreDebug->DHCSR & 1))
+    {
+        return true;
+    }
+
+    // 最大值  窗口值  分频
     uint8_t tr=0x7F;
     uint8_t wr=	0X5F;
     uint32_t WWDG_PRESCALER_X=WWDG_PRESCALER_8;

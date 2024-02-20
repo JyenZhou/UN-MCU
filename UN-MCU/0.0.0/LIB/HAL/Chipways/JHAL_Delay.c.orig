@@ -41,7 +41,7 @@ static bool __JHAL_isdelayInited=false;
  * @param  None
  * @return None
  */
-void  JHAL_delayInit(JHAL_DealyConfig config)
+void  JHAL_delayOpen(JHAL_Delay  config)
 {
     SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
     __delay_fac_us=Get_SystemCoreClock()/1000000;
@@ -49,18 +49,27 @@ void  JHAL_delayInit(JHAL_DealyConfig config)
 }
 
 
-		void  JHAL_delay(JHAL_TimeUnits timeUntis,u16 value)
-		{
-				//延时倍乘数	 
-	u32		 delay_fac=Get_SystemCoreClock()/Sec2Nsec*timeUntis;
-			if(nus==0)
-    {
-        nus++;
+
+
+void  JHAL_delay(JHAL_TimeUnits timeUntis,u16 value)
+{
+    //延时倍乘数
+     		 u32 delay_fac=Get_SystemCoreClock()/(Sec2Nsec/timeUntis);
+    if(value==0)
+    {       
         return;
     }
+		if(timeUntis<JHAL_TimeUnits_US)
+		{
+
+			 for (u32 i = 0; i < delay_fac; i++) {
+        __NOP();
+    }
+			  return;
+		}
 
     uint32_t temp;
-    SysTick->LOAD=nus*delay_fac; 				//时间加载
+    SysTick->LOAD=value*delay_fac; 				//时间加载
     SysTick->VAL=0x00;        				//清空计数器
     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk ; //开始倒数
     do
@@ -69,8 +78,11 @@ void  JHAL_delayInit(JHAL_DealyConfig config)
     } while((temp&0x01)&&!(temp&(1<<16)));	//等待时间到达
     SysTick->CTRL&=~ SysTick_CTRL_ENABLE_Msk; //关闭计数器
     SysTick->VAL =0X00;       				//清空计数器
-						
-		}
+
+}
+
+
+
 
 /**
  * @brief  微秒级延时
@@ -123,4 +135,4 @@ void  JHAL_delayTryCheckedExceptions(void)
 
 
 
- 
+

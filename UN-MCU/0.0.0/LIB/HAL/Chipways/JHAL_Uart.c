@@ -1,6 +1,6 @@
 #include "../JHAL_Uart.h"
 #include "xl_uart.h"
- #define __JHAL_UART_Exist
+#define __JHAL_UART_Exist
 //这个单片机只有三个串口
 #define __UART_Number  3
 
@@ -113,47 +113,47 @@ static JHAL_UART_RXConfig  *__rXConfig[__UART_Number];
 
 bool JHAL_uartOpen( JHAL_UART  *config)
 {
-		if(!	config->__info.isOpen ){
-    UART_Type *  __uartX=__JHAL_juart2uart(config->id);
-    UART_InitTypeDef UART_InitStructure;
-    if(config->id == 0)
-    {
-        SIM_SCGC_Cmd(SIM_SCGC_UART1,ENABLE);
-        SIM_PINSEL_UART1(UART1_PS_PTC7_PTC6);
-    } else   if(config->id == 1)
-    {
-        SIM_SCGC_Cmd(SIM_SCGC_UART1,ENABLE);
-        SIM_PINSEL_UART1(UART1_PS_PTF3_PTF2);
-    }
-    else {
+    if(!	config->__info.isOpen ) {
+        UART_Type *  __uartX=__JHAL_juart2uart(config->id);
+        UART_InitTypeDef UART_InitStructure;
+        if(config->id == 0)
+        {
+            SIM_SCGC_Cmd(SIM_SCGC_UART1,ENABLE);
+            SIM_PINSEL_UART1(UART1_PS_PTC7_PTC6);
+        } else   if(config->id == 1)
+        {
+            SIM_SCGC_Cmd(SIM_SCGC_UART1,ENABLE);
+            SIM_PINSEL_UART1(UART1_PS_PTF3_PTF2);
+        }
+        else {
 //不存在或未实现
-        while(true);
+            while(true);
 
+        }
+
+
+
+        UART_InitStructure.UART_SourceClk= Get_PeripheralClock();
+        UART_InitStructure.UART_BaudRate = config->baudRate;
+        UART_InitStructure.UART_DataLength = UART_DataLength_8b;
+        UART_InitStructure.UART_StopBits = UART_StopBits_1;
+        UART_InitStructure.UART_Parity = UART_Parity_No;
+
+        UART_Init(__uartX, &UART_InitStructure);
+        __Uart_Interrupt_Init(__uartX);
+
+        __rXConfig[__JHAL_juart2Id(config->id)]=&(config->rxConfig);
+
+
+        UART_EnableCmd(__uartX, ENABLE);
+
+
+
+        return config->__info.isOpen=true;
     }
 
+    return false;
 
-
-    UART_InitStructure.UART_SourceClk= Get_PeripheralClock();
-    UART_InitStructure.UART_BaudRate = config->baudRate;
-    UART_InitStructure.UART_DataLength = UART_DataLength_8b;
-    UART_InitStructure.UART_StopBits = UART_StopBits_1;
-    UART_InitStructure.UART_Parity = UART_Parity_No;
-
-    UART_Init(__uartX, &UART_InitStructure);
-    __Uart_Interrupt_Init(__uartX);
-
-    __rXConfig[__JHAL_juart2Id(config->id)]=&(config->rxConfig);
-
-
-    UART_EnableCmd(__uartX, ENABLE);
-
-		
-		
-    return config->__info.isOpen=true;
-	}
-	
-		return false;
-		
 }
 
 
@@ -251,24 +251,24 @@ void  __JHAL_receiveHandler(u8 uartID, UART_Type *uart)
             __JHAL_uartReceiveIT(uartID,uart);
         }
     }
-		
-	 
+
+
 }
 
 
 
 bool  JHAL_uartClose(JHAL_UART *juart)
 {
-if(  juart->__info.isOpen){
-	
-    __JHAL_uartAbortReceiveIT(__JHAL_juart2Id(juart->id));
-    UART_Type *uart=__JHAL_juart2uart(juart->id);
-    UART_DeInit(uart);
-    UART_EnableCmd(uart, DISABLE);
- juart->__info.isOpen =false;
-    return true;
-}
-return false;
+    if(  juart->__info.isOpen) {
+
+        __JHAL_uartAbortReceiveIT(__JHAL_juart2Id(juart->id));
+        UART_Type *uart=__JHAL_juart2uart(juart->id);
+        UART_DeInit(uart);
+        UART_EnableCmd(uart, DISABLE);
+        juart->__info.isOpen =false;
+        return true;
+    }
+    return false;
 }
 
 
@@ -306,19 +306,19 @@ void UART1_IRQHandler(void)
 }
 
 
-  u16 JHAL_uartRxFinsh(JHAL_UART *uart){
-	
-		
-		return 0;
-		
-	}
+u16 JHAL_uartRxFinsh(JHAL_UART *uart) {
 
-	
-	  bool JHAL_uartSendDatas(JHAL_UART *uart,u8* data,u16  length,JHAL_CRC_Mode mode){
-			
-			
-			return false;
-		}
+
+    return 0;
+
+}
+
+
+bool JHAL_uartSendDatas(JHAL_UART *uart,u8* data,u16  length,JHAL_CRC_Mode mode) {
+
+
+    return false;
+}
 
 #ifdef JHAL_UartPrintfDev
 

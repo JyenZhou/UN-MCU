@@ -153,10 +153,10 @@ void __JHAL_instructionTest()
 
 
 
-void __JHAL_systemSelfTest(void)
+void JHAL_systemSelfTest(void)
 {
     // ÷∏¡Ó≤‚ ‘
-    __JHAL_instructionTest();
+     __JHAL_instructionTest();
 
 
 }

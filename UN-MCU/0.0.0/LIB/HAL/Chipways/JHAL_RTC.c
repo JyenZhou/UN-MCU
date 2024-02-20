@@ -107,18 +107,18 @@ void __JHAL_rtcInterruptEnable(RTC_Type *RTCx)
 
 }
 
- 
+
 
 bool JHAL_rtcOpen( JHAL_RTC  *config)
 {
     if(!config->__info.isOpen) {
         __JHAL_rtcTimeInit(RTC,config->itTimeUnit,config->itTimeValue); //设置初始时间
         __JHAL_rtcInterruptEnable(RTC);  //配置中断
-			
-			
-			return   config->__info.isOpen=true;
+
+
+        return   config->__info.isOpen=true;
     }
-		return false;
+    return false;
 }
 bool  JHAL_rtcClose(JHAL_RTC *config)
 {
@@ -126,13 +126,13 @@ bool  JHAL_rtcClose(JHAL_RTC *config)
         //打开RTC模块总线时钟  因为低功耗后可能会关闭这个时钟  到时候操作无效
         SIM_SCGC_Cmd(SIM_SCGC_RTC,ENABLE);
         RTC_DeInit(RTC);
-			
-			
-				    config->__info.isOpen=false;
-			return true;
+
+
+        config->__info.isOpen=false;
+        return true;
     }
-		return false;
-		
+    return false;
+
 }
 
 /**
@@ -144,12 +144,12 @@ void RTC_IRQHandler(void)
 {
 
     RTC_ClrInterruptFlag(RTC); //清空中断
-    JHAL_rtcInterruptCallBack(0);
+    JHAL_rtcInterruptCallback(0);
 
 }
 
 
 
-__attribute__((weak)) void JHAL_rtcInterruptCallBack(u8 dev)
+__attribute__((weak)) void JHAL_rtcInterruptCallback(u8 dev)
 {
 }

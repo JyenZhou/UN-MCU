@@ -54,19 +54,19 @@ void  JHAL_delayOpen(JHAL_Delay  config)
 void  JHAL_delay(JHAL_TimeUnits timeUntis,u16 value)
 {
     //延时倍乘数
-     		 u32 delay_fac=Get_SystemCoreClock()/(Sec2Nsec/timeUntis);
+    u32 delay_fac=Get_SystemCoreClock()/(Sec2Nsec/timeUntis);
     if(value==0)
-    {       
+    {
         return;
     }
-		if(timeUntis<JHAL_TimeUnits_US)
-		{
+    if(timeUntis<JHAL_TimeUnits_US)
+    {
 
-			 for (u32 i = 0; i < delay_fac; i++) {
-        __NOP();
+        for (u32 i = 0; i < delay_fac; i++) {
+            __NOP();
+        }
+        return;
     }
-			  return;
-		}
 
     uint32_t temp;
     SysTick->LOAD=value*delay_fac; 				//时间加载

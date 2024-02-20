@@ -123,10 +123,10 @@ void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,u32 mode)
     } else {
         JHAL_Fault_Handler("JHAL_gpioModeSet_Port");
     }
-		
-		
-		
-		
+
+
+
+
     JHAL_IOMODE_IO  io=  (JHAL_IOMODE_IO) (__JHAL_IOMODE_IO_Mask&mode);
 
     if(JHAL_IOMODE_IO_Input==io ) {
@@ -145,10 +145,10 @@ void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,u32 mode)
         }
         GPIO_Init(__JHAL_jport2port(port ), &GPIO_InitStruct);
 
-				
-				
-				
-				
+
+
+
+
 
         JHAL_IOMODE_EXTI_Trigger  trigger= (JHAL_IOMODE_EXTI_Trigger)(__JHAL_IOMODE_EXTI_Trigger_Mask &mode);
         if(trigger==JHAL_IOMODE_EXTI_Trigger_High_Rising||JHAL_IOMODE_EXTI_Trigger_Low_Falling==trigger)
@@ -175,10 +175,10 @@ void  JHAL_gpioModeSet(JHAL_IO_Port port,u8 pin,u32 mode)
             NVIC_Init(&NVIC_InitStruct);
         }
 
-  
-				
-				
-				
+
+
+
+
     } else if(io==JHAL_IOMODE_IO_OutputPushPull) {
 
         GPIO_InitStruct.GPIO_Mode = GPIO_Mode_Out_PP;

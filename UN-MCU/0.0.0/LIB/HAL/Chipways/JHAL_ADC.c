@@ -1,6 +1,6 @@
 #include "../JHAL_ADC.h"
 #include <xl_adc.h>
-
+#include <xl_sim.h>
 
 
 
@@ -19,7 +19,7 @@ ADC_Type* __JHAL_id2adc(u8 adc)
 
 
 
- 
+
 
 /*
 //BandGap最大、小AD值
@@ -39,7 +39,7 @@ u32  __JHAL_adcAqcSingle(ADC_Type* adc,u8 channel)
     return  ADC_GetConversionValue(adc);
 }
 
- 
+
 
 
 JHAL_ADCValue __JHAL_adcAqcSingleCollector(JHAL_ADC* adc,u8 adc_channel)
@@ -48,7 +48,7 @@ JHAL_ADCValue __JHAL_adcAqcSingleCollector(JHAL_ADC* adc,u8 adc_channel)
     uint32_t t_adcBuffer[  adc->samplingCount]  ;
     for(uint16_t t_count = 0; t_count <  adc->samplingCount; t_count++)
     {
-        t_adcValue =__JHAL_adcAqcSingle(   __JHAL_id2adc( adc->id) ,adc_channel);
+        t_adcValue =__JHAL_adcAqcSingle(   __JHAL_id2adc( adc->id),adc_channel);
         t_adcBuffer[t_count] = t_adcValue;
         if(t_adcValue==0)
         {
@@ -74,7 +74,7 @@ JHAL_ADCValue __JHAL_adcAqcSingleCollector(JHAL_ADC* adc,u8 adc_channel)
 
 void  __JHAL_adcUpdateVoltageCalculationCoefficient( JHAL_ADC  *jadc)
 {
- 
+
     switch(jadc->vref)
     {
     case  JHAL_ADC_ReferVoltage_BandGap:
@@ -88,7 +88,7 @@ void  __JHAL_adcUpdateVoltageCalculationCoefficient( JHAL_ADC  *jadc)
 
 }
 
- 
+
 
 
 
@@ -112,13 +112,13 @@ number  要初始化通道的个数
 
 bool  JHAL_adcOpen(JHAL_ADC *jadc )
 {
-   if(   !jadc->__info.isOpen ) 
-	 {
-		 jadc->__info.isOpen=true;
-		 if(jadc->samplingCount==0)
-		 {
-			 jadc->samplingCount=5;
-		 }
+    if(   !jadc->__info.isOpen )
+    {
+        jadc->__info.isOpen=true;
+        if(jadc->samplingCount==0)
+        {
+            jadc->samplingCount=5;
+        }
         ADC_Type* adc=__JHAL_id2adc(jadc->id);
         JHAL_delayOpen(*(JHAL_Delay  *)NULL);
         ADC_InitTypeDef ADC_InitStruct= {0};
@@ -161,6 +161,22 @@ bool  JHAL_adcOpen(JHAL_ADC *jadc )
         JHAL_delayUs(50);
         for(u8 i=0; i<jadc->channelsNumber; i++)
         {
+            u8 channel= jadc->channels[i];
+            if(channel> ADC_CHANNEL_TEMPSENSOR)
+            {
+
+                if(channel==JHAL_ADC_ChannelTemperature)
+                {
+                    channel=ADC_CHANNEL_TEMPSENSOR;
+
+                } else
+                {
+                    JHAL_error("JHAL_adcOpen");
+                }
+
+            }
+
+
             if(jadc->isMultichannelMode) {
                 ADC_SetChannel(adc,jadc->channels[i]);
             } else {
@@ -169,38 +185,50 @@ bool  JHAL_adcOpen(JHAL_ADC *jadc )
         }
 
         __JHAL_adcUpdateVoltageCalculationCoefficient(  jadc);
-        
+
         //第一次不准 初始化时候采集一次
         if(jadc->isMultichannelMode) {
             while( !JHAL_adcAqcMultiple(jadc));
         }
-				
-				 return  jadc->__info.isOpen=true;
-			}
-       return false; 
-    
+
+        return  jadc->__info.isOpen=true;
+    }
+    return false;
+
 }
 bool JHAL_adcClose(JHAL_ADC *jadc)
 {
-   if(   jadc->__info.isOpen ) 
-	 {
-	 
-	
+    if(   jadc->__info.isOpen )
+    {
+
+
         ADC_DeInit(__JHAL_id2adc(jadc->id));
-     
-		 jadc->__info.isOpen=false ;
-    return true; 
- }
-	 return false; 
+
+        jadc->__info.isOpen=false ;
+        return true;
+    }
+    return false;
 }
 
 JHAL_ADCInfo JHAL_adcAqcSingle(JHAL_ADC *jadc,u8 channelIndex)
-{  
-	 ADC_Type* adc=__JHAL_id2adc(jadc->id);
+{
+    ADC_Type* adc=__JHAL_id2adc(jadc->id);
+
 	
-	
+	u8 channel=jadc->channels[channelIndex];
+    if(channel>= ADC_CHANNEL_TEMPSENSOR)
+    {
+        if(channel==JHAL_ADC_ChannelTemperature)
+        {
+            channel=ADC_CHANNEL_TEMPSENSOR;
+        } else
+        {
+            JHAL_error("JHAL_adcOpen");
+        }
+    }
+
     JHAL_ADCInfo adcInfo= {0};
-    adcInfo.adcValue=__JHAL_adcAqcSingleCollector(jadc, jadc->channels[channelIndex]);
+    adcInfo.adcValue=__JHAL_adcAqcSingleCollector(jadc, channel);
     adcInfo.minVoltage=adcInfo.adcValue.minAD*jadc->__info.calculationCoefficient;
     adcInfo.voltage=adcInfo.adcValue.ad*jadc->__info.calculationCoefficient;
     adcInfo.maxVoltage=adcInfo.adcValue.maxAD*jadc->__info.calculationCoefficient;

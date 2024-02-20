@@ -3,7 +3,7 @@
 
 
 
- 
+
 void __JHAL_wdgNVIC(FunctionalState isEn)
 {
 
@@ -25,13 +25,13 @@ void  JHAL_wdgFeed(JHAL_WDG  *wdg)
 
 bool  JHAL_wdgClose(JHAL_WDG  *wdg)
 {
-  if(  wdg->__info.isOpen ) {
-			
+    if(  wdg->__info.isOpen ) {
+
         SIM_SCGC_Cmd(SIM_SCGC_WDG,DISABLE);
         __JHAL_wdgNVIC(DISABLE);
         WDOG_DeInit(WDOG);
         WDOG_EnableCmd(WDOG,DISABLE);
-			 wdg->__info.isOpen=false;
+        wdg->__info.isOpen=false;
         return true;
     }
     return false;
@@ -41,9 +41,9 @@ bool  JHAL_wdgClose(JHAL_WDG  *wdg)
 bool  JHAL_wdgOpen (JHAL_WDG   *config)
 {
     if(! config->__info.isOpen ) {
-			
-			
-			
+
+
+
         __JHAL_wdgNVIC(ENABLE);
         SIM_SCGC_Cmd(SIM_SCGC_WDG,ENABLE);
         WDOG_DeInit(WDOG);
@@ -79,10 +79,10 @@ bool  JHAL_wdgOpen (JHAL_WDG   *config)
 
 void WDOG_IRQHandler(void)
 {
-    JHALwdgBeforeInterruptCallBack(JHAL_WDG_GWDG);
+    JHALwdgBeforeInterruptCallback(JHAL_WDG_GWDG);
 }
 
 
-__weak   void JHALwdgBeforeInterruptCallBack(JHAL_WDG_Dev dev)
+__weak   void JHALwdgBeforeInterruptCallback(JHAL_WDG_Dev dev)
 {
 }

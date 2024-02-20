@@ -1,7 +1,7 @@
 #include "../JHAL_Delay.h"
 
 
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
 
@@ -101,7 +101,7 @@ extern "C" {
 //当使用ucos的时候,此函数会初始化ucos的时钟节拍
 //SYSTICK的时钟固定为AHB时钟
 //SYSCLK:系统时钟频率
-
+    //  JHAL_delayOpen((JHAL_Delay){NULL});
     void  JHAL_delayOpen(JHAL_Delay config)
     {
 

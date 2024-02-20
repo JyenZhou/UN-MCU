@@ -1,7 +1,7 @@
 #ifndef __ITOA_INTTOINT__H__
 #define __ITOA_INTTOINT__H__
 #include "JSYS.h"
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
 

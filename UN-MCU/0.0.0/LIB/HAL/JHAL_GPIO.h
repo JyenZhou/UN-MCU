@@ -11,7 +11,7 @@
 #ifndef __JHAL_GPIO__H__
 #define __JHAL_GPIO__H__
 
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
 
@@ -31,7 +31,11 @@ extern "C" {
         JHAL_IOI,
     } JHAL_IO_Port;
 
-
+  typedef   struct
+    {
+        JHAL_IO_Port port;
+        u8 pin;
+    } JHAL_IO;
 
     typedef enum
     {
@@ -107,6 +111,12 @@ extern "C" {
 		//适用于端口和pin定义在一起的那种
     void JHAL_gpioIo2jio(void * io,JHAL_IO_Port *port,u8 *pin);
 
+
+
+ 
+  
+ 
+	
 
 #ifdef CplusPlus
 }

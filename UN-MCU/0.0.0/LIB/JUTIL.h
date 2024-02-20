@@ -1,6 +1,6 @@
 #ifndef __JUTIL_INCLUDES__H__
 #define __JUTIL_INCLUDES__H__
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
 
@@ -22,25 +22,17 @@ extern "C" {
 #define  JHAL_DEV_DEINIT         .__info.isOpen=true
 
 
- void JHAL_getDateTimeString( char dateStr[12], char timeStr[9]);
+
 
  #define UpdateDateTime void JHAL_getDateTimeString( char dateStr[12], char timeStr[9]){strncpy(dateStr, __DATE__, 12 - 1);dateStr[12 - 1] = '\0';strncpy(timeStr, __TIME__, 9 - 1); timeStr[9 - 1] = '\0';}
- 
+ void JHAL_getDateTimeString( char dateStr[12], char timeStr[9]);
 
-    u32 JHAL_uidGetHigh(void);
-    u32 JHAL_uidGetMiddle(void);
-    u32 JHAL_uidGetLow(void);
-// 96位UID相当于3个32位变量  每8位变量相当于一个字符  所以最大需要4*3+1 =13个字符空间 为了兼容 低位uid先存
-    void uid2string(char* string,int buffSize );
+
 
     void JHAL_systemReset(void);
-
-
-   void JHAL_error(char  * msg);
-
+    void JHAL_error(char  * msg);
     void  JHAL_enableInterrupts(void);
     void  JHAL_disableInterrupts(void);
-    void JHAL_getSFVersions( uint8_t *date);
     extern volatile u64 jsystemMs;
 
 

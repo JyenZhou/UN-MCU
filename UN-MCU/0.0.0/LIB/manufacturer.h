@@ -1,6 +1,6 @@
 #ifndef __JSYS_Manufacturer__H__
 #define  __JSYS_Manufacturer__H__
-#ifdef __CplusPlus
+#ifdef __cplusPlus
 extern "C" {
 #endif
  
@@ -26,7 +26,7 @@ extern "C" {
 #endif
 
 
-#ifdef  USE_STDPERIPH_DRIVER
+#ifdef  MM32G0001
 #include "HAL/MM32/Manufacturer/hal_conf.h"
 #include "HAL/MM32/Manufacturer/mm32_device.h"
 

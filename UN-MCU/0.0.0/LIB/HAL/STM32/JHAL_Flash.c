@@ -1,5 +1,6 @@
 #include "..\JHAL_Flash.h"
 
+#define  __JHAL_Flash_Exist
 /*************Jyen*************************Jyen********************Jyen***********************Jyen********************
    *                                                                *
  *                                                                   *
@@ -11,24 +12,24 @@
   *                                                                 *
    *                                                              *
 *********Jyen******************Jyen************************Jyen*****************************************/
-#define FLASH_WAITETIME 50000       //FLASH等待超时时间 
 
 
-#define FlashStartAddr FLASH_BASE
+
+#define JHAL_FlashStartAddr FLASH_BASE
 #if defined STM32F103xE   || defined STM32F103xB
 
 //扇区大小1K
-#define FlashPageSize 0x400
+#define JHAL_FlashPageSize 0x400
 //256K xe的大小是256-512 定义小的兼容性好 一般来说够用了  如果超出就再加个具体定义的宏定义
-#define FlashPageNumber 256
-#define FlashMaxSize  (*((uint16_t *)FLASH_SIZE_DATA_REGISTER))
+#define JHAL_FlashPageNumber 256
+#define JHAL_FlashMaxSize  (*((uint16_t *)FLASH_SIZE_DATA_REGISTER))
 
 
 #elif defined (STM32F407xx)
 //16K
-#define FlashPageSize 0x4000
-#define FlashPageNumber 10
-#define FlashMaxSize  (*((uint16_t *)0x1FFF7A22))
+#define JHAL_FlashPageSize 0x4000
+#define JHAL_FlashPageNumber 10
+#define JHAL_FlashMaxSize  (*((uint16_t *)0x1FFF7A22))
 
 #else
 #error 未定义flash大小
@@ -36,19 +37,11 @@
 
 
 
-#define FlashEndAddr (FlashStartAddr+FlashMaxSize)
+#define JHAL_FlashEndAddr (JHAL_FlashStartAddr+JHAL_FlashMaxSize)
 
 
-uint16_t getFlashSize()
-{
 
 
-    return FlashMaxSize;
-
-}
-
-
- 
 
 
 
@@ -60,6 +53,8 @@ bool __JHAL_flashErasePage(const uint32_t targetaddress )
     //1、解锁FLASH
 
     //2、擦除FLASH
+    JHAL_disableInterrupts();
+    HAL_FLASH_Unlock();
     //初始化FLASH_EraseInitTypeDef
 
     FLASH_EraseInitTypeDef f;
@@ -81,95 +76,26 @@ bool __JHAL_flashErasePage(const uint32_t targetaddress )
 
     if(  HAL_FLASHEx_Erase(&f, &PageError)!=HAL_OK)  //扇区擦除
     {
-
+        HAL_FLASH_Lock();
+        JHAL_enableInterrupts();
         return false;
     }
 
 
 
 
-    return   FLASH_WaitForLastOperation(FLASH_WAITETIME)==HAL_OK; //等待上次操作完成
-}
-
-
-
-
-
-
- 
-
-/*------------------Jyen--------------------------Jyen-----------------------*/
-/*******************************************************************************
-*@ 函数功能或简介: 擦出指定扇区区间的Flash数据
-  * @输入参数:StartPage 起始地址 (必须扇区对齐)
-							EndPage 结束地址  (会自动对齐扇区)
-
-  * @返 回 值: 扇区擦出状态
-  * @备注: 无
-  *
-  *
-  ******************************************************************************
-  *
-  *------------------Jyen-------------------------Jyen-------------------------*/
-
-bool JHAL_flashErasePage(uint32_t startPageAddr, uint32_t endAddr)
-{
-    JHAL_disableInterrupts();
-    HAL_FLASH_Unlock();
-
-    //判断开始地址是否按照扇区对齐 否则会出错
-    while((startPageAddr%FlashPageSize)!=0);
-    //地址超出
-    while(endAddr>FlashEndAddr);
-    //TODO 跨页将产生一个全局警告方便debug
-    u8 missionsRetriedCount=10;
-    do {
-
-        for (u32 i = startPageAddr; i <= endAddr; i += FlashPageSize)
-        {
-            if(! __JHAL_flashErasePage(i))//程序区页擦
-            {
-                continue;
-            }
-        }
-        break;
-    } while(--missionsRetriedCount!=0);
+    bool isok=  FLASH_WaitForLastOperation(JHAL_FLASH_WAITETIME)==HAL_OK; //等待上次操作完成
 
     HAL_FLASH_Lock();
     JHAL_enableInterrupts();
-
-
-    if(missionsRetriedCount>0)
-    {
-        return true;
-    } else {
-        return false;
-    }
-
+    return  isok;
 }
 
 
 
 
-/**
-  * 描述  flash 程序区写单字数据
-  * 输入  address： 指定flash地址
-  *  p_FlashBuffer: 写入数据的指针
-  *
-  * 返回  无。
-  * 注：写入前要先擦除地址所在的页  8字节对齐(uint64)  写入
-  */
-bool __JHAL_flashWrite8Byte(uint32_t address,void* p_FlashBuffer)
-{
 
-    if(HAL_OK==  HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD,address,* (u64_t*)p_FlashBuffer))
-    {
-        return true;
-    }
 
-    return false;
-
-}
 /**
   * 描述  flash 程序区写多个字节数据
   * 输入  address： 指定flash地址
@@ -183,20 +109,26 @@ bool JHAL_flashWriteNByte(uint32_t address,uint8_t *p_FlashBuffer,uint16 leng)//
     leng=(leng/8)+(leng%8!=0);
 
     JHAL_disableInterrupts();
+    HAL_FLASH_Unlock();
 
     for(u16 i=0; i<leng; i++) //一页1024byte，缓冲一次写64bit=8byte，128个缓冲块
     {
-        if(!  __JHAL_flashWrite8Byte(address,p_FlashBuffer))
+        if(HAL_OK!=  HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD,address,* (u64_t*)p_FlashBuffer))
         {
+            HAL_FLASH_Lock();
+            JHAL_enableInterrupts();
             return false;
         }
         p_FlashBuffer+=8;
         address+=8;
     }
+
+    bool isok=  FLASH_WaitForLastOperation(JHAL_FLASH_WAITETIME)==HAL_OK; //等待上次操作完成
+    HAL_FLASH_Lock();
     JHAL_enableInterrupts();
-    return true;
+    return isok;
 }
- 
+
 
 
 
